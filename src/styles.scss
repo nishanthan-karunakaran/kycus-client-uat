@@ -1,0 +1,29 @@
+@import './assets/styles/global';
+
+html,
+body {
+  width: 100vw;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+body {
+  background: linear-gradient(
+    to right,
+    rgb(21, 58, 124) 15% /* 15% blue */,
+    rgb(180, 124, 108) 90% /* 75% reddish */
+  ) !important;
+}
+
+.sidebar-bg {
+  background: linear-gradient(
+    to bottom,
+    rgb(21, 58, 124) 40% /* 40% Blue */,
+    rgb(180, 124, 108) 100% /* 60% Reddish */
+  ) !important;
+}

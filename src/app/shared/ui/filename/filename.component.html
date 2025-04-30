@@ -1,0 +1,32 @@
+<div
+  class="flex w-max items-center justify-between gap-2 bg-primary bg-opacity-10 p-2 text-primary"
+>
+  <div
+    class="flex items-center gap-2 border-r"
+    (click)="openFileInNewTab()"
+    (keydown.enter)="openFileInNewTab()"
+    (keydown.space)="openFileInNewTab()"
+    tabindex="0"
+  >
+    <lucide-icon name="file-minus" size="20" />
+    <p
+      class="max-w-[14ch] overflow-hidden truncate"
+      [attr.title]="fileName"
+      [ngClass]="{ underline: fileLink, 'cursor-pointer': fileLink }"
+    >
+      {{ fileName }}
+    </p>
+  </div>
+  <lucide-icon
+    *ngIf="canRemove"
+    name="x"
+    size="20"
+    [ngClass]="{
+      'cursor-pointer': canRemove,
+    }"
+    (click)="deleteFile()"
+    (keydown.enter)="deleteFile()"
+    (keydown.space)="deleteFile()"
+    tabindex="0"
+  />
+</div>

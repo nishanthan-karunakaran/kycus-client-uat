@@ -1,0 +1,40 @@
+<div
+  *ngIf="isOpen"
+  class="fixed inset-0 z-10 bg-gray-600 bg-opacity-50 transition-opacity duration-300 ease-in-out"
+  (click)="close()"
+  (keydown.enter)="close()"
+  (keydown.space)="close()"
+  tabindex="0"
+></div>
+
+<div
+  class="fixed top-0 z-20 h-full min-w-80 max-w-3xl transform overflow-auto bg-white shadow-lg transition-transform duration-300 ease-linear"
+  [ngClass]="[
+    position === 'right'
+      ? 'right-0 translate-x-full'
+      : 'left-0 -translate-x-full',
+    isOpen
+      ? 'translate-x-0'
+      : position === 'right'
+        ? 'translate-x-full'
+        : '-translate-x-full',
+    class,
+  ]"
+>
+  <button
+    *ngIf="showClose"
+    (click)="close()"
+    class="group absolute right-2 top-2 appearance-none border-none bg-transparent p-0 outline-none focus:ring-0 active:ring-0"
+    tabindex="0"
+  >
+    <lucide-icon
+      name="x"
+      size="20"
+      class="text-gray-900 transition-transform duration-200 ease-in-out group-hover:scale-125"
+    ></lucide-icon>
+  </button>
+
+  <div class="p-6" [ngClass]="[contentClass]">
+    <ng-content></ng-content>
+  </div>
+</div>

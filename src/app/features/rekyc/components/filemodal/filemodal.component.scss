@@ -1,0 +1,12 @@
+@keyframes moving-line {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(150%);
+  }
+}
+
+.animate-moving-line {
+  animation: moving-line 0.7s linear infinite alternate;
+}

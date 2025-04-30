@@ -1,0 +1,52 @@
+<div
+  *ngIf="isOpen"
+  class="modal-overlay fixed inset-0 z-50 flex items-center justify-center"
+>
+  <div
+    class="absolute inset-0 cursor-default bg-black bg-opacity-40 backdrop-blur-sm transition-opacity"
+    (click)="onOverlayClick($event)"
+    (keydown.enter)="onOverlayClick($event)"
+    (keydown.space)="onOverlayClick($event)"
+    tabindex="0"
+    role="button"
+    aria-label="Close overlay"
+  ></div>
+
+  <div
+    class="modal-container animate-fade-in relative w-full max-w-4xl scale-95 transform rounded-xl bg-white shadow-lg transition-transform"
+    [ngClass]="class"
+  >
+    <div
+      *ngIf="showClose || hasHeader"
+      class="flex w-full items-center border-b p-4"
+    >
+      <div class="flex-grow select-none truncate">
+        <ng-content select="[modalHeader]"></ng-content>
+      </div>
+
+      <!-- <button
+        *ngIf="showClose"
+        (click)="closeModal()"
+        class="group ml-1 flex-shrink-0 appearance-none border-none bg-transparent p-0 outline-none focus:ring-0 active:ring-0"
+        tabindex="0"
+      >
+        <lucide-icon
+          name="x"
+          size="20"
+          class="text-gray-900 transition-transform duration-200 ease-in-out group-hover:scale-125"
+        ></lucide-icon>
+      </button> -->
+    </div>
+
+    <div class="max-h-[70vh] overflow-auto px-10 py-6" [ngClass]="contentClass">
+      <ng-content select="[modalContent]"></ng-content>
+    </div>
+
+    <div
+      *ngIf="hasFooter"
+      class="flex w-full items-center justify-between border-t p-4"
+    >
+      <ng-content select="[modalFooter]"></ng-content>
+    </div>
+  </div>
+</div>

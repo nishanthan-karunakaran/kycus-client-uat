@@ -1,0 +1,163 @@
+<div class="flex w-full flex-col gap-8">
+  <div class="flex flex-col gap-6">
+    <p class="font-medium text-gray-500">
+      Check the list of current directors of the company. In case of any
+      inclusion or removal, please upload Form 32 along with a letterhead
+      declaration.
+    </p>
+
+    <div class="w-full">
+      <div class="flex w-full gap-2 p-2">
+        <p class="w-[35%]">Director Name</p>
+        <p class="flex-1 text-left">DIN Number</p>
+        <p class="w-[50px]"></p>
+        <p class="w-[250px] pl-8" *ngIf="isDirectorModified$()">
+          Form 32
+          <span class="text-red-500">*</span>
+        </p>
+      </div>
+
+      <div *ngIf="!isLoading()" class="flex">
+        <div class="flex-1">
+          <div
+            *ngFor="let dir of activeDirectors; trackBy: trackDir"
+            class="flex flex-1 border"
+            [ngClass]="{
+              'opacity-75': dir.status === 'inactive',
+            }"
+          >
+            <div class="flex min-h-14 w-[35%] items-center border-r px-2">
+              <p *ngIf="dir.status !== 'new-dir'">{{ dir.directorName }}</p>
+              <ui-input
+                *ngIf="dir.status === 'new-dir'"
+                name="directorName"
+                id="directorName"
+                placeholder="Enter Director Name"
+                (valueChange)="
+                  onDirInputChange(dir.dirId, 'directorName', $event)
+                "
+              />
+            </div>
+            <div class="flex min-h-14 flex-1 items-center border-r px-2">
+              <p *ngIf="dir.status !== 'new-dir'">{{ dir.din }}</p>
+              <ui-input
+                *ngIf="dir.status === 'new-dir'"
+                type="number"
+                name="din"
+                id="din"
+                placeholder="Enter Director Name"
+                (valueChange)="onDirInputChange(dir.dirId, 'din', $event)"
+              />
+            </div>
+            <div
+              class="flex min-h-14 w-[50px] items-center justify-center px-2"
+            >
+              <lucide-icon
+                name="trash-2"
+                size="16"
+                color="#FF8754"
+                class="cursor-pointer"
+                (click)="handleDirModification('delete', dir.dirId)"
+              />
+            </div>
+          </div>
+
+          <div
+            *ngIf="directorsList().length === 0"
+            class="flex-center min-h-14 flex-1 border"
+          >
+            <p>You must add Directors</p>
+          </div>
+
+          <div class="flex-center min-h-14 flex-1 border">
+            <ui-button
+              label="Add Director"
+              icon="plus"
+              iconPos="left"
+              (btnClick)="handleDirModification('add')"
+              class="btn-nostyle font-medium text-primary"
+            />
+          </div>
+        </div>
+
+        <div
+          class="flex w-[250px] flex-col justify-between border border-l-0"
+          *ngIf="isDirectorModified$() || form32.name"
+        >
+          <div class="flex h-[90%] flex-col items-center justify-center">
+            <ui-upload-button
+              *ngIf="!form32.name"
+              accept=".pdf, .xlsx"
+              label="Upload Form 32"
+              (selectedFile)="onForm32Change($event)"
+            />
+
+            <ui-filename
+              *ngIf="form32.name"
+              [fileName]="form32.name"
+              [fileLink]="form32.link"
+              (removeFile)="removeForm32()"
+            />
+
+            <p class="error-msg" *ngIf="form32Error()">{{ form32Error() }}</p>
+          </div>
+
+          <div class="flex justify-center" *ngIf="isDirectorModified$()">
+            <ui-button
+              label="Cancel Edit"
+              (btnClick)="cancelDirEdit()"
+              class="btn-nostyle text-secondary"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="isLoading()" class="flex-center min-h-14 flex-1 border">
+        <div role="status" class="w-full animate-pulse">
+          <div class="mb-4 h-4 w-3/4 rounded bg-gray-300"></div>
+          <div class="mb-4 h-4 w-1/2 rounded bg-gray-300"></div>
+          <div class="mb-4 h-4 w-full rounded bg-gray-300"></div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="flex items-center justify-end gap-2 border-t border-gray-300 py-4"
+    >
+      <!-- <ui-button
+      label="Save Draft"
+      class="btn-outline"
+      (btnClick)="saveDraft()"
+    /> -->
+      <ui-button
+        type="submit"
+        label="Next"
+        class="py-[7px]"
+        (btnClick)="submit()"
+      />
+    </div>
+
+    <ui-modal
+      [showClose]="false"
+      (close)="handleForm32Modal()"
+      class="max-w-md"
+      [isOpen]="isForm32ModalOpen()"
+    >
+      <div modalContent class="flex flex-col gap-8">
+        <p class="text-md">
+          Upon including or removing Directors, please upload Form-32 along with
+          a letterhead declaration
+        </p>
+
+        <div class="flex justify-between gap-4">
+          <button class="btn-outline w-1/2" (click)="decideDirChange('cancel')">
+            Cancel
+          </button>
+          <button class="w-1/2" (click)="decideDirChange('continue')">
+            Continue
+          </button>
+        </div>
+      </div>
+    </ui-modal>
+  </div>
+</div>

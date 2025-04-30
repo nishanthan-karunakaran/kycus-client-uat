@@ -1,0 +1,44 @@
+<table class="w-full border-collapse border border-gray-300">
+  <thead>
+    <tr class="bg-gray-100">
+      <th
+        *ngFor="let column of columns; trackBy: trackByKey"
+        (click)="isColumnSortable(column.key) && sort(column.key)"
+        [class.cursor-pointer]="isColumnSortable(column.key)"
+        [attr.aria-sort]="columnSortState[column.key]"
+        class="border border-gray-300 px-4 py-2 text-left"
+        scope="col"
+      >
+        <div class="flex items-center gap-1">
+          {{ column.label }}
+          <lucide-icon
+            *ngIf="isColumnSortable(column.key)"
+            size="16"
+            [name]="
+              sortKey === column.key
+                ? sortDirection === 'asc'
+                  ? 'arrow-up'
+                  : 'arrow-down'
+                : 'arrow-up-down'
+            "
+            [ariaHidden]="true"
+          ></lucide-icon>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let row of sortedData; trackBy: trackByRow"
+      class="hover:bg-gray-50"
+      (click)="emitActiveRow ? handleActiveRow(row) : null"
+    >
+      <td
+        *ngFor="let column of columns; trackBy: trackByKey"
+        class="border border-gray-300 px-4 py-2"
+      >
+        {{ row[column.key] }}
+      </td>
+    </tr>
+  </tbody>
+</table>

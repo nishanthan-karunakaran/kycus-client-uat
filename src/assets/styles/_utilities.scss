@@ -1,0 +1,102 @@
+@import './_variables';
+
+// Font Sizes
+.text-xs {
+  font-size: $font-xs;
+}
+.text-sm {
+  font-size: $font-sm;
+}
+.text-md {
+  font-size: $font-md;
+}
+.text-lg {
+  font-size: $font-lg;
+}
+.text-xl {
+  font-size: $font-xl;
+}
+.text-xxl {
+  font-size: $font-xxl;
+}
+
+// Spacing
+.m-xs {
+  margin: $spacing-xs;
+}
+.m-sm {
+  margin: $spacing-sm;
+}
+.m-md {
+  margin: $spacing-md;
+}
+.m-lg {
+  margin: $spacing-lg;
+}
+.m-xl {
+  margin: $spacing-xl;
+}
+
+.p-xs {
+  padding: $spacing-xs;
+}
+.p-sm {
+  padding: $spacing-sm;
+}
+.p-md {
+  padding: $spacing-md;
+}
+.p-lg {
+  padding: $spacing-lg;
+}
+.p-xl {
+  padding: $spacing-xl;
+}
+
+// Text Colors
+.text-primary {
+  color: $primary;
+}
+.text-secondary {
+  color: $secondary;
+}
+.text-body {
+  color: $text-body;
+}
+.text-accent {
+  color: $text-accent;
+}
+.text-dark {
+  color: $text-dark;
+}
+.text-subtle {
+  color: $text-subtle;
+}
+
+// Background Colors
+.bg-primary {
+  background-color: $primary;
+}
+.bg-secondary {
+  background-color: $secondary;
+}
+.bg-failure {
+  background-color: $failure;
+}
+
+// Responsive
+.gap-xs {
+  gap: 4px;
+}
+.gap-sm {
+  gap: 8px;
+}
+.gap-md {
+  gap: 16px;
+}
+.gap-lg {
+  gap: 24px;
+}
+.gap-xl {
+  gap: 32px;
+}

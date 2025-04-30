@@ -1,0 +1,101 @@
+<section class="flex h-full w-full overflow-hidden">
+  <aside
+    class="sidebar-bg relative flex h-full w-2/5 flex-col items-center justify-center"
+    aria-label="Sidebar Navigation"
+  >
+    <img
+      src="./assets/images/logo/ebitaus-emblem.webp"
+      alt="KYCus emblem"
+      class="absolute left-0 top-0 w-28 object-contain"
+    />
+
+    <img src="./assets/images/logo/kycus-logo-light.webp" alt="KYCus logo" />
+  </aside>
+
+  <main class="flex flex-1 items-center justify-center overflow-auto bg-white">
+    <div *ngIf="!isOTPSent()" class="flex w-[360px] flex-col gap-4">
+      <div class="text-primary">
+        <h4 class="font-semibold">Get Started with KYCus</h4>
+        <p>Continue with your company Mail ID</p>
+      </div>
+
+      <form
+        class="flex w-11/12 flex-col gap-4"
+        [formGroup]="loginForm"
+        (submit)="requestOTP()"
+      >
+        <ng-container *ngIf="!isOTPSent()">
+          <ui-input
+            type="email"
+            id="email"
+            name="email"
+            label="Official Mail ID"
+            placeholder="Enter your email"
+            formControlName="email"
+            [autofocus]="true"
+            [inputFormat]="inputFormat"
+            class="py-2.5"
+          ></ui-input>
+        </ng-container>
+
+        <ui-button
+          class="w-full py-2.5"
+          type="submit"
+          [label]="isOTPSent() ? 'Submit OTP' : 'Get OTP'"
+          [loading]="isLoading()"
+          [disabled]="loginForm.invalid || isLoading()"
+        />
+      </form>
+    </div>
+
+    <div *ngIf="isOTPSent()" class="flex w-[360px] flex-col gap-4">
+      <div>
+        <h4 class="mb-4 font-semibold text-primary">Verify E-Mail</h4>
+        <p>Please enter the OTP which has been sent to</p>
+        <div class="flex items-center gap-1">
+          <strong class="text-primary">{{ loginForm.value.email }}</strong>
+          <a
+            class="text-nowrap no-underline"
+            (click)="changeEmail()"
+            (keydown.enter)="changeEmail()"
+            (keydown.space)="changeEmail()"
+            tabindex="0"
+          >
+            (Change E-Mail)
+          </a>
+        </div>
+      </div>
+
+      <form
+        class="flex w-11/12 flex-col gap-4"
+        [formGroup]="otpForm"
+        (submit)="verifyOTP()"
+      >
+        <ui-otp label="OTP" formControlName="otp" [autofocus]="true" />
+        <p class="text-nowrap">
+          Didn't receive the OTP?
+          <a
+            (click)="requestOTP()"
+            (keydown.enter)="requestOTP()"
+            (keydown.space)="requestOTP()"
+            tabindex="0"
+            class="no-underline"
+          >
+            Resend
+            <span *ngIf="resendOTPTimer() > 0">
+              in ({{ resendOTPTimer() }}s)
+            </span>
+          </a>
+        </p>
+
+        <ui-button
+          class="w-full py-2.5"
+          type="submit"
+          label="Submit OTP"
+          [loading]="isLoading()"
+          [disabled]="otpForm.invalid || isLoading()"
+        />
+      </form>
+    </div>
+  </main>
+</section>

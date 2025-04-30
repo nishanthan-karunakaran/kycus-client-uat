@@ -1,0 +1,13 @@
+<section class="flex h-screen flex-col overflow-hidden">
+  <app-dashboard-header />
+
+  <section class="flex h-full flex-1 overflow-hidden">
+    <app-dashboard-sidebar class="h-full" />
+
+    <main class="h-full flex-1 bg-grayBg/90 p-6">
+      <section class="h-full w-full rounded-sm bg-white p-6">
+        <router-outlet></router-outlet>
+      </section>
+    </main>
+  </section>
+</section>

@@ -1,0 +1,70 @@
+<ng-container *ngIf="!isAuthenticated()">
+  <rekyc-email-validation
+    class="h-full w-full flex-1"
+    [token]="applicationToken"
+  />
+</ng-container>
+
+<section
+  *ngIf="isAuthenticated()"
+  class="flex h-screen w-screen flex-col overflow-hidden"
+>
+  <rekyc-form-header class="w-full" />
+
+  <!-- <pre class="bg-white">{{ ausInfo() | json }}</pre> -->
+
+  <main class="flex flex-1 items-center justify-center bg-gray-100">
+    <rekyc-entity-filledby *ngIf="entityInfo()?.entityFilledBy === null" />
+
+    <div
+      class="flex h-[90%] max-h-[90vh] w-[60%] min-w-[900px] flex-col overflow-hidden rounded-md bg-white shadow-md"
+    >
+      <div
+        class="flex flex-shrink-0 select-none items-center justify-between bg-secondary bg-opacity-10 p-6"
+      >
+        <ng-container
+          *ngFor="let item of formList(); let i = index; trackBy: trackStep"
+        >
+          <div
+            class="flex cursor-pointer items-center gap-1 text-nowrap text-gray-500"
+            [ngClass]="{
+              'text-success': item.isCompleted && item.step !== currentForm(),
+              'text-secondary': currentForm() === item.step,
+              disabled: isStepDisabled(item.step, item.canShow),
+            }"
+            (click)="setCurrentForm(item)"
+            (keydown.enter)="setCurrentForm(item)"
+            (keydown.space)="setCurrentForm(item)"
+            tabindex="0"
+          >
+            <span
+              class="flex size-5 items-center justify-center rounded-full text-white"
+              [ngClass]="{
+                'bg-success': item.isCompleted && item.step !== currentForm(),
+                'bg-secondary': currentForm() === item.step,
+                'bg-gray-500': currentForm() !== item.step && !item.isCompleted,
+              }"
+            >
+              {{ i + 1 }}
+            </span>
+            <span>{{ item.label }}</span>
+          </div>
+
+          <div
+            *ngIf="i < formList().length - 1"
+            class="mx-2 h-[1.6px] w-[90%]"
+            [ngClass]="{
+              'bg-success': item.isCompleted,
+              'bg-secondary': currentForm() === item.step && !item.isCompleted,
+              'bg-gray-300': currentForm() !== item.step && !item.isCompleted,
+            }"
+          ></div>
+        </ng-container>
+      </div>
+
+      <div class="flex-1 overflow-auto px-10 py-4">
+        <router-outlet />
+      </div>
+    </div>
+  </main>
+</section>

@@ -1,0 +1,33 @@
+<fieldset class="otp-container">
+  <label
+    *ngIf="label"
+    class="input-label"
+    [attr.aria-label]="label"
+    [attr.for]="'otpInput' + 0"
+  >
+    {{ label }}
+    <span *ngIf="required" class="required-asterisk">*</span>
+  </label>
+
+  <div class="flex w-full gap-2">
+    <input
+      *ngFor="let control of otpControls; let i = index; trackBy: trackOTP"
+      #otpInput
+      type="text"
+      [maxlength]="1"
+      [disabled]="disabled"
+      class="size-10 text-center"
+      [ngClass]="{ 'error-input': errorMessage }"
+      [formControl]="control"
+      (input)="onInputChange(i, $event)"
+      (keydown)="handleBackspace(i, $event)"
+      (focus)="otpInputs.toArray()[i].nativeElement.select()"
+      (paste)="onPaste($event)"
+      [attr.aria-label]="'OTP input ' + (i + 1)"
+    />
+  </div>
+
+  <p *ngIf="errorMessage" class="error-msg" id="error">
+    {{ errorMessage }}
+  </p>
+</fieldset>

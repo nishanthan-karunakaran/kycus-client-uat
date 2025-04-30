@@ -1,0 +1,128 @@
+<main class="flex items-center justify-center">
+  <section
+    class="card flex h-auto max-h-[90vh] w-[90%] flex-col items-center justify-start gap-4 rounded-lg border bg-white p-6 pt-4 sm:w-11/12 sm:pt-6 md:w-[740px]"
+  >
+    <div class="w-1/2 max-w-40 flex-shrink-0">
+      <img
+        src="./assets/images/logo/kycus.webp"
+        alt="Logo"
+        class="w-full object-contain"
+      />
+    </div>
+
+    <h4 class="self-start text-primary">Sign Up</h4>
+
+    <form
+      class="grid w-full place-items-center gap-4"
+      [formGroup]="signupForm"
+      (submit)="submitForm()"
+    >
+      <!-- class="no-scrollbar grid h-[50vh] w-full flex-grow auto-rows-min gap-4 overflow-y-auto p-1 sm:h-auto sm:grid-cols-2 sm:justify-between" -->
+      <div
+        class="no-scrollbar flex h-[50vh] w-full flex-grow flex-col gap-4 overflow-y-auto p-1 sm:h-auto"
+      >
+        <ui-input
+          label="Name"
+          id="name"
+          name="name"
+          placeholder="Enter your name"
+          formControlName="name"
+          [autofocus]="true"
+          [readonly]="signupState().otpSent"
+          [disabled]="signupState().otpSent"
+          [errorMessage]="getFormError('name')"
+        />
+
+        <ui-input
+          label="Official Mail-ID"
+          type="email"
+          id="email"
+          name="email"
+          formControlName="email"
+          placeholder="Enter your email"
+          [errorMessage]="getFormError('email')"
+          [icon]="signupState().otpVerified ? 'check' : null"
+          [inputFormat]="inputFormat"
+        ></ui-input>
+
+        <ng-container
+          *ngIf="signupState().otpSent && !signupState().otpVerified"
+        >
+          <ui-otp
+            label="OTP"
+            [errorMessage]="getFormError('otp')"
+            formControlName="otp"
+            [autofocus]="signupState().otpSent"
+          />
+          <p>
+            Didn't receive the OTP?
+            <a
+              (click)="sendEmailOTP(true)"
+              (keydown.enter)="sendEmailOTP(true)"
+              (keydown.space)="sendEmailOTP(true)"
+              tabindex="0"
+            >
+              Resend OTP
+            </a>
+            <span *ngIf="resendOTPTimer > 0">
+              in {{ resendOTPTimer }} seconds</span
+            >
+          </p>
+        </ng-container>
+
+        <ng-container
+          *ngIf="signupState().otpSent && signupState().otpVerified"
+        >
+          <ui-input
+            label="CIN"
+            id="cin"
+            name="cin"
+            placeholder="Enter your company's CIN"
+            formControlName="cin"
+            [errorMessage]="getFormError('cin')"
+            [autofocus]="signupState().otpVerified"
+          />
+
+          <ui-input
+            label="Company Name"
+            id="companyName"
+            name="companyName"
+            placeholder="Enter your company name"
+            formControlName="companyName"
+            [errorMessage]="getFormError('companyName')"
+          />
+
+          <ui-input
+            label="Designation"
+            id="designation"
+            name="designation"
+            placeholder="Enter your designation"
+            formControlName="designation"
+            [errorMessage]="getFormError('designation')"
+          />
+
+          <ui-input
+            label="Mobile Number"
+            id="mobileNumber"
+            name="mobileNumber"
+            type="number"
+            [maxlength]="10"
+            placeholder="Enter your mobile number"
+            formControlName="mobileNumber"
+            [errorMessage]="getFormError('mobileNumber')"
+          />
+        </ng-container>
+      </div>
+
+      <button
+        type="submit"
+        [ngClass]="{ loading: isLoading }"
+        [disabled]="isButtonDisabled()"
+        class="m-1 w-full"
+      >
+        REGISTER
+      </button>
+    </form>
+    <p>Already have an account? <a routerLink="/auth/signin">LOGIN</a></p>
+  </section>
+</main>

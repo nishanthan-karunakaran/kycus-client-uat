@@ -1,0 +1,61 @@
+<main class="flex items-center justify-center">
+  <section
+    class="card flex max-w-[400px] flex-col items-center justify-center gap-4"
+  >
+    <div class="w-1/2 max-w-40">
+      <img src="./assets/images/logo/kycus.webp" alt="" />
+    </div>
+
+    <form
+      class="flex w-11/12 flex-col gap-4"
+      [formGroup]="loginForm"
+      (submit)="submitLoginForm()"
+    >
+      <h4 class="self-start text-primary">Sign In</h4>
+
+      <ui-input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Enter your email"
+        [readonly]="loginState().otpSent"
+        formControlName="email"
+        [autofocus]="true"
+        [inputFormat]="inputFormat"
+        [errorMessage]="getFormError('email')"
+      ></ui-input>
+
+      <ng-container *ngIf="loginState().otpSent">
+        <ui-otp
+          label="OTP"
+          formControlName="otp"
+          [errorMessage]="getFormError('otp')"
+          [autofocus]="loginState().otpSent"
+        />
+        <p class="text-nowrap">
+          Didn't receive the OTP?
+          <a
+            (click)="requestLoginOTP(true)"
+            (keydown.enter)="requestLoginOTP(true)"
+            (keydown.space)="requestLoginOTP(true)"
+            tabindex="0"
+          >
+            Resend OTP
+          </a>
+          <span *ngIf="resendOTPTimer > 0">
+            in {{ resendOTPTimer }} seconds</span
+          >
+        </p>
+      </ng-container>
+
+      <button
+        type="submit"
+        [ngClass]="{ loading: isLoading }"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        {{ loginState().otpSent ? 'Submit OTP' : 'Send OTP' }}
+      </button>
+    </form>
+    <p>Don't have an account? <a routerLink="/auth/signup">REGISTER</a></p>
+  </section>
+</main>

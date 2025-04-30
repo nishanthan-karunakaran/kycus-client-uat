@@ -1,0 +1,28 @@
+<header class="flex h-14 w-full items-center justify-between px-6">
+  <div class="w-36">
+    <img
+      src="./assets/images/logo/kycus.webp"
+      alt="Kycus Logo"
+      (click)="navigateToHome()"
+      class="cursor-pointer"
+      role="button"
+      tabindex="0"
+      (keydown.enter)="navigateToHome()"
+      (keydown.space)="navigateToHome()"
+    />
+  </div>
+
+  <div class="flex items-center gap-4">
+    <div
+      *ngFor="let icon of iconsArr; trackBy: trackIcon"
+      class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-primary"
+      role="button"
+      tabindex="0"
+      (click)="handleIconClick(icon.name)"
+      (keydown.enter)="handleIconClick(icon.name)"
+      (keydown.space)="handleIconClick(icon.name)"
+    >
+      <lucide-icon [name]="icon.name" [color]="icon.color" [size]="icon.size" />
+    </div>
+  </div>
+</header>

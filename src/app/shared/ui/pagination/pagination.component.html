@@ -1,0 +1,46 @@
+<div class="flex w-full items-center gap-4" *ngIf="pageNumbers.length > 1">
+  <p
+    class="flex cursor-pointer items-center gap-2 hover:font-semibold focus:font-semibold"
+    [ngClass]="{
+      'opacity-50': active === 1,
+      'cursor-not-allowed': active === 1,
+      'hover:font-semibold': active !== 1,
+      'focus:font-semibold': active !== 1,
+    }"
+    (click)="prev()"
+    (keydown.space)="prev()"
+    (keydown.enter)="prev()"
+    [attr.tabindex]="active === 1 ? -1 : 0"
+  >
+    <lucide-icon name="arrow-left" size="16" />
+    Previous
+  </p>
+
+  <ng-container *ngFor="let page of pageNumbers; trackBy: trackByPage">
+    <ui-button
+      [label]="page"
+      (btnClick)="setActivePage(page)"
+      class="btn-outline size-4 p-4"
+      [ngClass]="{
+        'bg-primary text-white hover:bg-primary/95': page === active,
+      }"
+    />
+  </ng-container>
+
+  <p
+    class="flex cursor-pointer items-center gap-2 hover:font-semibold focus:font-semibold"
+    [ngClass]="{
+      'opacity-50': active === totalPages,
+      'cursor-not-allowed': active === totalPages,
+      'hover:font-semibold': active !== totalPages,
+      'focus:font-semibold': active !== totalPages,
+    }"
+    (click)="next()"
+    (keydown.space)="next()"
+    (keydown.enter)="next()"
+    [attr.tabindex]="active === totalPages ? -1 : 0"
+  >
+    Next
+    <lucide-icon name="arrow-right" size="16" />
+  </p>
+</div>

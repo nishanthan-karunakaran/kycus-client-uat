@@ -1,0 +1,27 @@
+@import './_colors';
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// Font Sizes
+$font-xs: 0.75rem;
+$font-sm: 0.875rem;
+$font-md: 1rem;
+$font-lg: 1.25rem;
+$font-xl: 1.5rem;
+$font-xxl: 2rem;
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+
+// Shadows
+$shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0px 4px 8px rgba(0, 0, 0, 0.15);
+$shadow-lg: 0px 6px 12px rgba(0, 0, 0, 0.2);

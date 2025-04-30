@@ -1,0 +1,43 @@
+<section class="flex h-full w-full overflow-hidden">
+  <aside
+    class="sidebar-bg relative flex h-full w-1/5 flex-col items-center justify-center"
+    aria-label="Sidebar Navigation"
+  >
+    <img
+      src="./assets/images/logo/ebitaus-emblem.webp"
+      alt="KYCus emblem"
+      class="absolute left-0 top-0 w-28 object-contain"
+    />
+
+    <img src="./assets/images/logo/kycus-logo.webp" alt="KYCus logo" />
+  </aside>
+
+  <main class="flex flex-1 items-center justify-center overflow-auto bg-white">
+    <div class="flex w-1/3 flex-col gap-4">
+      <h5 class="text-primary">Enter your E-Mail to proceed</h5>
+
+      <form class="flex w-11/12 flex-col gap-4" [formGroup]="loginForm" (submit)="submitForm()">
+        <ng-container *ngIf="!isEmailVerified()">
+          <ui-input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            formControlName="email"
+            [autofocus]="true"
+            [inputFormat]="inputFormat"
+            class="py-2.5"
+          ></ui-input>
+        </ng-container>
+
+        <ui-button
+          class="w-full py-2.5"
+          type="submit"
+          [label]="isEmailVerified() ? 'Submit OTP' : 'Get OTP'"
+          [loading]="isLoading"
+          [disabled]="loginForm.invalid || isLoading"
+        />
+      </form>
+    </div>
+  </main>
+</section>

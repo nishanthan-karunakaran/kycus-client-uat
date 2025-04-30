@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Firefox",
+      "type": "firefox",
+      "request": "launch",
+      "preLaunchTask": "npm: start",
+      "url": "http://192.168.29.243:4000/",
+      "webRoot": "${workspaceFolder}",
+      "firefoxExecutable": "C:/Program Files/Mozilla Firefox/firefox.exe"
+    },
+    {
+      "name": "Launch Angular",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: start",
+      "url": "http://192.168.29.243:4000/",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "ng test (Firefox)",
+      "type": "firefox",
+      "request": "launch",
+      "preLaunchTask": "npm: test",
+      "url": "http://192.168.29.243:9876",
+      "firefoxExecutable": "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+    }
+  ]
+}

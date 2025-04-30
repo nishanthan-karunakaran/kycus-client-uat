@@ -1,0 +1,119 @@
+<div class="flex flex-col gap-2">
+  <p>
+    Please attach the Beneficial Owners details as mentioned below to complete
+    the Extended Annexure.
+  </p>
+
+  <!-- <h6>Beneficiary Owner {{ i + 1 }}</h6> -->
+  <pre>{{ form.value | json }}</pre>
+
+  <div class="divide-y-2 rounded-lg border" formArrayName="boDetails">
+    <ng-container
+      *ngFor="
+        let set of boDetailsArray.controls;
+        let i = index;
+        trackBy: trackByIndex
+      "
+    >
+      <div [formArrayName]="i">
+        <div
+          *ngFor="
+            let group of getDocumentArray(i).controls;
+            trackBy: trackByIndex;
+            let j = index
+          "
+          [formGroupName]="j"
+          class="flex items-center justify-between px-4 py-4"
+        >
+          hi
+          <!-- <pre>{{ getDocumentArray(i) | json }}</pre> -->
+          <!-- <div class="w-[42%]">
+            <div class="flex flex-col gap-2">
+              <p>
+                {{ group.get('label')?.value }}
+                <span
+                  *ngIf="group.get('isRequired')?.value"
+                  class="text-red-500"
+                >
+                  *
+                </span>
+              </p>
+
+              <ui-select
+                *ngIf="
+                  ['identityProof', 'addressProof'].includes(
+                    group.get('type')?.value
+                  )
+                "
+                [options]="
+                  group.get('type')?.value === 'addressProof'
+                    ? addressProofList
+                    : identityProofList
+                "
+                (valueChange)="onProofDocChange(i, j, $event)"
+                placeholder="Choose Proof"
+                [defaultValue]="group.get('file.selectedType')?.value"
+              ></ui-select>
+            </div>
+
+            <span
+              class="text-xs text-red-500"
+              *ngIf="
+                group.get('file.name')?.errors?.['required'] &&
+                group.get('file.name')?.touched
+              "
+            >
+              {{ group.get('label')?.value }} is required
+            </span>
+          </div>
+
+          <div>
+            <ui-upload-button
+              *ngIf="!group.get('file.name')?.value"
+              [accept]="
+                group.get('type')?.value === 'identityProof' ||
+                group.get('type')?.value === 'addressProof'
+                  ? '.pdf'
+                  : '.jpg, .png'
+              "
+              [disabled]="
+                (group.get('type')?.value === 'identityProof' ||
+                  group.get('type')?.value === 'addressProof') &&
+                !group.get('file.selectedType')?.value
+              "
+              (selectedFile)="onFileSelection(i, j, $event)"
+            ></ui-upload-button>
+
+            <div
+              *ngIf="group.get('file.name')?.value"
+              class="flex items-center gap-2"
+            >
+              <ui-filename
+                [fileName]="group.get('file.name')?.value"
+                (removeFile)="removeFile(i, j)"
+              ></ui-filename>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- <div
+    class="flex items-center justify-end gap-2 border-t border-gray-300 py-4"
+  >
+    <ui-button
+      label="Save Draft"
+      class="btn-outline"
+      (btnClick)="submit('save')"
+    />
+    <ui-button
+      type="submit"
+      label="I Declare"
+      class="py-[7px]"
+      [disabled]="!isFormValid"
+      [loading]="isLoading()"
+      (btnClick)="submit('submit')"
+    />
+  </div> -->
+</div>

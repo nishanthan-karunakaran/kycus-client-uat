@@ -1,0 +1,21 @@
+<div class="flex h-full w-full flex-col gap-2 overflow-hidden">
+  <div class="flex items-center justify-between px-2">
+    <div class="ml-2 text-xs">
+      <p>Please make sure the required fields are filled</p>
+      <ul class="list-inside list-disc">
+        <li class="font-medium text-secondary">Edited</li>
+        <li class="font-medium text-primary">Prefilled (Editable)</li>
+      </ul>
+    </div>
+
+    <div>
+      <ui-button label="Save" (btnClick)="onSave()" />
+    </div>
+  </div>
+  <iframe
+    #pdfViewer
+    src="./assets/forms/rekyc/rekyc.html"
+    width="100%"
+    height="100%"
+  ></iframe>
+</div>

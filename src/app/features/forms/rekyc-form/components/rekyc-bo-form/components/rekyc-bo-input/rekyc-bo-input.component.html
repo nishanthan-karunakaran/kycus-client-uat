@@ -1,0 +1,198 @@
+<div class="flex flex-col gap-4">
+  <p class="font-medium text-gray-500">Add min 2 Beneficiary owner details</p>
+
+  <form [formGroup]="form">
+    <ng-container formArrayName="boDetails">
+      <div
+        *ngFor="
+          let group of boDetails.controls;
+          let i = index;
+          trackBy: trackBO
+        "
+        [formGroupName]="i"
+        class="mt-4 flex w-full flex-col gap-2 pb-4"
+      >
+        <h6 class="mb-2 text-primary">Beneficiary Owner {{ i + 1 }}</h6>
+
+        <div class="flex w-[60%] flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <div class="w-1/2">
+              <ui-input
+                type="text"
+                label="Name of the Beneficiary Owner"
+                formControlName="boName"
+                class="w-full"
+                (valueChange)="updateBoDetail(i, 'boName', $event)"
+              />
+              <span
+                *ngIf="
+                  group.get('noName')?.errors?.['required'] && isFormSubmitted()
+                "
+                class="error-msg"
+              >
+                Name is Required
+              </span>
+            </div>
+
+            <div
+              *ngIf="i > 1"
+              class="group self-end rounded-md bg-secondary/20 p-2 hover:bg-secondary/30 group-hover:bg-red-50"
+            >
+              <lucide-icon
+                name="trash-2"
+                color="#FF0000"
+                size="16"
+                class="hover:scale-110"
+                (click)="handleShowDeleteConfirmation(i)"
+              />
+            </div>
+          </div>
+
+          <p>Current Address</p>
+
+          <div>
+            <ui-input
+              type="text"
+              label="Address Line"
+              formControlName="addressLine"
+              (valueChange)="updateBoDetail(i, 'addressLine', $event)"
+            />
+            <span
+              *ngIf="
+                group.get('addressLine')?.errors?.['required'] &&
+                isFormSubmitted()
+              "
+              class="error-msg"
+            >
+              Adress Line is Required
+            </span>
+          </div>
+
+          <div class="flex w-full gap-2">
+            <div class="flex flex-1 flex-col gap-2">
+              <div>
+                <ui-input
+                  type="text"
+                  label="City"
+                  formControlName="city"
+                  (valueChange)="updateBoDetail(i, 'city', $event)"
+                />
+                <span
+                  *ngIf="
+                    group.get('city')?.errors?.['required'] && isFormSubmitted()
+                  "
+                  class="error-msg"
+                >
+                  City is Required
+                </span>
+              </div>
+
+              <div>
+                <ui-input
+                  type="text"
+                  label="State"
+                  formControlName="state"
+                  (valueChange)="updateBoDetail(i, 'state', $event)"
+                />
+                <span
+                  *ngIf="
+                    group.get('state')?.errors?.['required'] &&
+                    isFormSubmitted()
+                  "
+                  class="error-msg"
+                >
+                  State is Required
+                </span>
+              </div>
+            </div>
+
+            <div class="flex flex-1 flex-col gap-2">
+              <div>
+                <ui-input
+                  type="text"
+                  label="Country"
+                  formControlName="country"
+                  (valueChange)="updateBoDetail(i, 'country', $event)"
+                />
+                <span
+                  *ngIf="
+                    group.get('country')?.errors?.['required'] &&
+                    isFormSubmitted()
+                  "
+                  class="error-msg"
+                >
+                  Country is Required
+                </span>
+              </div>
+
+              <div>
+                <ui-input
+                  type="number"
+                  label="Pin Code"
+                  [maxlength]="6"
+                  formControlName="pin"
+                  (valueChange)="updateBoDetail(i, 'pin', $event)"
+                />
+                <span
+                  *ngIf="
+                    group.get('pin')?.errors?.['required'] && isFormSubmitted()
+                  "
+                  class="error-msg"
+                >
+                  Pincode is Required
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ui-button
+      label="Add Beneficiary Owner"
+      (btnClick)="addBoDetail()"
+      icon="plus"
+      [iconSize]="16"
+      class="btn-outline"
+    />
+  </form>
+
+  <div
+    class="flex items-center justify-end gap-2 border-t border-gray-300 py-4"
+  >
+    <ui-button
+      label="Save Draft"
+      class="btn-outline"
+      (btnClick)="submit('save')"
+    />
+    <ui-button
+      type="submit"
+      label="Submit"
+      class="py-[7px]"
+      [loading]="isLoading()"
+      (btnClick)="submit('submit')"
+    />
+  </div>
+
+  <ui-modal
+    [showClose]="false"
+    (close)="handleShowDeleteConfirmation()"
+    class="max-w-md"
+    [isOpen]="showDeleteConfimation()"
+  >
+    <div modalContent class="flex flex-col gap-8">
+      <p class="text-md">
+        Are you sure you want to remove this Beneficiary Owner?
+      </p>
+
+      <div class="flex justify-between gap-4">
+        <button
+          class="btn-outline w-1/2"
+          (click)="handleShowDeleteConfirmation()"
+        >
+          Cancel
+        </button>
+        <button class="w-1/2" (click)="removeBoDetail()">Continue</button>
+      </div>
+    </div>
+  </ui-modal>
+</div>

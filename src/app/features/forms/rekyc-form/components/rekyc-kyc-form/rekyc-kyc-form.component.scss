@@ -1,0 +1,57 @@
+@import 'src/styles.scss';
+
+.form-section {
+  // @apply my-2 border-b-2 border-gray-300;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid #99a1af;
+  font-weight: 600;
+  font-size: smaller !important;
+  color: #4b4b4d;
+
+  input:not(input[type='checkbox']) {
+    all: unset !important;
+    border-bottom: 1px solid black !important;
+    margin-left: 0.5rem !important;
+  }
+
+  input:not(.no-reset):not(input[type='checkbox']) {
+    width: 100% !important;
+  }
+}
+
+[type='checkbox'] {
+  @apply ring-0 focus:outline-none focus:ring-0;
+  appearance: none !important;
+  padding: 6px !important;
+  border: 2px solid !important;
+  border-radius: 6px !important;
+  accent-color: red !important;
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
+label {
+  color: $form-text-primary;
+}
+
+.form-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-container {
+  width: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.entity-sub-category-container {
+  display: flex;
+  border: 1px solid;
+  border-collapse: collapse;
+}

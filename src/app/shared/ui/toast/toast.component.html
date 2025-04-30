@@ -1,0 +1,30 @@
+<div class="fixed left-1/2 top-5 z-50 max-w-md -translate-x-1/2">
+  <div
+    *ngFor="let toast of toasts; trackBy: trackToast"
+    [ngClass]="toastClasses(toast)"
+    class="mb-2 grid w-full grid-cols-[auto_1fr_auto] place-content-center items-center gap-4 overflow-hidden rounded-lg p-4 text-white shadow-lg"
+    id="toast-{{ toast.id }}"
+  >
+    <lucide-icon
+      [name]="toastIcon(toast.type)"
+      size="20"
+      class="text-white"
+    ></lucide-icon>
+
+    <span class="whitespace-normal break-words" [ngClass]="textColor(toast)">
+      {{ toast.message }}
+    </span>
+
+    <button
+      *ngIf="toast.options.dismissable"
+      (click)="removeToast(toast)"
+      class="group appearance-none border-none bg-transparent p-0 outline-none focus:ring-0 active:ring-0"
+    >
+      <lucide-icon
+        name="x"
+        size="20"
+        class="text-white transition-transform duration-200 ease-in-out group-hover:scale-125"
+      ></lucide-icon>
+    </button>
+  </div>
+</div>

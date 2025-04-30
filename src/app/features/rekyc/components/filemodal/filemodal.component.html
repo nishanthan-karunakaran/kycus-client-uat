@@ -1,0 +1,161 @@
+<ui-modal
+  [dismissOnOutsideClick]="true"
+  [isOpen]="isModalOpen && !isOpenFilePreview()"
+  [showClose]="true"
+  [class]="'max-w-lg'"
+  (close)="handleModal()"
+>
+  <div modalHeader>
+    <h5 class="text-primary">Bulk Upload</h5>
+  </div>
+
+  <div
+    modalContent
+    class="flex items-center justify-center rounded-xl border-2 border-dashed border-primary p-6"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+    (dragleave)="onDragLeave()"
+    [ngClass]="{ 'bg-primary/10': isDragging() }"
+  >
+    <div class="flex w-2/3 flex-col items-center gap-4 text-primary">
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-14">
+          <img src="./assets/images/icons/upload-file.svg" alt="Upload File" />
+        </div>
+        <p>Drag & Drop</p>
+      </div>
+
+      <div class="flex w-full items-center gap-2">
+        <hr />
+        <span>or</span>
+        <hr />
+      </div>
+
+      <input
+        #file
+        id="file"
+        type="file"
+        class="hidden"
+        accept=".xlsx"
+        (change)="handleFile($event)"
+      />
+
+      <ui-button
+        label="Browse files"
+        class="btn-outline"
+        (btnClick)="file.click()"
+      />
+
+      <p class="text-pretty text-center">
+        Supports only
+        <strong>EXCEL format</strong>
+        <br />
+        Should be same as Given format
+        <br />
+        Max File Size
+        <strong>20MB</strong>
+      </p>
+
+      <a class="text-secondary">Download Sample</a>
+    </div>
+  </div>
+</ui-modal>
+
+<ui-modal
+  [isOpen]="isOpenFilePreview()"
+  [showClose]="true"
+  (close)="handlePreviewModal()"
+>
+  <div modalHeader>
+    <h5 class="text-primary">Bulk Upload</h5>
+  </div>
+
+  <div
+    modalContent
+    class="flex min-h-[50vh] w-full flex-col items-center justify-center gap-3"
+  >
+    <ng-container *ngIf="isDataFetching()">
+      <div class="relative h-1 w-20 overflow-hidden rounded-lg bg-gray-300">
+        <div
+          class="animate-moving-line h-full w-2/5 rounded-lg bg-primary"
+        ></div>
+      </div>
+      <p class="mt-2 text-primary">Fetching Data...</p>
+    </ng-container>
+
+    <ng-container *ngIf="!isDataFetching() && rekycData().length > 0">
+      <div class="w-full flex-1 overflow-y-auto px-0.5">
+        <table aria-labelledby="user-table" class="w-full table-auto">
+          <thead class="sticky top-0">
+            <tr>
+              <th scope="col">Company Name</th>
+              <th scope="col">Customer ID</th>
+              <th scope="col">CIN</th>
+              <th scope="col">PAN</th>
+              <th
+                *ngFor="
+                  let aus of rekycData()[0]?.ausDetails;
+                  let i = index;
+                  trackBy: trackAus
+                "
+                scope="col"
+              >
+                AUS {{ i + 1 }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of rekycData(); trackBy: trackRow"
+              tabindex="0"
+              [ngClass]="{
+                'bg-secondary': item.isDuplicate,
+                'hover:bg-secondary': item.isDuplicate,
+              }"
+            >
+              <td>{{ item.companyName || '-' }}</td>
+              <td>{{ item.custId || '-' }}</td>
+              <td>{{ item.cinNumber || '-' }}</td>
+              <td>{{ item.panNumber || '-' }}</td>
+              <td *ngFor="let aus of item.ausDetails; trackBy: trackAus">
+                <p>{{ aus?.name }}</p>
+                <span class="text-textBody">{{ aus?.email }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ui-pagination
+        [active]="1"
+        [totalItems]="rekycData().length"
+        class="self-center"
+        (activeChange)="setActivePage($event)"
+      />
+    </ng-container>
+
+    <div
+      *ngIf="!isDataFetching() && rekycData()"
+      modalFooter
+      class="flex w-full items-center justify-between"
+    >
+      <p class="font-semibold text-primary">
+        Please check all the details are right and submit
+      </p>
+
+      <div class="flex items-center gap-4">
+        <ui-button
+          class="btn-nostyle"
+          label="Cancel"
+          (btnClick)="handlePreviewModal()"
+        />
+
+        <ui-button
+          [loading]="isDataSubmitting()"
+          label="Submit"
+          (btnClick)="submitReKycExcel()"
+        />
+      </div>
+    </div>
+  </div>
+</ui-modal>

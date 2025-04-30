@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  body {
+    @apply text-sm;
+  }
+
+  main {
+    @apply h-full w-full;
+  }
+
+  h1 {
+    @apply text-4xl font-bold;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold;
+  }
+
+  h3 {
+    @apply text-2xl font-medium;
+  }
+
+  h4 {
+    @apply text-xl font-medium;
+  }
+
+  h5 {
+    @apply text-lg font-semibold;
+  }
+
+  h6 {
+    @apply text-base font-medium;
+  }
+
+  fieldset {
+    @apply flex w-full flex-col gap-2 border-none;
+  }
+
+  a {
+    @apply cursor-pointer font-semibold text-secondary underline;
+  }
+
+  hr {
+    @apply h-[1px] w-full border-0 bg-gray-300;
+  }
+
+  button {
+    @apply rounded-md border-none bg-primary px-4 py-1.5 text-center font-semibold text-white transition-all duration-200 ease-in-out focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-70;
+  }
+
+  ui-input,
+  ui-input-debounce {
+    all: unset !important;
+  }
+
+  ui-button {
+    all: unset !important;
+  }
+
+  [type='text'],
+  [type='email'],
+  [type='password'],
+  [type='number'],
+  [type='tel'],
+  [type='url'],
+  [type='search'],
+  textarea {
+    @apply rounded-md py-1.5 text-sm accent-primary focus:appearance-none focus:border-none focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+
+  [type='checkbox'] {
+    @apply rounded-md accent-primary focus:border-2 focus:ring-0;
+  }
+
+  select {
+    @apply rounded-md py-1.5 text-sm accent-primary focus:border-none focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+
+  label {
+    @apply font-medium;
+  }
+
+  table {
+    @apply w-full rounded-xl border;
+  }
+
+  thead {
+    @apply bg-gray-200;
+  }
+
+  tbody {
+    tr {
+      @apply border-b bg-gray-50 hover:bg-gray-100;
+    }
+  }
+
+  th {
+    @apply text-nowrap px-4 py-2 text-left font-semibold;
+  }
+
+  td {
+    @apply px-4 py-2;
+  }
+}
+
+@layer components {
+  /*  Button Components */
+  .btn-secondary {
+    @apply bg-secondary hover:bg-secondary/90;
+  }
+
+  .btn-secondary-light {
+    @apply bg-secondary bg-opacity-10;
+  }
+
+  .btn-danger {
+    @apply bg-danger hover:bg-danger/90;
+  }
+
+  .btn-nostyle {
+    @apply bg-transparent font-normal text-black focus:ring-0;
+  }
+
+  .btn-outline {
+    @apply border border-solid border-primary bg-transparent text-primary hover:bg-primary/10 focus:ring-0;
+  }
+
+  .btn-outline-compact {
+    @apply border-[1px] border-solid border-gray-300 bg-white px-2 py-1 text-xs font-normal text-primary;
+  }
+
+  .btn-outline-primary {
+    @apply btn-outline border-primary bg-primary/10 text-primary hover:bg-primary/20 focus:border-primary focus:ring-primary;
+  }
+
+  .btn-outline-secondary {
+    @apply btn-outline border-secondary bg-secondary/10 text-secondary hover:bg-secondary/20 focus:border-secondary focus:ring-secondary;
+  }
+
+  .btn-outline-danger {
+    @apply btn-outline border-danger bg-danger/10 text-danger hover:bg-danger/20 focus:border-danger focus:ring-danger;
+  }
+
+  .equal-btn {
+    @apply px-4 py-1;
+  }
+
+  .error-msg {
+    @apply mt-2 text-xs font-medium text-danger;
+  }
+
+  .error-input {
+    @apply border-2 border-solid border-danger;
+  }
+
+  /* Card Components */
+  .card {
+    @apply flex h-auto w-[90%] max-w-[400px] flex-col gap-2 overflow-auto rounded-lg border border-gray-200 bg-white p-4 shadow-lg sm:max-w-[600px];
+  }
+
+  .card-header {
+    @apply mb-2 text-lg font-semibold text-gray-900;
+  }
+
+  .card-content {
+    @apply no-scrollbar flex-1 overflow-auto text-gray-700;
+  }
+
+  .card-footer {
+    @apply mt-4 border-t border-gray-200 pt-2 text-sm text-gray-500;
+  }
+
+  /* Loader */
+  .loading {
+    @apply relative flex items-center justify-center text-transparent;
+  }
+
+  .loading::before {
+    content: '';
+    @apply absolute h-5 w-5 animate-spin rounded-full border-[3px] border-white border-t-transparent;
+  }
+
+  .btn-outline.loading::before,
+  .btn-outline-primary.loading::before {
+    @apply absolute h-5 w-5 animate-spin rounded-full border-[3px] border-primary border-t-transparent;
+  }
+
+  .btn-outline-secondary.loading::before {
+    @apply absolute h-5 w-5 animate-spin rounded-full border-[3px] border-secondary border-t-transparent;
+  }
+
+  .btn-outline-danger.loading::before {
+    @apply absolute h-5 w-5 animate-spin rounded-full border-[3px] border-danger border-t-transparent;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-col-center {
+    @apply flex flex-col items-center justify-center;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari, and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge, and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}

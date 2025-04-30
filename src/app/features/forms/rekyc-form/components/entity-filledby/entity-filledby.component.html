@@ -1,0 +1,109 @@
+<ui-modal (close)="handleEntityFilledBy()" [isOpen]="isOpen()" class="max-w-xl">
+  <div modalHeader>
+    <h4 class="text-primary">
+      Welcome to
+      <span class="text-secondary">Ebitaus</span>
+    </h4>
+    <p class="text-primary">One step solution for Corporate KYC</p>
+  </div>
+
+  <div modalContent>
+    <div *ngIf="!showFlow()" class="flex flex-col gap-2">
+      <p class="text-base font-medium text-gray-500">
+        Fully digital and automated can be completed in few minutes
+      </p>
+
+      <div>
+        <img
+          src="./assets/images/modules/rekyc/rekyc-flow.webp"
+          alt="ReKyc Flow"
+        />
+      </div>
+
+      <ui-button
+        label="Continue"
+        class="mt-10 w-full"
+        (btnClick)="updateShowFlow()"
+      />
+    </div>
+
+    <div *ngIf="showFlow()">
+      <p class="text-base">
+        Please select the responsible person to fill the
+        <strong>Entity Details</strong>
+        &
+        <strong>RE-KYC Form</strong>
+      </p>
+
+      <div class="mt-4 flex flex-col gap-4">
+        <div
+          class="flex items-center justify-between rounded-md border p-4"
+          (click)="selectedFilledBy.set(1)"
+          (keydown.enter)="selectedFilledBy.set(1)"
+          (keydown.space)="selectedFilledBy.set(1)"
+          tabindex="0"
+        >
+          <div class="flex items-center gap-2">
+            <input type="checkbox" [checked]="selectedFilledBy() === 1" />
+            <label for="entityFilledBy">Do it myself</label>
+          </div>
+
+          <div
+            class="rounded-md bg-gray-100 px-4 py-0.5 font-medium text-primary"
+          >
+            {{ ausInfo()?.ausEmail }}
+          </div>
+        </div>
+
+        <div
+          class="flex items-center justify-between gap-4 rounded-md border px-4 py-2"
+          (click)="selectedFilledBy.set(2)"
+          (keydown.enter)="selectedFilledBy.set(2)"
+          (keydown.space)="selectedFilledBy.set(2)"
+          tabindex="1"
+        >
+          <div class="flex items-center gap-2">
+            <input type="checkbox" [checked]="selectedFilledBy() === 2" />
+            <label for="entityFilledBy">Authorized Signatories</label>
+          </div>
+
+          <div class="w-1/2">
+            <ui-select
+              [options]="ausList()"
+              (valueChange)="setSelectedAusId($event)"
+            />
+          </div>
+        </div>
+
+        <div
+          class="flex items-center justify-between rounded-md border p-4"
+          (click)="selectedFilledBy.set(3)"
+          (keydown.enter)="selectedFilledBy.set(3)"
+          (keydown.space)="selectedFilledBy.set(3)"
+          tabindex="3"
+        >
+          <div class="flex items-center gap-2">
+            <input type="checkbox" [checked]="selectedFilledBy() === 3" />
+            <label for="entityFilledBy">Others</label>
+          </div>
+
+          <div class="w-1/2">
+            <ui-input
+              type="text"
+              placeholder="Others"
+              (valueChange)="setOthersEmail($event)"
+              [autofocus]="selectedFilledBy() === 3"
+            />
+          </div>
+        </div>
+      </div>
+
+      <ui-button
+        label="Continue"
+        class="mt-6 w-full"
+        [loading]="isLoading()"
+        (btnClick)="updateEntityFilledBy()"
+      />
+    </div>
+  </div>
+</ui-modal>

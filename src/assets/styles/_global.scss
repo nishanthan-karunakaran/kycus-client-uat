@@ -1,0 +1,23 @@
+@import './colors';
+@import './variables';
+@import './utilities';
+@import './tailwind';
+
+.modal-open {
+  position: fixed; /* Locks viewport */
+  inset: 0; /* Covers full screen */
+  overflow: hidden; /* Prevents scrolling */
+  touch-action: none; /* Blocks touch gestures */
+}
+
+.modal-open body {
+  pointer-events: none; /* Blocks interaction with background */
+}
+
+.modal-overlay {
+  pointer-events: auto; /* Allows clicks on overlay */
+}
+
+.modal-container {
+  pointer-events: auto; /* Enables interaction only for the modal */
+}

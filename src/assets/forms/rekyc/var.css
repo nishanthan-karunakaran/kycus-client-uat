@@ -1,0 +1,145 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 26px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 22px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+.form-section {
+  padding: 0.5rem 0;
+  border-bottom: 2px solid var(--primary-border);
+}
+
+input:not(input[type='checkbox']) {
+  all: unset !important;
+  border-bottom: 1px solid black !important;
+  margin-left: 0.5rem !important;
+}
+
+input:not(.no-reset):not(input[type='checkbox']) {
+  width: 100% !important;
+}
+
+.section-title {
+  color: black;
+  font-weight: 600;
+  font-size: var(--title-text);
+}
+
+.form-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-container {
+  width: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+/* custom variables */
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-col-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-start {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-wrap {
+  text-wrap: wrap;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
+}
+
+.text-black {
+  color: black;
+}
