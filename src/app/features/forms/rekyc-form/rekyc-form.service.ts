@@ -84,6 +84,10 @@ export class RekycFormService {
       currentRekyc[key] = value;
     }
 
+    if (key === 'entityInfo') {
+      // eslint-disable-next-line no-console
+      console.log('entityInfo', value, currentRekyc);
+    }
     // Store the entire rekyc object back to localStorage as a string
     localStorage.setItem('rekyc', JSON.stringify(currentRekyc));
 

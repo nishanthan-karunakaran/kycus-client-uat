@@ -199,7 +199,6 @@ export class EntityDetailsComponent implements OnInit, OnDestroy {
 
   handlePreviewSheet() {
     this.showPreviewSheet.set(!this.showPreviewSheet());
-    this.previewEntityDetails();
   }
 
   trackDoc(_index: number, doc: string): string {
@@ -421,40 +420,6 @@ export class EntityDetailsComponent implements OnInit, OnDestroy {
           );
 
           this.store.dispatch(updatePartialEntityDetails({ partialData: updatedEntityDetails }));
-        }
-      },
-    });
-  }
-
-  previewEntityDetails() {
-    const entityId = this.entityInfo()?.entityId as string;
-
-    this.entityDetailService.previewEntityDetails(entityId).subscribe({
-      next: (result) => {
-        const { response } = result;
-
-        if (!response) return;
-
-        const { status } = response;
-
-        if (status === ApiStatus.SUCCESS) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const { data } = response as any;
-
-          const customOrder = ['pan', 'gstin', 'addressProof', 'coi', 'moa', 'aoa'];
-
-          interface PreviewDoc {
-            docType: string;
-          }
-
-          // Sort the documents array
-          const sortedDocuments = data.sort((a: PreviewDoc, b: PreviewDoc) => {
-            return customOrder.indexOf(a.docType) - customOrder.indexOf(b.docType);
-          });
-
-          this.previewData.set(sortedDocuments);
-
-          // this.previewData.set(data);
         }
       },
     });

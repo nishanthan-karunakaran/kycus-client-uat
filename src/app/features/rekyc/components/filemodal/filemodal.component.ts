@@ -53,6 +53,7 @@ export class FilemodalComponent {
   handlePreviewModal() {
     this.isOpenFilePreview.set(false);
     this.closeModal.emit(false);
+    this.file = null; // resetting the file after upload
   }
 
   handleFile(event: Event | DragEvent) {

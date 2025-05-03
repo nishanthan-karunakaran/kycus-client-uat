@@ -1301,7 +1301,7 @@ function ausDetails() {
 
           if (ausData?.personalDetails?.documents?.signature?.url) {
             const img = document.createElement('img');
-            img.src = imageUrlToBase64SameOrigin(ausData.personalDetails.documents.signature.url);
+            img.src = ausData.personalDetails.documents.signature.url;
             wrapper.appendChild(img);
           }
 

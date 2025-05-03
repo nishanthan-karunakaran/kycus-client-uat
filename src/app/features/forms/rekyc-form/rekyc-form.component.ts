@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { selectEntityInfo } from './components/entity-filledby/store/entity-info.selectors';
+import { updateAusInfo } from './components/rekyc-personal-details/store/personal-details.actions';
 import { AccessibleSteps } from './components/rekyc-personal-details/store/personal-details.reducer';
 import {
   selectAccessibleSteps,
@@ -27,7 +28,6 @@ import {
   selectRekycFormStatus,
   selectRekycStatus,
 } from './store/rekyc-form.selectors';
-import { updateAusInfo } from './components/rekyc-personal-details/store/personal-details.actions';
 
 @Component({
   selector: 'app-rekyc-form',

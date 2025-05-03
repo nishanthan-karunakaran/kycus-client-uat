@@ -267,6 +267,7 @@ export class RekycDirectorsFormComponent implements OnInit {
         const { status } = response;
 
         if (status === ApiStatus.SUCCESS) {
+          this.toast.success('Directors details saved successfully!');
           this.store.dispatch(
             updatePartialDirectors({ directorList: refinedDirList, isDirectorModified: false }),
           );

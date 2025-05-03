@@ -43,5 +43,6 @@ export class RekycEntityDetailsFormComponent {
 
   setCurrentScreen(value: string) {
     this.rekycFormService.updateRekycLS('currentEntityDetTab', value);
+    this.rekycFormService.updateRekycLS('activeRoute', 'entity-details');
   }
 }

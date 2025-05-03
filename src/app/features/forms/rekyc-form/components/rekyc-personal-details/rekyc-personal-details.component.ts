@@ -219,7 +219,6 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
 
   handlePreviewSheet() {
     this.showPreviewSheet.set(!this.showPreviewSheet());
-    this.previewEntityDetails();
   }
 
   trackDoc(_index: number) {
@@ -411,39 +410,6 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
           const { data } = response as { status: string; data: { documents: PersonalDetails } };
 
           this.store.dispatch(updatePartialPersonalDetails({ partialData: data.documents }));
-        }
-      },
-    });
-  }
-
-  previewEntityDetails() {
-    const entityId = this.entityInfo()?.entityId as string;
-    const ausId = this.ausInfo()?.ausId as string;
-
-    this.personalFormService.previewEntityDetails(entityId, ausId).subscribe({
-      next: (result) => {
-        const { response } = result;
-
-        if (!response) return;
-
-        const { status } = response;
-
-        if (status === ApiStatus.SUCCESS) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const { data } = response as any;
-
-          const customOrder = ['identityProof', 'addressProof', 'photograph', 'signature'];
-
-          interface PreviewDoc {
-            docType: string;
-          }
-
-          // Sort the documents array
-          const sortedDocuments = data[0].documents.sort((a: PreviewDoc, b: PreviewDoc) => {
-            return customOrder.indexOf(a.docType) - customOrder.indexOf(b.docType);
-          });
-
-          this.previewData.set(sortedDocuments);
         }
       },
     });

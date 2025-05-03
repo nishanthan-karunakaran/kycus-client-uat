@@ -134,6 +134,24 @@ export class RekycEntityFilledbyComponent implements OnInit {
           } else {
             this.isOpen.set(false);
             this.toast.info(response.message || 'Something went wrong!');
+            const accessibleSteps = {
+              entityDetails: false,
+              ausDetails: true,
+              rekycForm: false,
+              eSign: true,
+            };
+            this.rekycFormService.updateRekycLS('accessibleSteps', accessibleSteps);
+
+            this.store.dispatch(updateAccessibleSteps({ accessibleSteps }));
+
+            const entityInfo = { ...this.entityInfo() } as EntityInfoState;
+            entityInfo.entityFilledBy = 'filled by diff aus / person';
+
+            this.rekycFormService.updateRekycLS('entityInfo', entityInfo);
+
+            this.store.dispatch(
+              updateEntityFilledBy({ entityFilledBy: 'filled by diff aus / person' }),
+            );
           }
         }
       },
