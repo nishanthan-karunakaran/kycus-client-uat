@@ -54,6 +54,11 @@ export class RekycEmailValidationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     localStorage.removeItem('rekyc');
+    localStorage.removeItem('access_token');
+
+    if (this.token) {
+      this.rekycFormService.updateRekycLS('applicationToken', this.token);
+    }
 
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, this.validatorsService.emailValidator()]],
@@ -109,6 +114,8 @@ export class RekycEmailValidationComponent implements OnInit, OnDestroy {
         if (status === ApiStatus.SUCCESS) {
           const { data } = response as { data: VerifyOtpResponse };
           data.ausInfo.isAuthenticated = true; // update the authenticated status
+          data.ausInfo.ausName = data.ausInfo?.ausName || this.loginForm.value.email;
+          data.ausInfo.ausType = data.ausInfo.ausId?.includes('OTHER') ? 'OTHER' : 'AUS';
           this.store.dispatch(setEntityInfo(data.entityInfo));
           this.store.dispatch(setAusInfo(data.ausInfo));
           this.toast.success('Email Verified!');
@@ -159,7 +166,7 @@ export class RekycEmailValidationComponent implements OnInit, OnDestroy {
             this.store.dispatch(updateAccessibleSteps({ accessibleSteps }));
           }
         } else {
-          this.toast.error(message as string);
+          this.toast.error((message as string) || 'Something went wrong');
         }
       },
     });
@@ -188,7 +195,7 @@ export class RekycEmailValidationComponent implements OnInit, OnDestroy {
             this.isOTPSent.set(true);
             this.startResendTimer();
           } else {
-            this.toast.error(message as string);
+            this.toast.error((message as string) || 'Something went wrong');
           }
         },
       });

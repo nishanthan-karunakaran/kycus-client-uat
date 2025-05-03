@@ -137,12 +137,12 @@ export class RekycBoInputComponent implements OnInit {
   }
 
   submit(action: 'save' | 'submit') {
-    if (!this.isFormValid) {
+    if (!this.isFormValid && action === 'submit') {
       this.isFormSubmitted.set(true);
       return;
     }
 
-    if (action === 'submit') {
+    if (action === 'submit' || action === 'save') {
       const boList = this.form.value.boDetails as BoDetail[];
 
       const payload: SaveBODetails = {
@@ -159,7 +159,11 @@ export class RekycBoInputComponent implements OnInit {
           const { status } = response;
 
           if (status === ApiStatus.SUCCESS) {
-            this.toast.success('Beneficairy Owners saved!');
+            if (action === 'save') {
+              this.toast.info('Beneficairy Owners saved successfully!');
+            } else {
+              this.toast.success('Beneficairy Owners submitted successfully!');
+            }
             this.store.dispatch(updateRekycStepStatus({ boDetails: true }));
             this.rekycFormService.updatRekycFormStep('bo');
           } else {

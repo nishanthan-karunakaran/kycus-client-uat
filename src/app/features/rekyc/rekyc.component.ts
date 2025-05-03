@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DoCheck } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-rekyc',
@@ -6,9 +6,4 @@ import { ChangeDetectionStrategy, Component, DoCheck } from '@angular/core';
   styleUrls: ['./rekyc.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RekycComponent implements DoCheck {
-  ngDoCheck(): void {
-    // eslint-disable-next-line no-console
-    console.log('rendeing');
-  }
-}
+export class RekycComponent {}

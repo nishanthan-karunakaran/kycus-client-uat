@@ -18,6 +18,7 @@ import {
 } from 'src/app/features/rekyc/rekyc.model';
 import { RekycService } from 'src/app/features/rekyc/rekyc.service';
 import { ToastService } from 'src/app/shared/ui/toast/toast.service';
+import { API_URL } from '@core/constants/apiurls';
 
 @Component({
   selector: 'app-filemodal',
@@ -37,6 +38,7 @@ export class FilemodalComponent {
   duplicateRekycData: RekycData[] = [];
   activePage = signal(1);
   isDragging = signal(false);
+  excelTemplate = `https://kycusuat.ebitaus.com${API_URL.REKYC.EXCEL_TEMPLATE}`;
 
   constructor(
     private toastService: ToastService,
@@ -130,7 +132,7 @@ export class FilemodalComponent {
   submitReKycExcel() {
     const payload: SubmitReKycExcel = {
       mode: 'submit',
-      uploadedBy: 'admin@hdfc.com',
+      uploadedBy: localStorage.getItem('authEmail') as string,
       bankName: 'HDFC Bank',
       data: this.rekycData(),
     };
@@ -173,5 +175,12 @@ export class FilemodalComponent {
 
   trackAus(index: number): number {
     return index;
+  }
+
+  downloadSampleExcel() {
+    const link = document.createElement('a');
+    link.href = this.excelTemplate;
+    link.download = 'SampleTemplate.xlsx';
+    link.click();
   }
 }

@@ -27,6 +27,7 @@ import {
   selectRekycFormStatus,
   selectRekycStatus,
 } from './store/rekyc-form.selectors';
+import { updateAusInfo } from './components/rekyc-personal-details/store/personal-details.actions';
 
 @Component({
   selector: 'app-rekyc-form',
@@ -86,8 +87,8 @@ export class RekycFormComponent implements OnInit, DoCheck, OnDestroy {
 
     this.updateFormList();
 
-    this.handleInitialRoute();
     this.applicationToken = this.activatedRouter.snapshot.queryParamMap.get('token');
+    this.handleInitialRoute();
   }
 
   ngDoCheck(): void {
@@ -123,12 +124,12 @@ export class RekycFormComponent implements OnInit, DoCheck, OnDestroy {
         isCompleted: rekycFormStatus.rekycForm, // Signal value
         canShow: accessibleSteps.rekycForm,
       },
-      {
-        label: 'E-Sign',
-        step: FormStep.E_SIGN,
-        isCompleted: rekycFormStatus.eSign,
-        canShow: accessibleSteps.eSign,
-      },
+      // {
+      //   label: 'E-Sign',
+      //   step: FormStep.E_SIGN,
+      //   isCompleted: rekycFormStatus.eSign,
+      //   canShow: accessibleSteps.eSign,
+      // },
     ];
 
     // Set the updated form list
@@ -141,21 +142,29 @@ export class RekycFormComponent implements OnInit, DoCheck, OnDestroy {
   handleInitialRoute() {
     const accessibleSteps = this.accessibleSteps();
 
-    if (!accessibleSteps) return;
+    if (!accessibleSteps || !this.applicationToken) return;
 
     const rekycData = localStorage.getItem('rekyc');
+    const parsed = rekycData ? JSON.parse(rekycData) : null;
+
+    const parsedApplicationToken = parsed?.applicationToken || null;
+
+    if (!parsed || !parsedApplicationToken || parsedApplicationToken !== this.applicationToken) {
+      this.store.dispatch(updateAusInfo({ isAuthenticated: false }));
+      return;
+    }
+
     let activeRoute = Object.keys(accessibleSteps).find(
       (step) => accessibleSteps[step as keyof AccessibleSteps],
     );
 
     const stepToRoute = {
-      ausDetails: 'personal-details',
       entityDetails: 'entity-details',
+      ausDetails: 'personal-details',
       rekycForm: 'rekyc-form',
       eSign: 'eSign',
     };
 
-    const parsed = rekycData ? JSON.parse(rekycData) : null;
     if (parsed?.activeRoute) {
       activeRoute = parsed.activeRoute;
     } else {

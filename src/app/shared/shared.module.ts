@@ -24,6 +24,7 @@ import {
   LaptopMinimalCheck,
   Loader,
   LoaderCircle,
+  LogOut,
   LucideAngularModule,
   Plus,
   Search,
@@ -50,6 +51,8 @@ import { SheetComponent } from './ui/sheet/sheet.component';
 import { TableComponent } from './ui/table/table.component';
 import { UploadButtonComponent } from './ui/upload-button/upload-button.component';
 import { PresentValuesPipe } from '@core/pipes/presentValues.pipe';
+import { MenuComponent } from './ui/menu/menu.component';
+import { TooltipComponent } from './ui/tooltip/tooltip.component';
 
 @NgModule({
   declarations: [
@@ -65,11 +68,13 @@ import { PresentValuesPipe } from '@core/pipes/presentValues.pipe';
     UploadButtonComponent,
     FilenameComponent,
     SelectComponent,
+    MenuComponent,
   ],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
+    TooltipComponent,
     ReactiveFormsModule,
     InputFormatDirective,
     PresentValuesPipe,
@@ -105,6 +110,7 @@ import { PresentValuesPipe } from '@core/pipes/presentValues.pipe';
       Plus,
       Loader,
       LoaderCircle,
+      LogOut,
     }),
   ],
   exports: [
@@ -127,6 +133,7 @@ import { PresentValuesPipe } from '@core/pipes/presentValues.pipe';
     UploadButtonComponent,
     FilenameComponent,
     SelectComponent,
+    MenuComponent,
   ],
 })
 export class SharedModule {}

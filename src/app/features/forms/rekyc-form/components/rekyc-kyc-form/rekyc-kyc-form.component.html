@@ -8,8 +8,24 @@
       </ul>
     </div>
 
-    <div>
-      <ui-button label="Save" (btnClick)="onSave()" />
+    <div *ngIf="!isFetchingFormData()" class="flex items-center gap-2">
+      <!-- <ng-container *ngIf="isSubmitted()">
+        <p class="font-medium text-success">
+          You have already submitted the form!
+        </p>
+      </ng-container> -->
+
+      <ng-container>
+        <ui-button label="Save" (btnClick)="onSave()" />
+        <ui-button
+          *ngIf="isSaveBtnClicked()"
+          class="btn-outline min-h-[33px] min-w-[106px]"
+          [label]="isGettingReport() ? '' : 'Submit'"
+          [loading]="isGettingReport()"
+          [disabled]="isGettingReport()"
+          (btnClick)="getReport()"
+        />
+      </ng-container>
     </div>
   </div>
   <iframe

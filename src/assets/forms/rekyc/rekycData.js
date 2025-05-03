@@ -1,5 +1,4 @@
 function sendSaveData() {
-  console.log('Iframe received TRIGGER_SAVE', data);
   window.parent.postMessage(
     {
       type: 'SAVE_DATA',
@@ -34,7 +33,6 @@ function setFormData(payload) {
   };
 
   renderAll();
-  console.log('data set', data);
 }
 
 window.addEventListener('message', (event) => {
@@ -165,4 +163,62 @@ function camelToTitleCase(input) {
   return input
     .replace(/([a-z])([A-Z])/g, '$1 $2') // insert space before capital letters
     .replace(/^./, (char) => char.toUpperCase()); // capitalize first letter
+}
+
+function imageUrlToBase64(url) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      const reader = new FileReader();
+      reader.onloadend = function () {
+        resolve(reader.result); // Base64 string
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.onerror = reject;
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+  });
+}
+
+function imageToBase64(url) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      const reader = new FileReader();
+      reader.onloadend = function () {
+        const base64 = reader.result.split(',')[1]; // Extract only the Base64 part
+        console.log('Base64:', base64); // Log the Base64 string
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.onerror = reject;
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+  });
+}
+
+function imageUrlToBase64SameOrigin(imageUrl) {
+  const img = new Image();
+  img.onload = function () {
+    const canvas = document.createElement('canvas');
+    canvas.width = this.naturalWidth;
+    canvas.height = this.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(this, 0, 0);
+    const base64Data = canvas.toDataURL();
+    // callback(base64Data);
+  };
+  img.onerror = function () {
+    console.error('Error loading image:', imageUrl);
+    // callback(null);
+  };
+  img.crossOrigin = 'anonymous'; // Important for same-origin requests in some scenarios
+  img.src = imageUrl;
+  return imageUrl;
 }

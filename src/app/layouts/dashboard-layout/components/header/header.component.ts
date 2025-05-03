@@ -25,6 +25,7 @@ export class HeaderComponent {
       size: '22',
     },
   ];
+  userEmail = localStorage.getItem('authEmail') || '';
 
   constructor(private router: Router) {}
 
@@ -38,6 +39,6 @@ export class HeaderComponent {
 
   handleIconClick(icon: string) {
     // eslint-disable-next-line no-console
-    console.log(icon);
+    console.warn(icon);
   }
 }

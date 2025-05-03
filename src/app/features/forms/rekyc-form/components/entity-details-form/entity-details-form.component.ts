@@ -44,9 +44,4 @@ export class RekycEntityDetailsFormComponent {
   setCurrentScreen(value: string) {
     this.rekycFormService.updateRekycLS('currentEntityDetTab', value);
   }
-
-  submit(value: string) {
-    // eslint-disable-next-line no-console
-    console.log(value);
-  }
 }

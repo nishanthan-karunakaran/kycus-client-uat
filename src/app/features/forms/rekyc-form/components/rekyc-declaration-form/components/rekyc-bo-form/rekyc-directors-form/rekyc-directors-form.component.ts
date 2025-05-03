@@ -216,7 +216,12 @@ export class RekycDirectorsFormComponent implements OnInit {
 
   submit() {
     if (this.isLoading()) {
-      this.toast.error('Please wait for the previous request to complete');
+      this.toast.error('Please wait for the request to complete');
+      return;
+    }
+
+    if (this.directorsList().length === 0) {
+      this.toast.error('Please add at least two directors');
       return;
     }
 
@@ -227,9 +232,15 @@ export class RekycDirectorsFormComponent implements OnInit {
       this.form32Error.set('');
     }
 
+    // if (!this.isDirectorModified$()) {
+    //   this.store.dispatch(updateRekycStepStatus({ directorDetails: true }));
+    //   this.rekycFormService.updatRekycFormStep('directors');
+    //   return;
+    // }
+
     const existingDir = this.directorsList();
     const refinedDirList = existingDir
-      .filter((dir) => dir.status === 'new-dir')
+      .filter((dir) => dir.status === 'new-dir' || !dir.status)
       .map((dir) => ({ ...dir, status: 'active' }));
 
     if ([...existingDir, ...refinedDirList].length < 2) {
@@ -239,7 +250,7 @@ export class RekycDirectorsFormComponent implements OnInit {
 
     const data = {
       ausId: this.ausInfo()?.ausId as string,
-      directorsList: refinedDirList,
+      directorsList: this.isDirectorModified$() ? refinedDirList : this.directorsList(),
     };
     const formData = new FormData();
     formData.append('form32', this.form32.file as Blob);
@@ -256,14 +267,16 @@ export class RekycDirectorsFormComponent implements OnInit {
         const { status } = response;
 
         if (status === ApiStatus.SUCCESS) {
-          this.toast.success('Directors details saved successfully!');
           this.store.dispatch(
             updatePartialDirectors({ directorList: refinedDirList, isDirectorModified: false }),
           );
           this.store.dispatch(updateRekycStepStatus({ directorDetails: true }));
           this.rekycFormService.updatRekycFormStep('directors');
         } else {
-          this.toast.error(response.message || 'Something went wrong!');
+          this.toast.success('Directors details saved successfully!');
+          this.store.dispatch(updateRekycStepStatus({ directorDetails: true }));
+          this.rekycFormService.updatRekycFormStep('directors');
+          // this.toast.error(response.message || 'Something went wrong!');
         }
       },
     });

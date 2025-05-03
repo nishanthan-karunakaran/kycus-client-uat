@@ -44,11 +44,6 @@ export class RekycDeclarationFormComponent {
     this.currentScreen.set(value as Screens);
   }
 
-  submit(value: string) {
-    // eslint-disable-next-line no-console
-    console.log(value);
-  }
-
   tabNavigation() {
     if (this.currentScreen() === 'directors') {
       this.setCurrentScreen('bo');

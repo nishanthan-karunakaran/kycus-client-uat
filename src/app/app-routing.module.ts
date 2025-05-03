@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '@core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -8,17 +9,25 @@ const routes: Routes = [
   },
   {
     path: 'v2/auth',
-    loadChildren: () => import('./layouts/auth-layout/auth-layout.module').then((m) => m.AuthLayoutModule),
+    loadChildren: () =>
+      import('./layouts/auth-layout/auth-layout.module').then((m) => m.AuthLayoutModule),
+  },
+  {
+    path: 'bankers',
+    loadChildren: () => import('./features/bankers/bankers.module').then((m) => m.BankersModule),
   },
   {
     path: 'application',
-    loadChildren: () => import('./features/application/application.module').then((m) => m.ApplicationModule),
+    loadChildren: () =>
+      import('./features/application/application.module').then((m) => m.ApplicationModule),
   },
   {
     path: '',
     loadChildren: () =>
-      import('./layouts/dashboard-layout/dashboard-layout.module').then((m) => m.DashboardLayoutModule),
-    // canActivate: [AuthGuard],
+      import('./layouts/dashboard-layout/dashboard-layout.module').then(
+        (m) => m.DashboardLayoutModule,
+      ),
+    canActivate: [AuthGuard],
   },
   {
     path: '**',

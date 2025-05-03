@@ -12,6 +12,12 @@ import { selectEntityInfo } from '../entity-filledby/store/entity-info.selectors
 export class RekycFormHeaderComponent {
   readonly ausInfo = toSignal(this.store.select(selectAusInfo));
   readonly entityInfo = toSignal(this.store.select(selectEntityInfo));
+  menuOptions = [
+    {
+      label: 'Logout',
+      icon: 'log-out',
+    },
+  ];
 
   constructor(private store: Store) {}
 
@@ -19,8 +25,8 @@ export class RekycFormHeaderComponent {
     switch (this.ausInfo()?.ausType?.toLowerCase()) {
       case 'aus':
         return 'Authorized Signatory';
-      case 'others':
-        return 'Others';
+      case 'other':
+        return 'Other';
       default:
         return 'Authorized Signatory';
     }

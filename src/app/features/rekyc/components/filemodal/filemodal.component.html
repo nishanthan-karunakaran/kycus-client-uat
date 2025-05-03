@@ -4,6 +4,7 @@
   [showClose]="true"
   [class]="'max-w-lg'"
   (close)="handleModal()"
+  tabindex="0"
 >
   <div modalHeader>
     <h5 class="text-primary">Bulk Upload</h5>
@@ -56,7 +57,15 @@
         <strong>20MB</strong>
       </p>
 
-      <a class="text-secondary">Download Sample</a>
+      <a
+        (click)="downloadSampleExcel()"
+        (keydown.enter)="downloadSampleExcel()"
+        (keydown.space)="downloadSampleExcel()"
+        class="text-secondary"
+        tabindex="0"
+      >
+        Download Sample
+      </a>
     </div>
   </div>
 </ui-modal>

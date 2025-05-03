@@ -56,6 +56,7 @@
         </div>
 
         <div
+          *ngIf="ausList() && ausList().length > 0"
           class="flex items-center justify-between gap-4 rounded-md border px-4 py-2"
           (click)="selectedFilledBy.set(2)"
           (keydown.enter)="selectedFilledBy.set(2)"

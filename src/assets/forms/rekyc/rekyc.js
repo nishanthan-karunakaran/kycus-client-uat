@@ -1,6 +1,15 @@
 let data = {};
 
 async function renderAll() {
+  // const status = data?.status || false;
+
+  // if (status) {
+  //   document.querySelectorAll('input, select, textarea, button').forEach((element) => {
+  //     element.disabled = true; // Disable all form elements
+  //   });
+  //   document.body.style.pointerEvents = 'none'; // Disable all interactions with the body
+  // }
+
   await entityBasicInfo();
   await entityMailingAddress();
   await entityRegisteredAddress();
@@ -25,18 +34,29 @@ function entityBasicInfo() {
   const entityCustId = document.getElementById('entityCustId');
   const entityName = document.getElementById('entityName');
   const entityPan = document.getElementById('entityPan');
+  const propKartaCustId = document.getElementById('propKartaCustId');
+  const propKartaPan = document.getElementById('propKartaPan');
+  const propKartaCustName = document.getElementById('propKartaCustName');
+  const propKartaName = document.getElementById('propKartaName');
 
   entityCustId.value = data.originalData.custId || '';
   entityName.value = data.originalData.entityName || '';
   entityPan.value = data.originalData.entityDetails?.pan?.panNumber || '';
+  propKartaCustId.value = data.originalData.propKartaCustId || '';
+  propKartaPan.value = data.originalData.propKartaPan || '';
+  propKartaCustName.value = data.originalData.propKartaCustName || '';
+  propKartaName.value = data.originalData.propKartaName || '';
 
   // Attach tracking
   attachInputTracking(entityCustId, ['custId']);
   attachInputTracking(entityName, ['entityName']);
   attachInputTracking(entityPan, ['entityDetails', 'pan', 'panNumber']);
+  attachInputTracking(propKartaCustId, ['propKartaCustId']);
+  attachInputTracking(propKartaPan, ['propKartaPan']);
+  attachInputTracking(propKartaCustName, ['propKartaCustName']);
+  attachInputTracking(propKartaName, ['propKartaName']);
 
   const dateInputs = document.querySelectorAll('input#date-input');
-  console.log('date inputs', dateInputs);
 
   if (dateInputs.length > 0) {
     const today = new Date();
@@ -585,8 +605,6 @@ function businessDetails() {
   // Pre-fill if any data exists
   const dataSet = data?.originalData?.businessDetails || {};
 
-  console.log('dataset', dataSet);
-
   detailsOfActivityInput.value = dataSet.detailsOfActivity || '';
   dateOfIncorporationInput.value = dataSet.dateOfIncorporation || '';
   annualTurnOverFiguresInput.value = dataSet.annualTurnOverFigures || '';
@@ -795,22 +813,6 @@ function entityProofDeclaration() {
     input.disabled = true;
   });
 
-  // Attach input tracking for changes
-  // function attachInputTracking(inputField, key) {
-  //   inputField.addEventListener('input', (e) => {
-  //     // Update the corresponding field in editedData on input change
-  //     data.editedData.entityProofDeclaration[key] = e.target.value.trim();
-  //     // Optionally, log the change for debugging
-  //     console.log(`Updated ${key}: `, e.target.value.trim());
-  //   });
-  // }
-
-  // Attach tracking to the input fields
-  // attachInputTracking(inputs[0], 'entityProof1');
-  // attachInputTracking(inputs[1], 'entityProof2');
-  // attachInputTracking(inputs[2], 'addressProof');
-  // attachInputTracking(inputs[3], 'identityProof');
-
   const date = document.querySelector('#date-input');
   if (date) {
     const today = new Date();
@@ -844,18 +846,27 @@ function entityProofDeclaration() {
 }
 
 function extendedAnnexure() {
-  const extended = data?.originalData.extendedAnnexure || {
-    basicDetails: {
-      entityName: data.originalData.entityName || '',
-      entityCustId: data.originalData.entityCustId || '',
-    },
-    docEntity: {
-      cin: data.originalData.entityDetails?.cin?.cinNumber || '',
-    },
-    mailAddress: {
-      cin: data.originalData.entityDetails?.cin?.cinNumber || '',
-    },
-  };
+  if (!data.originalData?.extendedAnnexure) {
+    data.originalData.extendedAnnexure = {
+      basicDetails: {
+        entityName: data.originalData?.entityName || '',
+        entityCustId: data.originalData?.custId || '',
+        aofNo: data.originalData?.aofNo || '',
+      },
+      docEntity: {
+        cin: data.originalData?.entityDetails?.cin?.cinNumber || '',
+        reg: '',
+        trust: '',
+        moa: '',
+      },
+      mailAddress: {
+        cin: data.originalData?.entityDetails?.cin?.cinNumber || '',
+        reg: '',
+      },
+    };
+  }
+
+  const extended = data.originalData.extendedAnnexure;
 
   const basicLabelKey = {
     aofNo: 'aofNo',
@@ -865,10 +876,14 @@ function extendedAnnexure() {
 
   const docEntityLabel = {
     coi: 'cin',
+    reg: 'reg',
+    trust: 'trust',
+    moa: 'moa',
   };
 
   const mailAddressLabel = {
     coi: 'cin',
+    reg: 'reg',
   };
 
   // Correct input color handling based on original vs edited
@@ -895,21 +910,13 @@ function extendedAnnexure() {
       input.addEventListener('input', () => {
         extended.basicDetails[basicLabelKey[key]] = input.value;
 
-        if (!data.editedData) data.editedData = {};
-        if (!data.editedData.extendedAnnexure)
-          data.editedData.extendedAnnexure = { basicDetails: {} };
-        if (!data.editedData.extendedAnnexure.basicDetails)
-          data.editedData.extendedAnnexure.basicDetails = {};
-
-        data.editedData.extendedAnnexure.basicDetails[basicLabelKey[key]] = input.value; // store real input value
-
         basicDetailsInputColor(input, key); // Check color again after typing
       });
     }
   });
 
   // Prefill + bind document entity
-  const docEntityFields = ['coi', 'rc', 'td', 'moa_aoa'];
+  const docEntityFields = ['coi', 'reg', 'trust', 'moa'];
   docEntityFields.forEach((key) => {
     const input = document.getElementById(`docEntity-${key}`);
     const check = document.getElementById(`docEntity-${key}-check`);
@@ -944,18 +951,16 @@ function extendedAnnexure() {
   });
 
   // Prefill + bind mailing address
-  const mailFields = ['coi', 'rc', 'other'];
+  const mailFields = ['coi', 'reg', 'other'];
   mailFields.forEach((key) => {
     const input = document.getElementById(`mailAddress-${key}`);
     const check = document.getElementById(`mailAddress-${key}-check`);
 
     const labelKey = mailAddressLabel[key];
 
-    if (typeof extended.mailAddress[labelKey] !== 'undefined') {
-      if (check) check.checked = !!extended.mailAddress[labelKey];
-      if (input && typeof extended.mailAddress[labelKey] === 'string') {
-        input.value = extended.mailAddress[labelKey];
-      }
+    if (check) check.checked = !!extended.mailAddress[labelKey];
+    if (input && typeof extended.mailAddress[labelKey] === 'string') {
+      input.value = extended.mailAddress[labelKey];
     }
 
     if (check) {
@@ -1207,7 +1212,6 @@ function boDetailsTable() {
 }
 
 function ausDetails() {
-  console.log('reached auss');
   const ausData = data?.originalData?.authorizedSignatoriesDetails || [];
   const labels = [
     'Name of the Authorised Signatory',
@@ -1225,9 +1229,9 @@ function ausDetails() {
   const labelKey = {
     'Name of the Authorised Signatory': 'name',
     "Father's name": 'fatherName',
-    'Proof of Identity': 'identityProof',
-    'Proof of Address': 'addressProof',
-    'Address - Line': 'address.line',
+    'Proof of Identity': 'documents.identityProof.selectedType',
+    'Proof of Address': 'documents.addressProof.selectedType',
+    'Address - Line': 'address.street',
     'Address - City': 'address.city',
     'Address - State': 'address.state',
     'Address - Country': 'address.country',
@@ -1297,7 +1301,7 @@ function ausDetails() {
 
           if (ausData?.personalDetails?.documents?.signature?.url) {
             const img = document.createElement('img');
-            img.src = ausData.personalDetails.documents.signature.url;
+            img.src = imageUrlToBase64SameOrigin(ausData.personalDetails.documents.signature.url);
             wrapper.appendChild(img);
           }
 
@@ -1326,10 +1330,18 @@ function ausDetails() {
           // Capture true original value once (important)
           const trueOriginalValue = getValueByPath(ausData?.personalDetails, key) ?? '';
 
-          // Set initial input value
-          input.value = trueOriginalValue;
+          if (label === 'Proof of Identity' || label === 'Proof of Address') {
+            // const selectedType = ausData?.personalDetails?.documents?.[key]?.type || '';
+            // const docNumber =
+            //   ausData?.personalDetails?.documents?.[key]?.number || 'Number not extracted';
+            // // Set initial input value
+            // input.value = `${selectedType} - ${docNumber}`;
+            input.value = trueOriginalValue.toUpperCase();
+          } else {
+            // Set initial input value
+            input.value = trueOriginalValue;
+          }
 
-          // 🌟 Function to update color based on value
           function updateColor(value) {
             const editedAus = data.editedData.authorizedSignatoriesDetails?.find(
               (aus) => aus?.ausId === ausData?.ausId,

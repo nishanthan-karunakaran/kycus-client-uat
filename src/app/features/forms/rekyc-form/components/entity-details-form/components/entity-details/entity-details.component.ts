@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  DoCheck,
   effect,
   EventEmitter,
   OnDestroy,
@@ -13,6 +12,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ApiStatus } from '@core/constants/api.response';
+import { GetEntityResponse } from '@features/forms/rekyc-form/components/entity-details-form/entity-details-form.model';
 import { updatePartialEntityDetails } from '@features/forms/rekyc-form/components/entity-details-form/store/entity-details.actions';
 import { selectEntityDetails } from '@features/forms/rekyc-form/components/entity-details-form/store/entity-details.selectors';
 import {
@@ -35,14 +35,13 @@ import { Store } from '@ngrx/store';
 import { ToastService } from '@src/app/shared/ui/toast/toast.service';
 import { HelperService } from 'src/app/core/services/helpers.service';
 import { EntityDetailsService } from './entity-details.service';
-import { GetEntityResponse } from '@features/forms/rekyc-form/components/entity-details-form/entity-details-form.model';
 
 @Component({
   selector: 'rekyc-entity-details',
   templateUrl: './entity-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EntityDetailsComponent implements OnInit, DoCheck, OnDestroy {
+export class EntityDetailsComponent implements OnInit, OnDestroy {
   @Output() formNavigation = new EventEmitter<string>();
   form!: FormGroup;
   entityAddressProofList = [
@@ -123,11 +122,6 @@ export class EntityDetailsComponent implements OnInit, DoCheck, OnDestroy {
     this.getEntityDetails();
   }
 
-  ngDoCheck(): void {
-    // eslint-disable-next-line no-console
-    console.log('Entity details form rendeing');
-  }
-
   patchFormWithDocs(docs: EntityDetails): void {
     if (!this.form) return;
 
@@ -142,7 +136,7 @@ export class EntityDetailsComponent implements OnInit, DoCheck, OnDestroy {
       const typeFromForm = group.get('type')?.value;
       if (typeFromForm !== key) {
         // eslint-disable-next-line no-console
-        console.log(`Skipping patch for ${key} due to type mismatch: ${typeFromForm}`);
+        console.warn(`Skipping patch for ${key} due to type mismatch: ${typeFromForm}`);
         return;
       }
 

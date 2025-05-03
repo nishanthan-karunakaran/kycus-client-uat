@@ -26,6 +26,7 @@ export interface ReKycApplication {
   _id: string;
   id: string;
   bankName: string;
+  entityId: string;
   entityName: string;
   cin: string;
   reason: string;

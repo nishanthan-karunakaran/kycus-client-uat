@@ -3,7 +3,10 @@ import { Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { API_URL } from '@core/constants/apiurls';
 import { ApiService } from '@core/services/api.service';
-import { selectAccessibleSteps } from '@features/forms/rekyc-form/components/rekyc-personal-details/store/personal-details.selectors';
+import {
+  selectAccessibleSteps,
+  selectAusInfo,
+} from '@features/forms/rekyc-form/components/rekyc-personal-details/store/personal-details.selectors';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { DeleteDocument, FormStep } from './rekyc-form.model';
@@ -21,6 +24,7 @@ import {
 } from './store/rekyc-form.selectors';
 import { EntityDetTab } from './store/rekyc-form.state';
 import { ApiStatus } from '@core/constants/api.response';
+import { selectEntityInfo } from './components/entity-filledby/store/entity-info.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +46,8 @@ export class RekycFormService {
   readonly rekycFormStatus = toSignal(this.store.select(selectRekycFormStatus));
   readonly rekycStepStatus = toSignal(this.store.select(selectRekycStepStatus));
   readonly accessibleSteps = toSignal(this.store.select(selectAccessibleSteps));
+  readonly ausInfo = toSignal(this.store.select(selectAusInfo));
+  readonly entityInfo = toSignal(this.store.select(selectEntityInfo));
 
   private triggerFnSubject = new Subject<void>();
   triggerFn$ = this.triggerFnSubject.asObservable();
@@ -145,8 +151,13 @@ export class RekycFormService {
       }
 
       // All steps done, move to next major step
-      this.updateRekycLS('activeRoute', 'personal-details');
-      this.triggerRouteHandling();
+      if (accessibleSteps?.ausDetails) {
+        this.updateRekycLS('activeRoute', 'personal-details');
+        this.triggerRouteHandling();
+      } else if (this.ausInfo()?.ausId?.toLowerCase().includes('other')) {
+        this.updateRekycLS('activeRoute', 'rekyc-form');
+        this.triggerRouteHandling();
+      }
       return;
     }
 
@@ -165,9 +176,10 @@ export class RekycFormService {
       next = 'personal-details';
     } else if (!formStatus.forms.rekycForm && accessibleSteps?.rekycForm) {
       next = 'rekyc-form';
-    } else if (!formStatus.forms.eSign && accessibleSteps?.eSign) {
-      next = 'eSign';
     }
+    // else if (!formStatus.forms.eSign && accessibleSteps?.eSign) {
+    //   next = 'eSign';
+    // }
 
     if (next) {
       this.updateRekycLS('activeRoute', next);
@@ -186,13 +198,15 @@ export class RekycFormService {
 
     if (!accessibleSteps[targetFormKey]) return false;
 
-    if (status[targetFormKey]) return status[targetFormKey];
+    // if (status[targetFormKey]) return status[targetFormKey];
 
     if (targetIndex === -1) return false;
 
-    for (let i = 0; i < targetIndex; i++) {
-      if (!status[this.stepOrder[i]]) {
-        return false;
+    if (this.entityInfo()?.entityFilledBy === this.ausInfo()?.ausId) {
+      for (let i = 0; i < targetIndex; i++) {
+        if (!status[this.stepOrder[i]]) {
+          return false;
+        }
       }
     }
 
@@ -207,16 +221,19 @@ export class RekycFormService {
     const access_token = localStorage.getItem('access_token');
 
     const headers = new HttpHeaders({
-      access_token: access_token ? access_token : '',
+      Authorization: access_token ? `Bearer ${access_token}` : '',
     });
 
     // using http with HttpBackend handler, because of angular's api aborting
     // whenever the route changes angular will abort all the active requests
 
     this.http
-      .get('http://3.109.141.220:3002' + API_URL.APPLICATION.REKYC.TAB_COMPLETION_STATUS(ausId), {
-        headers,
-      })
+      .get(
+        'https://kycusuat.ebitaus.com' + API_URL.APPLICATION.REKYC.TAB_COMPLETION_STATUS(ausId),
+        {
+          headers,
+        },
+      )
       .subscribe({
         next: (response) => {
           if (response) {
@@ -240,7 +257,7 @@ export class RekycFormService {
       });
 
     return this.http.get(
-      'http://3.109.141.220:3002' + API_URL.APPLICATION.REKYC.TAB_COMPLETION_STATUS(ausId),
+      'https://kycusuat.ebitaus.com' + API_URL.APPLICATION.REKYC.TAB_COMPLETION_STATUS(ausId),
       { headers },
     );
   }

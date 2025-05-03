@@ -45,15 +45,15 @@ export class ApiService {
           catchError((error) => {
             const errMsg = error?.error?.message || error.message;
 
-            // const rekycTokenError = errMsg.toLowerCase().includes('token');
-            // const rekycApplicationError = errMsg.toLowerCase().includes('rekyc record not found');
-            // // errMsg.toLowerCase().includes('no rekyc');
+            const rekycTokenError = errMsg.toLowerCase().includes('token');
+            const rekycApplicationError = errMsg.toLowerCase().includes('rekyc record not found');
+            // errMsg.toLowerCase().includes('no rekyc');
 
-            // if (rekycTokenError || rekycApplicationError) {
-            //   this.store.dispatch(updateAusInfo({ isAuthenticated: false }));
-            //   localStorage.removeItem('access_token');
-            //   localStorage.removeItem('rekyc');
-            // }
+            if (rekycTokenError || rekycApplicationError) {
+              this.store.dispatch(updateAusInfo({ isAuthenticated: false }));
+              localStorage.removeItem('access_token');
+              localStorage.removeItem('rekyc');
+            }
 
             return of({
               loading: false,
@@ -75,7 +75,7 @@ export class ApiService {
     return this.request<T>('GET', url, undefined, params, headers);
   }
 
-  post<T>(url: string, body: BodyType, headers?: HttpHeaders) {
+  post<T>(url: string, body?: BodyType, headers?: HttpHeaders) {
     return this.request<T>('POST', url, body, undefined, headers);
   }
 

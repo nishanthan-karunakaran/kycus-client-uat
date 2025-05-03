@@ -8,6 +8,10 @@
     <h5 class="text-primary">Preview Document</h5>
   </header>
 
+  <p class="my-4 px-4 text-center" *ngIf="data.length === 0">
+    Wait we are processing your documents. Please check back later.
+  </p>
+
   <div *ngFor="let doc of data; trackBy: trackDoc" class="divide-y-2">
     <div class="flex justify-between border p-4">
       <div class="flex flex-col gap-1">

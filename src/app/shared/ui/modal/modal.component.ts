@@ -52,8 +52,6 @@ export class ModalComponent implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   onKeydown(event: KeyboardEvent) {
-    // eslint-disable-next-line no-console
-    console.log(event);
     if (this.dismissOnOutsideClick && event.key === 'Escape') {
       this.closeModal();
     }
@@ -76,8 +74,6 @@ export class ModalComponent implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // eslint-disable-next-line no-console
-    console.log('ngonchange', changes['isOpen']?.currentValue, changes['isOpen']?.previousValue);
     if (changes['isOpen']?.currentValue !== changes['isOpen']?.previousValue) {
       if (this.isOpen) {
         this.lockBackground();
@@ -88,8 +84,6 @@ export class ModalComponent implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // eslint-disable-next-line no-console
-    console.log('from ngondestroy');
     this.unlockBackground();
   }
 }

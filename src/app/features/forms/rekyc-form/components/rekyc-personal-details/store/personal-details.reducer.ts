@@ -61,8 +61,7 @@ export const initialAusInfoState: AusInfoState = {
   ausName: '',
   ausEmail: '',
   ausType: 'aus',
-  isAuthenticated: true,
-  // isAuthenticated: localStorage.getItem('access_token') !== null,
+  isAuthenticated: localStorage.getItem('access_token') !== null,
   accessibleSteps: getInitialAccessibleSteps(),
 };
 

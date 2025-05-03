@@ -37,9 +37,6 @@ export class EmailValidationComponent implements OnInit {
       ],
       otp: [''],
     });
-
-    // eslint-disable-next-line no-console
-    console.log(this.loginForm.value);
   }
 
   requestOTP() {

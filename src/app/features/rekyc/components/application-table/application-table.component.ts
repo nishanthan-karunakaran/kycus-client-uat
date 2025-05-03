@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,6 +9,7 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { ToastService } from '@src/app/shared/ui/toast/toast.service';
 import { ApiStatus } from 'src/app/core/constants/api.response';
 import {
   GetReKycApplicationsParams,
@@ -24,11 +26,12 @@ import { rekycSelectors } from 'src/app/features/rekyc/store/rekyc.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationTableComponent implements OnInit {
-  searchInput = '';
+  searchInput = signal('');
   activePage = signal(1);
   isModalOpen = false;
   selectedReKycEntity: ReKycApplication | null = null;
-  isApplicationsLoading = false;
+  isApplicationsLoading = signal(false);
+  isSendingReminder = signal<null | string>(null);
   reKycApplications = toSignal(this.store.select(rekycSelectors.selectReKycApplications));
   reKycPaginationInfo = toSignal(this.store.select(rekycSelectors.selectReKycPaginationInfo));
   readonly ROWS_PER_PAGE = 10;
@@ -37,6 +40,7 @@ export class ApplicationTableComponent implements OnInit {
     private store: Store,
     private rekycService: RekycService,
     private cdr: ChangeDetectorRef,
+    private toast: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +48,7 @@ export class ApplicationTableComponent implements OnInit {
   }
 
   filteredReKycApplications = computed(() => {
-    const query = this.searchInput.toLowerCase();
+    const query = this.searchInput().toLowerCase();
     const start = this.activePage() * this.ROWS_PER_PAGE - this.ROWS_PER_PAGE;
     const end = this.activePage() * this.ROWS_PER_PAGE;
 
@@ -55,12 +59,61 @@ export class ApplicationTableComponent implements OnInit {
     );
   });
 
+  formatTo12HourDateTime(isoString: string) {
+    const date = new Date(isoString);
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+    const paddedHours = String(hours).padStart(2, '0');
+
+    return `${day}-${month}-${year} ${paddedHours}:${minutes} ${ampm}`;
+  }
+
+  handleSendReminder(entityId: string) {
+    this.rekycService.sendReminder(entityId).subscribe({
+      next: (result) => {
+        const { loading, response } = result;
+
+        if (loading) {
+          this.isSendingReminder.set(entityId);
+        } else {
+          this.isSendingReminder.set(null);
+        }
+
+        if (loading || !response) return;
+
+        const { status, success } = response as any;
+
+        if (status === ApiStatus.SUCCESS || success) {
+          this.toast.success('Reminder sent successfully');
+        } else {
+          this.toast.error('Failed to send reminder');
+        }
+      },
+    });
+  }
+
+  handleDownloadReport(entityId: string) {
+    this.rekycService.downloadReport(entityId);
+  }
+
+  handleViewReport(entityId: string) {
+    this.rekycService.viewReport(entityId);
+  }
+
   handleReKycSheet(data: ReKycApplication | null = null) {
     this.selectedReKycEntity = data;
   }
 
   onSearchInputChange(event: string): void {
-    this.searchInput = event;
+    this.searchInput.set(event);
   }
 
   trackRow(_: number, rekycAppReKycApplication: ReKycApplication): string {
@@ -85,7 +138,7 @@ export class ApplicationTableComponent implements OnInit {
     this.rekycService.getReKycApplications(params).subscribe({
       next: (result) => {
         const { loading, response } = result;
-        this.isApplicationsLoading = loading;
+        this.isApplicationsLoading.set(loading);
 
         if (!response) return;
 

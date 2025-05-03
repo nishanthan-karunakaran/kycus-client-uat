@@ -12,7 +12,7 @@ export class ApiInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept<T>(req: HttpRequest<T>, next: HttpHandler): Observable<HttpEvent<T>> {
-    const token = this.authService.getAuthToken();
+    // const token = this.authService.getAuthToken();
     const access_token = localStorage.getItem('access_token');
     const apiBaseUrl = environment.apiBaseUrl;
     const fullUrl = apiBaseUrl + req.url;
@@ -24,8 +24,8 @@ export class ApiInterceptor implements HttpInterceptor {
     const clonedRequest = req.clone({
       url: fullUrl,
       setHeaders: {
-        Authorization: token ? `Bearer ${token}` : '',
-        access_token: access_token ? access_token : '',
+        // Authorization: token ? `Bearer ${token}` : '',
+        Authorization: access_token ? `Bearer ${access_token}` : '',
       },
     });
 

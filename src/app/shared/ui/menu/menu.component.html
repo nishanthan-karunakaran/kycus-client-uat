@@ -1,0 +1,40 @@
+<nav class="menu rounded-lg bg-gray-800 p-4 text-white shadow-lg">
+  <ul class="space-y-2">
+    <li
+      *ngFor="let item of menuItems; trackBy: trackByFn"
+      class="menu-item group"
+    >
+      <a
+        href="#"
+        (click)="onMenuItemClick(item); $event.preventDefault()"
+        (keydown.enter)="onMenuItemClick(item)"
+        (keydown.space)="onMenuItemClick(item); $event.preventDefault()"
+        tabIndex="0"
+        class="flex cursor-pointer items-center space-x-2 rounded-lg px-4 py-2 transition hover:bg-gray-700"
+      >
+        <i *ngIf="item.icon" class="{{ item.icon }}"></i>
+        <span>{{ item.label }}</span>
+      </a>
+      <ng-container *ngIf="hasChildren(item)">
+        <ul class="submenu ml-4 mt-2 space-y-2 border-l-2 border-gray-700 pl-4">
+          <li
+            *ngFor="let child of item.children; trackBy: trackByFn"
+            class="submenu-item"
+          >
+            <a
+              href="#"
+              (click)="onMenuItemClick(child); $event.preventDefault()"
+              (keydown.enter)="onMenuItemClick(child)"
+              (keydown.space)="onMenuItemClick(child); $event.preventDefault()"
+              tabIndex="0"
+              class="flex cursor-pointer items-center space-x-2 rounded-lg px-4 py-2 transition hover:bg-gray-700"
+            >
+              <i *ngIf="child.icon" class="{{ child.icon }}"></i>
+              <span>{{ child.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </ng-container>
+    </li>
+  </ul>
+</nav>

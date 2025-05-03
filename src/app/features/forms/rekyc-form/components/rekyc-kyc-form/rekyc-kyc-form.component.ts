@@ -7,12 +7,15 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { ApiStatus } from '@core/constants/api.response';
-import { ToastService } from '@src/app/shared/ui/toast/toast.service';
-import { RekycKycFormService } from './rekyc-kyc-form.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { ApiStatus } from '@core/constants/api.response';
+import { RekycService } from '@features/rekyc/rekyc.service';
 import { Store } from '@ngrx/store';
+import { ToastService } from '@src/app/shared/ui/toast/toast.service';
 import { selectEntityInfo } from '../entity-filledby/store/entity-info.selectors';
+import { RekycKycFormService } from './rekyc-kyc-form.service';
+import { updateRekycFormStatus } from '@features/forms/rekyc-form/store/rekyc-form.action';
+import { selectRekycFormStatus } from '@features/forms/rekyc-form/store/rekyc-form.selectors';
 
 @Component({
   selector: 'rekyc-kyc-form',
@@ -26,9 +29,15 @@ export class RekycKycFormComponent implements OnInit {
   readonly entityInfo = toSignal(this.store.select(selectEntityInfo));
   formData = signal({});
   private isDataSent = false; // Flag to track if data has been sent already
+  isSaveBtnClicked = signal(false);
+  isGettingReport = signal(false);
+  isSubmitted = signal(false);
+  isFetchingFormData = signal(false);
+  formStatus = toSignal(this.store.select(selectRekycFormStatus));
 
   constructor(
     private rekycKycFormService: RekycKycFormService,
+    private rekycService: RekycService,
     private toast: ToastService,
     private store: Store,
   ) {}
@@ -50,13 +59,20 @@ export class RekycKycFormComponent implements OnInit {
     const iframe = this.pdfViewer.nativeElement;
     const data = this.formData();
 
-    // eslint-disable-next-line no-console
-    console.log('data sent', data);
-    if (iframe?.contentWindow && Object.keys(data).length > 0) {
-      // eslint-disable-next-line no-console
-      console.log('data sent', data);
-      iframe.contentWindow.postMessage({ type: 'SET_FORM_DATA', payload: data }, '*');
-      this.isDataSent = true; // Set flag to true after data is sent
+    const sendMessage = () => {
+      if (iframe?.contentWindow && Object.keys(data).length > 0) {
+        iframe.contentWindow.postMessage({ type: 'SET_FORM_DATA', payload: data }, '*');
+        this.isDataSent = true; // Set flag to true after data is sent
+      }
+    };
+
+    // Wait for the iframe to load before sending the data
+    if (iframe?.contentWindow?.document.readyState === 'complete') {
+      sendMessage();
+    } else {
+      iframe.onload = () => {
+        sendMessage();
+      };
     }
   }
 
@@ -65,34 +81,39 @@ export class RekycKycFormComponent implements OnInit {
 
     this.rekycKycFormService.fetchFormData(entityId).subscribe({
       next: (result) => {
-        const { response } = result;
+        const { loading, response } = result;
+        this.isFetchingFormData.set(loading);
 
         if (!response) return;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { status, data } = response as { status: ApiStatus; data: any };
 
-        // eslint-disable-next-line no-console
-        console.log('data is fetched');
         if (status === ApiStatus.SUCCESS) {
           const obj = { ...data };
           this.formData.set(obj);
           this.sendFormDataToIframe(); // Send data only once
+
+          if (obj?.status === 'completed') {
+            this.isSubmitted.set(true);
+          }
         }
       },
     });
   }
 
-  onSave() {
+  onSave(isSubmitting = false) {
     const iframe = this.pdfViewer.nativeElement;
+    this.isSaveBtnClicked.set(true);
 
     const entityId = this.entityInfo()?.entityId as string;
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === 'SAVE_DATA' && event.data?.source === 'kyc-form') {
-        this.formData.set(event.data.payload);
-
-        // eslint-disable-next-line no-console
-        console.log('saving data', this.formData());
+        let formData = event.data.payload;
+        // if (isSubmitting) {
+        formData = { ...formData, status: 'completed' };
+        // }
+        this.formData.set(formData);
 
         this.rekycKycFormService.savePDF(this.formData(), entityId).subscribe({
           next: (result) => {
@@ -103,7 +124,12 @@ export class RekycKycFormComponent implements OnInit {
             const { status } = response;
 
             if (status === ApiStatus.SUCCESS) {
-              this.toast.success('Form saved!');
+              if (isSubmitting) {
+                this.toast.success('Form submitted!');
+              } else {
+                this.store.dispatch(updateRekycFormStatus({ rekycForm: true }));
+                this.toast.success('Form saved!');
+              }
             }
           },
         });
@@ -115,5 +141,45 @@ export class RekycKycFormComponent implements OnInit {
     window.addEventListener('message', handleMessage);
 
     iframe.contentWindow?.postMessage({ type: 'TRIGGER_SAVE' }, '*');
+  }
+
+  getReport() {
+    this.rekycService.generateReport(this.entityInfo()?.entityId as string).subscribe({
+      next: (result) => {
+        const { loading, response } = result;
+        this.isGettingReport.set(loading);
+        if (!response) return;
+        const { status } = response;
+        if (status === ApiStatus.SUCCESS) {
+          this.toast.success('Report successfully generated and sent to the Bank');
+        } else {
+          this.toast.error('Failed to generate report');
+        }
+      },
+    });
+    // return;
+    // this.rekycKycFormService.getReport(this.entityInfo()?.entityId as string).subscribe({
+    //   next: (result) => {
+    //     const { loading, response } = result;
+    //     this.isGettingReport.set(loading);
+
+    //     if (response) {
+    //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //       const { status, data } = response as { status: ApiStatus; data: any };
+
+    //       if (status === ApiStatus.SUCCESS) {
+    //         const ausPending = data?.ausPending || [];
+
+    //         if (ausPending.length > 0 || !data?.boPending || !data?.directorsPending) {
+    //           this.toast.error(
+    //             'Please complete all the previous steps and make sure all AUS are filled their details',
+    //           );
+    //         } else {
+    //           this.rekycService.generateReport(this.entityInfo()?.entityId as string);
+    //         }
+    //       }
+    //     }
+    //   },
+    // });
   }
 }

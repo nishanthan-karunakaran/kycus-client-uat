@@ -132,7 +132,8 @@ export class RekycEntityFilledbyComponent implements OnInit {
               );
             }
           } else {
-            this.toast.error(response.message || 'Something went wrong!');
+            this.isOpen.set(false);
+            this.toast.info(response.message || 'Something went wrong!');
           }
         }
       },

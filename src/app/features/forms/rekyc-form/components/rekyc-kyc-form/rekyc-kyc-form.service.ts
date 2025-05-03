@@ -44,4 +44,8 @@ export class RekycKycFormService {
   savePDF(data: any, entityId: string) {
     return this.api.put(API_URL.APPLICATION.REKYC.REKYC_FORM.PUT(entityId), data);
   }
+
+  getReport(entityId: string) {
+    return this.api.get(API_URL.APPLICATION.REKYC.REPORT.GET_REPORT(entityId));
+  }
 }

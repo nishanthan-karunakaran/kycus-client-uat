@@ -65,7 +65,7 @@
         <div>
           <ui-upload-button
             *ngIf="!form.get(doc + '.file.name')?.value"
-            accept=".pdf, .xlsx"
+            accept=".pdf"
             [disabled]="
               doc === 'addressProof'
                 ? form.get(doc + '.file.selectedType')?.value === ''

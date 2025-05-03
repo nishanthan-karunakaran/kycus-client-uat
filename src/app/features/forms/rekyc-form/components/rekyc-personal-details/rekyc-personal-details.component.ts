@@ -108,6 +108,7 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
   documentKeys = ['identityProof', 'addressProof', 'photograph', 'signature'];
   showPreviewSheet = signal(false);
   previewData = signal([]);
+  showPopup = signal(false);
 
   proofDoc = (doc: string) => doc === 'identityProof' || doc === 'addressProof';
 
@@ -147,7 +148,7 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
       const typeFromForm = group.get('type')?.value;
       if (typeFromForm !== key) {
         // eslint-disable-next-line no-console
-        console.log(`Skipping patch for ${key} due to type mismatch: ${typeFromForm}`);
+        console.warn(`Skipping patch for ${key} due to type mismatch: ${typeFromForm}`);
         return;
       }
 
@@ -210,6 +211,10 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
     });
 
     this.form = this.fb.group(group);
+  }
+
+  handlePopup() {
+    this.showPopup.set(!this.showPopup());
   }
 
   handlePreviewSheet() {
@@ -375,6 +380,17 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
       this.toast.success('Form sumitted successfully!');
       this.store.dispatch(updateRekycFormStatus({ ausDetails: true }));
       // this.rekycFormService.updatRekycFormStep('personal-details');
+      const entityFilledBy = this.entityInfo()?.entityFilledBy;
+      // const entityFilledByOthers = entityFilledBy && entityFilledBy.toLowerCase().includes('other');
+      const entityFilledBySameLoggedInUser =
+        entityFilledBy && entityFilledBy === this.ausInfo()?.ausId;
+
+      if (!entityFilledBySameLoggedInUser) {
+        this.handlePopup();
+      }
+      // if (entityFilledByOthers || entityFilledBySameLoggedInUser) {
+      this.rekycFormService.updatRekycFormStep('personal-details');
+      // }
     } else {
       this.toast.info('Form saved successfully!');
     }
@@ -403,8 +419,7 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
   previewEntityDetails() {
     const entityId = this.entityInfo()?.entityId as string;
     const ausId = this.ausInfo()?.ausId as string;
-    // eslint-disable-next-line no-console
-    console.log('onnnn callin');
+
     this.personalFormService.previewEntityDetails(entityId, ausId).subscribe({
       next: (result) => {
         const { response } = result;

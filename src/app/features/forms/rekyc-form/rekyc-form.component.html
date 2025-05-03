@@ -28,8 +28,9 @@
           <div
             class="flex cursor-pointer items-center gap-1 text-nowrap text-gray-500"
             [ngClass]="{
-              'text-success': item.isCompleted && item.step !== currentForm(),
-              'text-secondary': currentForm() === item.step,
+              'text-secondary':
+                currentForm() === item.step && !item.isCompleted,
+              'text-success': item.isCompleted,
               disabled: isStepDisabled(item.step, item.canShow),
             }"
             (click)="setCurrentForm(item)"
@@ -40,8 +41,9 @@
             <span
               class="flex size-5 items-center justify-center rounded-full text-white"
               [ngClass]="{
-                'bg-success': item.isCompleted && item.step !== currentForm(),
-                'bg-secondary': currentForm() === item.step,
+                'bg-success': item.isCompleted,
+                'bg-secondary':
+                  currentForm() === item.step && !item.isCompleted,
                 'bg-gray-500': currentForm() !== item.step && !item.isCompleted,
               }"
             >
