@@ -2,7 +2,6 @@ import { ActionReducerMap, createReducer, on } from '@ngrx/store';
 import { entityDetailsReducer } from '../components/entity-details-form/store/entity-details.reducers';
 import { entityInfoReducer } from '../components/entity-filledby/store/entity-info.reducer';
 import { boReducer } from '../components/rekyc-bo-form/store/rekyc-bo.reducer';
-import { rekycDirectorReducer } from '../components/rekyc-declaration-form/components/rekyc-bo-form/rekyc-directors-form/store/declaration-directors.reducers';
 import {
   ausInfoReducer,
   personalDetailsReducer,
@@ -15,6 +14,7 @@ import {
 } from './rekyc-form.action';
 import { EntityDetTab, ReKYCFormState } from './rekyc-form.state';
 import { FormStep } from '../rekyc-form.model';
+import { rekycDirectorReducer } from '../components/rekyc-directors-form/store/declaration-directors.reducers';
 
 export interface FormStatus {
   steps: {
