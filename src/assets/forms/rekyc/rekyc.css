@@ -815,3 +815,40 @@ body {
     }
   }
 }
+
+#fatca-crs {
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid var(--primary-border);
+  }
+
+  .terms {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    strong {
+      font-weight: 600;
+      color: black;
+    }
+
+    ul {
+      margin-left: -1rem;
+
+      li {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .declaration {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+}
