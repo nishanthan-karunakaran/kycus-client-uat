@@ -1168,10 +1168,14 @@
                 </div>
 
                 <div class="form-container dateBusiness">
-                  <label for="dateBusiness" class="text-nowrap">
+                  <label for="commencementBusiness" class="text-nowrap">
                     (c) Date of Commencement of Business
                   </label>
-                  <input type="text" name="dateBusiness" id="dateBusiness" />
+                  <input
+                    type="text"
+                    name="commencementBusiness"
+                    id="commencementBusiness"
+                  />
                 </div>
               </div>
             </div>
@@ -1210,7 +1214,7 @@
                   </div>
                 </div>
                 <div class="checkbox-question">
-                  <label for="taxOutsideIndia">
+                  <label for="usCitizenOrResident">
                     (b) Is the entity incorporated or organized in the United
                     States (including a Trust, if the trustee is a U.S. citizen
                     or resident)
@@ -1221,16 +1225,16 @@
                     <div>
                       <input
                         type="checkbox"
-                        name="taxableOutsideIndia"
-                        id="taxableOutsideIndia"
+                        name="usResident"
+                        id="usResident"
                       />
                       <p>Yes</p>
                     </div>
                     <div>
                       <input
                         type="checkbox"
-                        name="nonTaxableOutsideIndia"
-                        id="nonTaxableOutsideIndia"
+                        name="nonUSResident"
+                        id="nonUSResident"
                       />
                       <p>No</p>
                     </div>
@@ -1253,7 +1257,7 @@
 
               <div class="checkbox-question-wrapper">
                 <div class="checkbox-question">
-                  <label for="taxOutsideIndia">
+                  <label for="ownedByMany">
                     (a) Is the entity a Governmental entity, an International
                     Organization, a Central Bank, or an entity wholly owned by
                     one or more of the above mentioned entity types
@@ -1265,16 +1269,16 @@
                     <div>
                       <input
                         type="checkbox"
-                        name="taxableOutsideIndia"
-                        id="taxableOutsideIndia"
+                        name="ownedByMany"
+                        id="ownedByMany"
                       />
                       <p>Yes</p>
                     </div>
                     <div>
                       <input
                         type="checkbox"
-                        name="nonTaxableOutsideIndia"
-                        id="nonTaxableOutsideIndia"
+                        name="nonOwnedByMany"
+                        id="nonOwnedByMany"
                       />
                       <p>No</p>
                     </div>
@@ -1282,7 +1286,7 @@
                 </div>
 
                 <div class="checkbox-question">
-                  <label for="taxOutsideIndia">
+                  <label for="financialInstitution">
                     (b) Is the entity a Financial Institution1 (FI) OR a Direct
                     Reporting NFE
                     <br />
@@ -1293,16 +1297,16 @@
                     <div>
                       <input
                         type="checkbox"
-                        name="taxableOutsideIndia"
-                        id="taxableOutsideIndia"
+                        name="financialInstitution"
+                        id="financialInstitution"
                       />
                       <p>Yes</p>
                     </div>
                     <div>
                       <input
                         type="checkbox"
-                        name="nonTaxableOutsideIndia"
-                        id="nonTaxableOutsideIndia"
+                        name="nonFinancialInstitution"
+                        id="nonFinancialInstitution"
                       />
                       <p>No</p>
                     </div>
@@ -1320,23 +1324,23 @@
                     </p>
 
                     <div class="checkbox-question">
-                      <label for="taxOutsideIndia">
+                      <label for="publiclyTradedCorporation">
                         (i) Publicly traded corporation
                       </label>
                       <div class="checkboxes">
                         <div>
                           <input
                             type="checkbox"
-                            name="taxableOutsideIndia"
-                            id="taxableOutsideIndia"
+                            name="publicTraded"
+                            id="publicTraded"
                           />
                           <p>Yes</p>
                         </div>
                         <div>
                           <input
                             type="checkbox"
-                            name="nonTaxableOutsideIndia"
-                            id="nonTaxableOutsideIndia"
+                            name="nonPublicTraded"
+                            id="nonPublicTraded"
                           />
                           <p>No</p>
                         </div>
@@ -1362,23 +1366,23 @@
                     </div>
 
                     <div class="checkbox-question">
-                      <label for="taxOutsideIndia">
+                      <label for="relatedPublicTraded">
                         (ii) Related entity of a publicly traded corporation
                       </label>
                       <div class="checkboxes">
                         <div>
                           <input
                             type="checkbox"
-                            name="taxableOutsideIndia"
-                            id="taxableOutsideIndia"
+                            name="relatedPublicTraded"
+                            id="relatedPublicTraded"
                           />
                           <p>Yes</p>
                         </div>
                         <div>
                           <input
                             type="checkbox"
-                            name="nonTaxableOutsideIndia"
-                            id="nonTaxableOutsideIndia"
+                            name="nonRelatedPublicTraded"
+                            id="nonRelatedPublicTraded"
                           />
                           <p>No</p>
                         </div>
@@ -1396,8 +1400,8 @@
                         </label>
                         <input
                           type="text"
-                          name="stockExchange"
-                          id="stockExchange"
+                          name="listedCompany"
+                          id="listedCompany"
                         />
                       </div>
 
@@ -1407,8 +1411,8 @@
                         </label>
                         <input
                           type="text"
-                          name="stockExchange"
-                          id="stockExchange"
+                          name="listedStockExchange"
+                          id="listedStockExchange"
                         />
                       </div>
 
@@ -1422,16 +1426,16 @@
                             <div>
                               <input
                                 type="checkbox"
-                                name="taxableOutsideIndia"
-                                id="taxableOutsideIndia"
+                                name="subsidiary"
+                                id="subsidiary"
                               />
                               <p>Subsidiary of the listed company</p>
                             </div>
                             <div>
                               <input
                                 type="checkbox"
-                                name="nonTaxableOutsideIndia"
-                                id="nonTaxableOutsideIndia"
+                                name="controlled"
+                                id="controlled"
                               />
                               <p>
                                 Controlled by a listed company or under common
@@ -1446,7 +1450,7 @@
                 </div>
 
                 <div class="checkbox-question">
-                  <label for="taxOutsideIndia">
+                  <label for="ultimateBeneficialOwner">
                     (d) Does the entity have any ultimate beneficial owners
                     (incl. controlling persons) who are tax residents (incl.
                     U.S. citizens/green card holders) of countries other than
@@ -1458,16 +1462,16 @@
                     <div>
                       <input
                         type="checkbox"
-                        name="taxableOutsideIndia"
-                        id="taxableOutsideIndia"
+                        name="ultimateBeneficialOwner"
+                        id="ultimateBeneficialOwner"
                       />
                       <p>Yes</p>
                     </div>
                     <div>
                       <input
                         type="checkbox"
-                        name="nonTaxableOutsideIndia"
-                        id="nonTaxableOutsideIndia"
+                        name="nonUltimateBeneficialOwner"
+                        id="nonUltimateBeneficialOwner"
                       />
                       <p>No</p>
                     </div>

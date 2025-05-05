@@ -23,6 +23,7 @@ async function renderAll() {
   await extendedAnnexure();
   await boDetailsTable();
   await ausDetails();
+  await extendedDeclaration();
   // await downloadPDF();
 }
 
@@ -1451,9 +1452,100 @@ function ausDetails() {
     container.appendChild(table);
     section.appendChild(container);
     pdfPage.appendChild(section);
-    const extended = document.querySelector('.extended-declaration-div');
-    extended.parentNode.insertBefore(pdfPage, extended);
+    // const extended = document.querySelector('.extended-declaration-div');
+    // extended.parentNode.insertBefore(pdfPage, extended);
   }
+}
+
+function extendedDeclaration() {
+  const section = document.querySelector('#extended-declaration');
+  const entityDetails = data?.originalData.entityDetails;
+
+  const aofNo = section.querySelector('#aof-no');
+  aofNo.value = data?.originalData?.entityDetails?.aofNo || '';
+  attachInputTracking(aofNo, ['entityDetails', 'aofNo']);
+
+  const entityName = section.querySelector('#entityName');
+  entityName.value = data?.originalData?.entityName || '';
+  attachInputTracking(entityName, ['entityName']);
+
+  const custId = section.querySelector('#custId');
+  custId.value = data?.originalData?.custId || '';
+  attachInputTracking(custId, ['custId']);
+
+  if (!data?.originalData?.entityDetails?.country) {
+    data.originalData.entityDetails.country = entityDetails?.registeredOfficeAddress?.country;
+  }
+
+  const countryCin = section.querySelector('#countryCin');
+  countryCin.value = data?.originalData?.entityDetails?.country || '';
+  attachInputTracking(countryCin, ['entityDetails', 'country']);
+
+  if (!data?.originalData?.entityDetails?.city) {
+    data.originalData.entityDetails.city = entityDetails?.registeredOfficeAddress?.city;
+  }
+
+  const cityCin = section.querySelector('#cityCin');
+  cityCin.value = data?.originalData?.entityDetails?.city || '';
+  attachInputTracking(cityCin, ['entityDetails', 'cityCin']);
+
+  handleEitherCheckbox('taxableOutsideIndia', 'nonTaxableOutsideIndia', 'taxOutsideIndia');
+  handleEitherCheckbox('usResident', 'nonUSResident', 'usResident');
+  handleEitherCheckbox('ownedByMany', 'nonOwnedByMany', 'ownedBy');
+  handleEitherCheckbox('financialInstitution', 'nonFinancialInstitution', 'financialInstitution');
+  handleEitherCheckbox('publicTraded', 'nonPublicTraded', 'publicTraded');
+  handleEitherCheckbox('relatedPublicTraded', 'nonRelatedPublicTraded', 'relatedPublicTraded');
+  handleEitherCheckbox('subsidiary', 'controlled', 'relationNature');
+  handleEitherCheckbox(
+    'ultimateBeneficialOwner',
+    'nonUltimateBeneficialOwner',
+    'ultimateBeneficialOwner',
+  );
+
+  function handleEitherCheckbox(cb1, cb2, cbKey) {
+    const c1 = section.querySelector(`#${cb1}`);
+    const c2 = section.querySelector(`#${cb2}`);
+    updateCheckBoxValue();
+
+    c1.onchange = () => {
+      if (c1.checked) {
+        data.originalData.entityDetails[cbKey] = 'c1';
+        c2.checked = false; // Ensure the other checkbox is unchecked
+      } else {
+        data.originalData.entityDetails[cbKey] = null;
+      }
+
+      updateCheckBoxValue();
+    };
+
+    c2.onchange = () => {
+      if (c2.checked) {
+        data.originalData.entityDetails[cbKey] = 'c2';
+        c1.checked = false; // Ensure the other checkbox is unchecked
+      } else {
+        data.originalData.entityDetails[cbKey] = null;
+      }
+
+      updateCheckBoxValue();
+    };
+
+    function updateCheckBoxValue() {
+      c1.checked = data?.originalData?.entityDetails[cbKey] === 'c1';
+      c2.checked = data?.originalData?.entityDetails[cbKey] === 'c2';
+    }
+  }
+
+  const stockExchange = section.querySelector('#stockExchange');
+  stockExchange.value = data?.originalData?.entityDetails?.stockExchange || '';
+  attachInputTracking(stockExchange, ['entityDetails', 'stockExchange']);
+
+  const listedCompany = section.querySelector('#listedCompany');
+  listedCompany.value = data?.originalData?.entityDetails?.listedCompany || '';
+  attachInputTracking(listedCompany, ['entityDetails', 'listedCompany']);
+
+  const listedStockExchange = section.querySelector('#listedStockExchange');
+  listedStockExchange.value = data?.originalData?.entityDetails?.listedStockExchange || '';
+  attachInputTracking(listedStockExchange, ['entityDetails', 'listedStockExchange']);
 }
 
 function downloadPDF() {
