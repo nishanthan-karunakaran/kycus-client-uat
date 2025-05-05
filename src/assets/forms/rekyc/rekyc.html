@@ -307,7 +307,9 @@
         <div class="entity_sub_category_container">
           <div class="entity_sub_category_wrapper">
             <div class="pubPvtLtdCompany">
-              <div class="title"><p>PUB / PVT LTD COMPANY</p></div>
+              <div class="title">
+                <p>PUB / PVT LTD COMPANY</p>
+              </div>
               <div class="checkbox_container">
                 <div class="checkbox_wrapper">
                   <input
@@ -349,7 +351,9 @@
             </div>
 
             <div class="association">
-              <div class="title"><p>ASSOCIATION</p></div>
+              <div class="title">
+                <p>ASSOCIATION</p>
+              </div>
               <div class="checkbox_container">
                 <div class="checkbox_wrapper">
                   <input
@@ -464,7 +468,9 @@
 
           <div class="entity_sub_category_wrapper">
             <div class="foreignBodies">
-              <div class="title"><p>FOREIGN BODIES</p></div>
+              <div class="title">
+                <p>FOREIGN BODIES</p>
+              </div>
 
               <div class="checkbox_container">
                 <div class="checkbox_wrapper">
@@ -540,7 +546,9 @@
 
           <div class="entity_sub_category_wrapper">
             <div class="trust">
-              <div class="title"><p>TRUST</p></div>
+              <div class="title">
+                <p>TRUST</p>
+              </div>
 
               <div class="checkbox_container">
                 <div class="checkbox_wrapper">
@@ -610,7 +618,9 @@
 
           <div class="entity_sub_category_wrapper">
             <div class="bank">
-              <div class="title"><p>BANK</p></div>
+              <div class="title">
+                <p>BANK</p>
+              </div>
 
               <div class="checkbox_container">
                 <div class="checkbox_wrapper">
@@ -647,7 +657,9 @@
             </div>
 
             <div class="socities">
-              <div class="title"><p>SOCITIES</p></div>
+              <div class="title">
+                <p>SOCITIES</p>
+              </div>
 
               <div class="checkbox_container">
                 <div class="checkbox_wrapper">
@@ -1083,6 +1095,394 @@
             Beneficial Owner details {All fields are mandatory}
           </h6>
         </div>
+      </section>
+    </div>
+
+    <!-- Page 4 -->
+    <div class="pdf-page extended-declaration-div">
+      <section id="extended-declaration" class="form-section">
+        <div class="header text-center">
+          <div>
+            <h4 class="text-black">
+              Extended Declaration For Non-Individual Entities
+            </h4>
+            <h6>(For Account opening and Re-KYC)</h6>
+          </div>
+        </div>
+
+        <div class="date-container">
+          <div class="form-container">
+            <label for="date" class="text-nowrap">Date</label>
+            <input id="date-input" type="text" style="width: 200px" />
+          </div>
+
+          <div class="form-container">
+            <label for="aof" class="text-nowrap">AOF Number</label>
+            <input id="aof-no" type="text" />
+          </div>
+        </div>
+
+        <div class="questions_container">
+          <p class="mandatory_headline">
+            {All Questions from 1 to 5 are mandatory}
+          </p>
+
+          <div class="questions">
+            <!-- Question 1 -->
+            <div class="form-row">
+              <label for="entityName" class="text-nowrap">
+                1. Name of the Entity
+              </label>
+              <input type="text" name="entityName" id="entityName" />
+            </div>
+
+            <!-- Question 2 -->
+            <div class="form-row">
+              <label for="custId">
+                2. Customer ID
+                <br />
+                (Applicable for existing customers)
+              </label>
+              <input type="text" name="custId" id="custId" />
+            </div>
+
+            <!-- Question 3 -->
+            <div class="third-question">
+              <div class="qNo">
+                <p>3.</p>
+              </div>
+
+              <div class="third-question-wrapper">
+                <div class="form-container">
+                  <label for="countryCin" class="text-nowrap">
+                    (a) Country of Incorporation
+                  </label>
+                  <input type="text" name="countryCin" id="countryCin" />
+                </div>
+
+                <div class="form-container">
+                  <label for="cityCin" class="text-nowrap">
+                    (b) Place/City of Incorporation
+                  </label>
+                  <input type="text" name="cityCin" id="cityCin" />
+                </div>
+
+                <div class="form-container dateBusiness">
+                  <label for="dateBusiness" class="text-nowrap">
+                    (c) Date of Commencement of Business
+                  </label>
+                  <input type="text" name="dateBusiness" id="dateBusiness" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="fourth-question">
+              <div class="qNo">
+                <p>4.</p>
+              </div>
+
+              <div class="checkbox-question-wrapper">
+                <div class="checkbox-question">
+                  <label for="taxOutsideIndia">
+                    (a) Is the entity a tax resident of any country/ies outside
+                    India
+                    <br />
+                    (If Yes, please fill Annexure 1)
+                  </label>
+                  <div class="checkboxes">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="taxableOutsideIndia"
+                        id="taxableOutsideIndia"
+                      />
+                      <p>Yes</p>
+                    </div>
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="nonTaxableOutsideIndia"
+                        id="nonTaxableOutsideIndia"
+                      />
+                      <p>No</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="checkbox-question">
+                  <label for="taxOutsideIndia">
+                    (b) Is the entity incorporated or organized in the United
+                    States (including a Trust, if the trustee is a U.S. citizen
+                    or resident)
+                    <br />
+                    (If Yes, please fill Annexure 1)
+                  </label>
+                  <div class="checkboxes">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="taxableOutsideIndia"
+                        id="taxableOutsideIndia"
+                      />
+                      <p>Yes</p>
+                    </div>
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="nonTaxableOutsideIndia"
+                        id="nonTaxableOutsideIndia"
+                      />
+                      <p>No</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="fifth-question">
+              <div class="question-title">
+                <p>
+                  5. Questions relevant for entity FATCA and CRS classification
+                </p>
+                <span>
+                  (Please consult your professional tax advisor for further
+                  guidance on tax residency and FATCA& CRS classification)
+                </span>
+              </div>
+
+              <div class="checkbox-question-wrapper">
+                <div class="checkbox-question">
+                  <label for="taxOutsideIndia">
+                    (a) Is the entity a Governmental entity, an International
+                    Organization, a Central Bank, or an entity wholly owned by
+                    one or more of the above mentioned entity types
+                    <br />
+                    (If yes, please sign the declaration on Page 2; If No, go to
+                    next question)
+                  </label>
+                  <div class="checkboxes">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="taxableOutsideIndia"
+                        id="taxableOutsideIndia"
+                      />
+                      <p>Yes</p>
+                    </div>
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="nonTaxableOutsideIndia"
+                        id="nonTaxableOutsideIndia"
+                      />
+                      <p>No</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="checkbox-question">
+                  <label for="taxOutsideIndia">
+                    (b) Is the entity a Financial Institution1 (FI) OR a Direct
+                    Reporting NFE
+                    <br />
+                    (If Yes, please fill Annexure 1; If No, please go to next
+                    question)
+                  </label>
+                  <div class="checkboxes">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="taxableOutsideIndia"
+                        id="taxableOutsideIndia"
+                      />
+                      <p>Yes</p>
+                    </div>
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="nonTaxableOutsideIndia"
+                        id="nonTaxableOutsideIndia"
+                      />
+                      <p>No</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="question-c">
+                  <div class="qNo">
+                    <p>(c)</p>
+                  </div>
+                  <div>
+                    <p>
+                      Is the entity a publicly traded corporation/ a related
+                      entity of a publicly traded corporation
+                    </p>
+
+                    <div class="checkbox-question">
+                      <label for="taxOutsideIndia">
+                        (i) Publicly traded corporation
+                      </label>
+                      <div class="checkboxes">
+                        <div>
+                          <input
+                            type="checkbox"
+                            name="taxableOutsideIndia"
+                            id="taxableOutsideIndia"
+                          />
+                          <p>Yes</p>
+                        </div>
+                        <div>
+                          <input
+                            type="checkbox"
+                            name="nonTaxableOutsideIndia"
+                            id="nonTaxableOutsideIndia"
+                          />
+                          <p>No</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="stockExchange nested-question">
+                      <p>
+                        (If Yes, please specify any one stock exchange upon
+                        which the stock is regularly traded)
+                      </p>
+
+                      <div class="form-row">
+                        <label for="stockExchange" class="text-nowrap">
+                          Name of the Stock Exchange
+                        </label>
+                        <input
+                          type="text"
+                          name="stockExchange"
+                          id="stockExchange"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="checkbox-question">
+                      <label for="taxOutsideIndia">
+                        (ii) Related entity of a publicly traded corporation
+                      </label>
+                      <div class="checkboxes">
+                        <div>
+                          <input
+                            type="checkbox"
+                            name="taxableOutsideIndia"
+                            id="taxableOutsideIndia"
+                          />
+                          <p>Yes</p>
+                        </div>
+                        <div>
+                          <input
+                            type="checkbox"
+                            name="nonTaxableOutsideIndia"
+                            id="nonTaxableOutsideIndia"
+                          />
+                          <p>No</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="stockExchange nested-question">
+                      <p>(If Yes, please provide below details)</p>
+
+                      <div class="form-row">
+                        <label for="stockExchange" class="text-nowrap">
+                          Name of the listed company,
+                          <br />
+                          the stock of which is regularly traded
+                        </label>
+                        <input
+                          type="text"
+                          name="stockExchange"
+                          id="stockExchange"
+                        />
+                      </div>
+
+                      <div class="form-row">
+                        <label for="stockExchange" class="text-nowrap">
+                          Name of the Stock Exchange
+                        </label>
+                        <input
+                          type="text"
+                          name="stockExchange"
+                          id="stockExchange"
+                        />
+                      </div>
+
+                      <div class="relationNature">
+                        <label for="stockExchange" class="text-nowrap">
+                          Nature of relation:
+                        </label>
+
+                        <div class="relationNature-checkbox-wrapper">
+                          <div class="checkboxes">
+                            <div>
+                              <input
+                                type="checkbox"
+                                name="taxableOutsideIndia"
+                                id="taxableOutsideIndia"
+                              />
+                              <p>Subsidiary of the listed company</p>
+                            </div>
+                            <div>
+                              <input
+                                type="checkbox"
+                                name="nonTaxableOutsideIndia"
+                                id="nonTaxableOutsideIndia"
+                              />
+                              <p>
+                                Controlled by a listed company or under common
+                                control
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="checkbox-question">
+                  <label for="taxOutsideIndia">
+                    (d) Does the entity have any ultimate beneficial owners
+                    (incl. controlling persons) who are tax residents (incl.
+                    U.S. citizens/green card holders) of countries other than
+                    India
+                    <br />
+                    ((If yes, please fill Annexure 1))
+                  </label>
+                  <div class="checkboxes">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="taxableOutsideIndia"
+                        id="taxableOutsideIndia"
+                      />
+                      <p>Yes</p>
+                    </div>
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="nonTaxableOutsideIndia"
+                        id="nonTaxableOutsideIndia"
+                      />
+                      <p>No</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>
+          <strong class="text-black">Note:</strong>
+          If the entity is not listed in any of the stock exchange, then please
+          fill Annexure 2 (beneficial ownership declaration) mandatorily
+        </p>
       </section>
     </div>
   </body>

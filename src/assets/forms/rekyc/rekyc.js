@@ -1451,7 +1451,8 @@ function ausDetails() {
     container.appendChild(table);
     section.appendChild(container);
     pdfPage.appendChild(section);
-    document.body.appendChild(pdfPage);
+    const extended = document.querySelector('.extended-declaration-div');
+    extended.parentNode.insertBefore(pdfPage, extended);
   }
 }
 

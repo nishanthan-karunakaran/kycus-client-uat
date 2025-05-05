@@ -670,3 +670,148 @@ body {
     }
   }
 }
+
+#extended-declaration {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid var(--primary-border);
+  }
+
+  .date-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+
+    .form-container:first-child {
+      width: 16%;
+    }
+  }
+
+  .mandatory_headline {
+    text-align: center;
+    color: black;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .questions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    .third-question {
+      display: flex;
+      align-items: start;
+      gap: 0.5rem;
+
+      .third-question-wrapper {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        div {
+          width: 48%;
+        }
+
+        /* .dateBusiness {
+          width: 50%;
+        } */
+      }
+    }
+
+    .fourth-question {
+      display: flex;
+      align-items: start;
+      gap: 0.5rem;
+    }
+
+    .checkbox-question-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .checkbox-question {
+        display: flex;
+        gap: 1rem;
+
+        label {
+          max-width: 70%;
+        }
+
+        .checkboxes {
+          display: flex;
+          align-items: start;
+          gap: 1rem;
+
+          div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+        }
+      }
+    }
+
+    .fifth-question {
+      .question-title {
+        margin-bottom: 1rem;
+
+        p {
+          font-weight: 600;
+          color: black;
+          margin-bottom: 0.3rem;
+        }
+        span {
+          margin-left: 0.6rem;
+        }
+      }
+
+      > :last-child {
+        margin-left: 1rem;
+      }
+
+      .question-c {
+        display: flex;
+        align-items: start;
+        gap: 0.25rem;
+
+        .nested-question {
+          margin-bottom: 1rem;
+          /* width: 120%; */
+        }
+
+        .relationNature {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          .relationNature-checkbox-wrapper {
+            margin-top: -1rem;
+
+            div {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            }
+          }
+        }
+
+        .stockExchange {
+          div {
+            margin-top: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
