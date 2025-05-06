@@ -24,6 +24,7 @@ async function renderAll() {
   await boDetailsTable();
   await ausDetails();
   await extendedDeclaration();
+  await fatcaCRS();
   // await downloadPDF();
 }
 
@@ -1452,8 +1453,8 @@ function ausDetails() {
     container.appendChild(table);
     section.appendChild(container);
     pdfPage.appendChild(section);
-    // const extended = document.querySelector('.extended-declaration-div');
-    // extended.parentNode.insertBefore(pdfPage, extended);
+    const extended = document.querySelector('.extended-declaration-div');
+    extended.parentNode.insertBefore(pdfPage, extended);
   }
 }
 
@@ -1461,7 +1462,7 @@ function extendedDeclaration() {
   const section = document.querySelector('#extended-declaration');
   const entityDetails = data?.originalData.entityDetails;
 
-  const aofNo = section.querySelector('#aof-no');
+  const aofNo = document.querySelector('#aof-no');
   aofNo.value = data?.originalData?.entityDetails?.aofNo || '';
   attachInputTracking(aofNo, ['entityDetails', 'aofNo']);
 
@@ -1546,6 +1547,22 @@ function extendedDeclaration() {
   const listedStockExchange = section.querySelector('#listedStockExchange');
   listedStockExchange.value = data?.originalData?.entityDetails?.listedStockExchange || '';
   attachInputTracking(listedStockExchange, ['entityDetails', 'listedStockExchange']);
+}
+
+function fatcaCRS() {
+  if (!data?.originalData?.entityDetails?.fatcaCRS) {
+    data.originalData.entityDetails.fatcaCRS = {};
+  }
+
+  const section = document.querySelector('#fatca-crs');
+
+  const name = section.querySelector('#name');
+  name.value = data?.originalData?.entityDetails?.fatcaCRS?.name || '';
+  attachInputTracking(name, ['entityDetails', 'fatcaCRS', 'name']);
+
+  const designation = section.querySelector('#designation');
+  designation.value = data?.originalData?.entityDetails?.fatcaCRS?.designation || '';
+  attachInputTracking(designation, ['entityDetails', 'fatcaCRS', 'designation']);
 }
 
 function downloadPDF() {

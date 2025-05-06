@@ -1593,5 +1593,587 @@
         </div>
       </section>
     </div>
+
+    <!-- Page 6 -->
+    <div class="pdf-page">
+      <section id="annexure-1" class="form-section">
+        <div class="header text-center">
+          <div>
+            <h4 class="text-black">Annexure – 1</h4>
+            <p>
+              (This Annexure is in continutation to the “Extended Declaration
+              for Entities” and is required to be filled based on responses in
+              the main form)
+            </p>
+          </div>
+        </div>
+
+        <div class="part-a">
+          <p class="part-title text-center">
+            <strong>
+              PART A: Details required from all customers filling Annexure 1
+            </strong>
+          </p>
+
+          <div class="form-row">
+            <div class="form-container">
+              <label for="entityName" class="text-nowrap">
+                Name of the Entity
+              </label>
+              <input type="text" name="entityName" id="entityName" />
+            </div>
+            <div class="form-container">
+              <label for="entityName" class="text-nowrap">AOF Number</label>
+              <input type="text" name="aof-no" id="aof-no" />
+            </div>
+          </div>
+
+          <div class="questions-wrapper">
+            <div class="question-container">
+              <div class="qNo">6.</div>
+              <div class="question">
+                <div>
+                  <p>
+                    (a) Identification Number (please provide any one)
+                    (Mandatory)
+                  </p>
+                  <p class="select-id">Select ID Type</p>
+
+                  <div class="checkbox-container">
+                    <div class="checkbox">
+                      <input type="checkbox" name="cin" id="cin" />
+                      <p class="text-nowrap">CIN</p>
+                    </div>
+                    <div class="checkbox">
+                      <input
+                        type="checkbox"
+                        name="entityIdentificationNo"
+                        id="entityIdentificationNo"
+                      />
+                      <p class="text-nowrap">
+                        Global Entity Identification Number
+                      </p>
+                    </div>
+                    <div class="checkbox">
+                      <input type="checkbox" name="tin" id="tin" />
+                      <p class="text-nowrap">TIN</p>
+                    </div>
+                    <div class="others checkbox">
+                      <input type="checkbox" name="cin" id="cin" />
+                      <input
+                        type="text"
+                        name="other"
+                        id="other"
+                        placeholder="Other"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row idNo">
+                    <label for="idNo" class="text-nowrap">
+                      Provide the ID Number for above
+                    </label>
+                    <input type="text" name="idNo" id="idNo" />
+                  </div>
+                </div>
+
+                <div>
+                  <div class="form-row">
+                    <label for="idNoIssuingCountry" class="text-nowrap">
+                      (b) Identification Number issuing country
+                    </label>
+                    <input
+                      type="text"
+                      name="idNoIssuingCountry"
+                      id="idNoIssuingCountry"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p class="address-title">
+              <strong>ADDRESS AND CONTACT DETAILS (Mandatory)</strong>
+            </p>
+
+            <div class="question-container">
+              <div class="qNo">7.</div>
+              <div class="question">
+                <div class="form-row tax-address">
+                  <label for="taxAddress" class="text-nowrap">
+                    Address for tax purpose:
+                  </label>
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="taxAddressReg"
+                      id="taxAddressReg"
+                    />
+                    <p>Same as registered address</p>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="taxAddressMail"
+                      id="taxAddressMail"
+                    />
+                    <p>Same as mail address</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="question-container">
+              <div class="qNo">8.</div>
+              <div class="question">
+                <div class="form-row tax-address">
+                  <label for="taxAddress" class="text-nowrap">
+                    Address type for the above:
+                  </label>
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="resiBusiness"
+                      id="resiBusiness"
+                    />
+                    <p>Residential or Business</p>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="residential"
+                      id="residential"
+                    />
+                    <p>Residential</p>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="business" id="business" />
+                    <p>Business</p>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="regOffice" id="regOffice" />
+                    <p>Registered Office</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="part-b">
+          <p class="part-title text-center">
+            <strong>PART B: To be filled as applicable</strong>
+          </p>
+
+          <div class="question-container">
+            <div class="qNo">9.</div>
+            <div class="question">
+              <p>
+                Details of foreign tax residency and associated TIN (please fill
+                if answer to Q.4(a) or Q.4(b) is YES):
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Country/(ies) of tax residency</th>
+                    <th>Tax Identification Number</th>
+                    <th>Identification Type (TIN or Other, please specify)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <span>
+                In case Tax Identification Number is not available, kindly
+                provide functional equivalent.
+              </span>
+            </div>
+          </div>
+
+          <div class="question-container">
+            <div class="qNo">10.</div>
+            <div class="question tenth-question">
+              <div>
+                <p>
+                  Is the entity a specified U.S. Person
+                  <b>(please fill if answer to Q.4(b) is YES)</b>
+                </p>
+                <div class="checkbox-container">
+                  <div class="checkbox">
+                    <input type="checkbox" name="usPerson" id="usPerson" />
+                    <p>Yes</p>
+                  </div>
+                  <div class="checkbox">
+                    <input
+                      type="checkbox"
+                      name="nonUSPerson"
+                      id="nonUSPerson"
+                    />
+                    <p>No</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <label for="entityExcemptionCode" class="text-nowrap">
+                  If No, please mention entity’s exemption code:
+                </label>
+                <input
+                  type="text"
+                  name="entityExcemptionCode"
+                  id="entityExcemptionCode"
+                  pattern="^[a-zA-Z0-9]+$"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container">
+            <div class="qNo">11.</div>
+            <div class="question">
+              <p>
+                <b>Entity FATCA classification and other details (Mandatory)</b>
+              </p>
+
+              <table class="table-11-a">
+                <thead>
+                  <tr>
+                    <th>
+                      11(A) - (to be filled by Financial Institutions or Direct
+                      Reporting NFEs)* - please fill if answer to Q.5(b) is YES
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="entity-selection">
+                      <p>We are a:</p>
+
+                      <div class="checkbox-wrapper">
+                        <div class="checkbox-container">
+                          <div class="checkbox">
+                            <input
+                              type="checkbox"
+                              name="financialInstitution"
+                              id="financialInstitution"
+                            />
+                            <p>Financial Institution</p>
+                          </div>
+                          <div class="checkbox">
+                            <input
+                              type="checkbox"
+                              name="directReporting"
+                              id="directReporting"
+                            />
+                            <p>Direct reporting NFE</p>
+                          </div>
+                        </div>
+                        <p>(Please tick as appropriate)</p>
+                      </div>
+
+                      <p>
+                        *If the entity is a Financial Institution and located
+                        outside India, please fill 11(B)
+                      </p>
+                    </td>
+                    <td class="giin-container">
+                      <div class="giin-input">
+                        <label for="giin">GIIN:</label>
+                        <input type="text" name="giin" id="giin" />
+                      </div>
+
+                      <p>
+                        Note: If you do not have a GIIN but you are sponsored by
+                        another entity, please provide your sponsor’s GIIN above
+                        and indicate your sponsor’s name below:
+                      </p>
+                      <div class="sponsoringEntity-container">
+                        <label for="sponsoringEntity">
+                          Name of sponsoring entity:
+                        </label>
+                        <input
+                          type="text"
+                          name="sponsoringEntity"
+                          id="sponsoringEntity"
+                        />
+                      </div>
+                    </td>
+                    <td class="giin-not-available">
+                      <p>GIIN not available (please tick as applicable):</p>
+
+                      <div class="checkbox-wrapper">
+                        <p>
+                          Following options available only for Financial
+                          Institutions:
+                        </p>
+
+                        <div class="checkbox-container">
+                          <div class="checkbox">
+                            <input
+                              type="checkbox"
+                              name="appliedFor"
+                              id="appliedFor"
+                            />
+                            <p>Applied For</p>
+                          </div>
+                          <div class="notreq-checkbox">
+                            <div class="checkbox">
+                              <input
+                                type="checkbox"
+                                name="notReq"
+                                id="notReq"
+                              />
+                              <p>Not required to apply for</p>
+                            </div>
+
+                            <input
+                              type="text"
+                              placeholder="Please specify sub-category"
+                            />
+                          </div>
+                          <div class="checkbox">
+                            <input
+                              type="checkbox"
+                              name="notObtained"
+                              id="notObtained"
+                            />
+                            <p>Not obtained</p>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- Page 7 -->
+    <div class="pdf-page">
+      <section id="annexure-1-page-2" class="form-section">
+        <div class="question-wrapper">
+          <div class="question-title">
+            <p class="text-black">
+              <strong>
+                11(B) - (to be filled by Financial Institution that is a tax
+                resident outside India) (Mandatory)
+              </strong>
+            </p>
+          </div>
+          <div class="question-container">
+            <div class="question">
+              <div class="qNo">1.</div>
+              <div class="question-text">
+                <div>
+                  <p>
+                    Whether the Financial Institution is located in a CRS
+                    jurisdiction?
+                  </p>
+
+                  <div class="checkbox-container">
+                    <div class="checkbox">
+                      <input
+                        type="checkbox"
+                        name="crsJurisdiction"
+                        id="crsJurisdiction"
+                      />
+                      <p>Yes</p>
+                    </div>
+                    <div class="checkbox">
+                      <input
+                        type="checkbox"
+                        name="noCRSJurisdiction"
+                        id="noCRSJurisdiction"
+                      />
+                      <p>No</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="refer-parts">
+                  <!-- <p>
+                    (Please refer to the list of signatories to CRS given in the
+                    following
+                    <a
+                      href="http://www.oecd.org/tax/automatic-exchange/international-framework-for-the-crs"
+                      target="_blank"
+                    >
+                      link
+                    </a>
+                  </p> -->
+                  <p>
+                    (If Yes, Q 2 and Q3 are not required. If No, please go to
+                    Qs. 2)
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="question">
+              <div class="qNo">2.</div>
+              <div class="question-text">
+                <div>
+                  <p>Whether FI is an ‘Investment Entity’?</p>
+
+                  <div class="checkbox-container">
+                    <div class="checkbox">
+                      <input
+                        type="checkbox"
+                        name="investmentEntity"
+                        id="investmentEntity"
+                      />
+                      <p>Yes</p>
+                    </div>
+                    <div class="checkbox">
+                      <input
+                        type="checkbox"
+                        name="noInvestmentEntity"
+                        id="noInvestmentEntity"
+                      />
+                      <p>No</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="refer-parts">
+                  <p>
+                    (Please refer definition 1(iii) of Part C of the FATCA-CRS
+                    declaration)
+                  </p>
+                  <p>(If yes, please go to Qs. 3)</p>
+                </div>
+              </div>
+            </div>
+            <div class="question">
+              <div class="qNo">3.</div>
+              <div class="question-text">
+                <div>
+                  <p>
+                    The entity is managed by another entity that is a depository
+                    institution, a custodial institution, a specified insurance
+                    company, or an investment entity and the gross income of the
+                    entity is primarily attributable to investing, reinvesting,
+                    or trading in financial assets.
+                  </p>
+
+                  <div class="checkbox-container">
+                    <div class="checkbox">
+                      <input
+                        type="checkbox"
+                        name="financialAsset"
+                        id="financialAsset"
+                      />
+                      <p>Yes</p>
+                    </div>
+                    <div class="checkbox">
+                      <input
+                        type="checkbox"
+                        name="noFinancialAsset"
+                        id="noFinancialAsset"
+                      />
+                      <p>No</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="refer-parts">
+                  <p>(If Yes, please additionally fill Annexure 2)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="question-wrapper">
+          <div class="question-title">
+            <p class="text-black">
+              <strong>
+                11(C) - (Please fill ANY ONE as appropriate; to be filled by
+                NFEs other than Direct Reporting NFEs) - please fill if answer
+                to Q.5(d) is YES
+              </strong>
+            </p>
+          </div>
+          <div class="question-container">
+            <div class="question question-c">
+              <div class="qNo">C1</div>
+              <div class="question-text-c">
+                <div class="col1">
+                  <p>Is the Entity an active NFE</p>
+                </div>
+                <div class="col2">
+                  <div class="checkbox-container">
+                    <div class="checkbox">
+                      <input type="checkbox" name="activeNFE" id="activeNFE" />
+                      <p>Yes</p>
+                    </div>
+                    <div class="checkbox">
+                      <input
+                        type="checkbox"
+                        name="noActiveNFE"
+                        id="noActiveNFE"
+                      />
+                      <p>No</p>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <label for="subCatActiveNFE">
+                      Please specify the sub-category of Active NFE
+                    </label>
+                    <input
+                      type="text"
+                      name="subCatActiveNFE"
+                      id="subCatActiveNFE"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="question">
+              <div class="qNo">C2</div>
+              <div class="question-text-c">
+                <div class="col1">
+                  <p>Is the Entity a passive NFE</p>
+                  <p>(if Yes, please fill Annexure 2)</p>
+                </div>
+                <div class="col2">
+                  <div class="checkbox-container">
+                    <div class="checkbox">
+                      <input type="checkbox" name="activeNFE" id="activeNFE" />
+                      <p>Yes</p>
+                    </div>
+                    <div class="checkbox">
+                      <input
+                        type="checkbox"
+                        name="noActiveNFE"
+                        id="noActiveNFE"
+                      />
+                      <p>No</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </body>
 </html>
