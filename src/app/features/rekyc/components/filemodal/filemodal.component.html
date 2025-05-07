@@ -33,7 +33,7 @@
       </div>
 
       <input
-        #file
+        #fileInput
         id="file"
         type="file"
         class="hidden"
@@ -44,7 +44,7 @@
       <ui-button
         label="Browse files"
         class="btn-outline"
-        (btnClick)="file.click()"
+        (btnClick)="fileInput.click()"
       />
 
       <p class="text-pretty text-center">

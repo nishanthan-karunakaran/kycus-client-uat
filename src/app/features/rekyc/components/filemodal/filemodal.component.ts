@@ -7,6 +7,8 @@ import {
   Output,
   signal,
   ChangeDetectionStrategy,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ApiStatus } from 'src/app/core/constants/api.response';
@@ -40,6 +42,8 @@ export class FilemodalComponent {
   isDragging = signal(false);
   excelTemplate = `https://kycusuat.ebitaus.com${API_URL.REKYC.EXCEL_TEMPLATE}`;
 
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
   constructor(
     private toastService: ToastService,
     private rekycService: RekycService,
@@ -57,6 +61,7 @@ export class FilemodalComponent {
   }
 
   handleFile(event: Event | DragEvent) {
+    this.file = null;
     if (event instanceof Event && (event.target as HTMLInputElement)?.files) {
       this.file = (event.target as HTMLInputElement).files?.[0] ?? null;
     } else if (event instanceof DragEvent && event.dataTransfer) {
@@ -77,6 +82,8 @@ export class FilemodalComponent {
     } else {
       this.toastService.error('Please select a valid Excel file.');
     }
+
+    this.fileInput.nativeElement.value = '';
   }
 
   onDragOver(event: DragEvent) {
