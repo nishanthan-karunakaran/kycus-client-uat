@@ -25,6 +25,7 @@ async function renderAll() {
   await ausDetails();
   await extendedDeclaration();
   await fatcaCRS();
+  await annexure2();
   // await downloadPDF();
 }
 
@@ -1563,6 +1564,136 @@ function fatcaCRS() {
   const designation = section.querySelector('#designation');
   designation.value = data?.originalData?.entityDetails?.fatcaCRS?.designation || '';
   attachInputTracking(designation, ['entityDetails', 'fatcaCRS', 'designation']);
+}
+
+function annexure2() {
+  const boLength = 10;
+
+  const fields = {
+    'Name of the controlling person (mandatory)': 'boName',
+    'Entity Type (mandatory)': 'entityType',
+    'Controlling person type code (mandatory)': 'controllingPersonTypeCode',
+    'Date of birth (mandatory)': 'dob',
+    'PAN (mandatory)': 'pan',
+    'Customer ID (if applicable)': 'custId',
+    'Percentage of ownership/capital/profits(mandatory)': 'sharePercentage',
+    'Place / City of Birth (mandatory)': 'placeOfBirth',
+    'Country of Birth (mandatory)': 'countryOfBirth',
+    'Gender (mandatory)': 'gender',
+    'Marital Status (mandatory)': 'maritalStatus',
+    'Father’s name (mandatory)': 'fatherName',
+    'Nationality (Please specify country) (mandatory)': 'nationality',
+    'Aadhaar No (Optional)': 'aadhaarNo',
+    'Mother’s Name (optional)': 'motherName',
+    'Maiden Name (if any)': 'maidenName',
+    'Country of tax residence* (Mandatory)': 'taxResidenceCountry',
+    'Tax identification number (or functional equivalent of country other than India) %':
+      'taxIdNumber',
+    'Tax identification number type (for country other than India)': 'taxIdType',
+    'Address - Line (Mandatory)': 'addressLine',
+    'Address - City (Mandatory)': 'addressCity',
+    'Address - State (Mandatory)': 'addressState',
+    'Address - Country (Mandatory)': 'addressCountry',
+    'Address - Pin Code (Mandatory)': 'addressPinCode',
+    'Address Type for above (Mandatory)': 'addressType',
+    'Mobile Number (Mandatory)': 'mobileNo',
+    'Telephone Number (with ISD &STD code)': 'teleNo',
+    'Occupation Type (Mandatory)': 'occupationType',
+    'Proof of Identity (Mandatory)': 'identityProof',
+    'Proof of Address (Mandatory)': 'addressProof',
+    'Spouse’s name (Optional)': 'spouseName',
+    'Recent colour Photographs (Photo is Non- mandatory for Account opening)': 'photograph',
+  };
+
+  for (let index = 0; index < boLength; index += 2) {
+    let wholeContainer = null;
+    let section = null;
+    let content = null;
+    if (index < 2) {
+      wholeContainer = document.querySelector(`.annexure-2-div-${index + 1}`);
+      section = document.querySelector('#annexure-2');
+      content = section.querySelector('.content');
+    } else {
+      wholeContainer = document.createElement('div');
+      wholeContainer.classList.add(`annexure-2-div-${index + 1}`);
+      wholeContainer.classList.add('pdf-page');
+      section = document.createElement('section');
+      section.id = '#annexure-2';
+      content = document.createElement('div');
+      content.classList.add('content');
+    }
+    const table = document.createElement('table');
+    table.classList.add('bo-annexure-table');
+    const tbody = document.createElement('tbody');
+
+    const newPage = document.createElement('div');
+    newPage.classList.add('pdf-page');
+    const newSection = document.createElement('div');
+    newSection.classList.add('#annexure-2');
+    const table2 = document.createElement('table');
+    table2.classList.add('bo-annexure-table');
+    const tbody2 = document.createElement('tbody');
+
+    Object.entries(fields).map(([key, value], i) => {
+      const tr = document.createElement('tr');
+
+      const siNo = document.createElement('td');
+      siNo.classList.add('text-black');
+      siNo.innerText = i + 1;
+
+      const rowField = document.createElement('td');
+      rowField.classList.add('text-black');
+      rowField.innerText = key;
+
+      const bo1 = document.createElement('td');
+      const innerDiv1 = document.createElement('div');
+      const input1 = document.createElement('input');
+      input1.style.width = '96%';
+      input1.type = 'text';
+      input1.value = `${value}`;
+
+      innerDiv1.appendChild(input1);
+      bo1.append(innerDiv1);
+
+      const bo2 = document.createElement('td');
+      const innerDiv2 = document.createElement('div');
+      const input2 = document.createElement('input');
+      input2.style.width = '96%';
+      input2.type = 'text';
+      input2.value = `${value}`;
+
+      innerDiv2.appendChild(input2);
+      bo2.append(innerDiv2);
+
+      tr.appendChild(siNo);
+      tr.appendChild(rowField);
+      tr.appendChild(bo1);
+      tr.appendChild(bo2);
+      if (i <= 18) {
+        tbody.appendChild(tr);
+      } else {
+        tbody2.appendChild(tr);
+      }
+    });
+
+    table.appendChild(tbody);
+    content.appendChild(table);
+
+    table2.appendChild(tbody2);
+    newSection.appendChild(table2);
+    newPage.appendChild(newSection);
+
+    if (index < 2) {
+      wholeContainer.parentNode.insertBefore(newPage, wholeContainer.nextSibling);
+    } else {
+      section.appendChild(content);
+      wholeContainer.appendChild(section);
+      document.body.appendChild(wholeContainer);
+      document.body.appendChild(newPage);
+      // wholeContainer.parentNode.insertBefore(newPage, wholeContainer.nextSibling);
+      console.log('added to doc');
+    }
+  }
 }
 
 function downloadPDF() {

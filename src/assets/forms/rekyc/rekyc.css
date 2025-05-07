@@ -1160,3 +1160,57 @@ body {
     }
   }
 }
+
+#annexure-2,
+.annexure-2 {
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid var(--primary-border);
+
+    p {
+      margin: 0.5rem 2rem;
+    }
+  }
+
+  .content {
+    margin-top: 1rem;
+
+    .aofNo {
+      margin-bottom: 1rem;
+      margin-left: auto;
+      width: 50%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.bo-annexure-table {
+  border-collapse: collapse;
+
+  tbody {
+    tr {
+      border: 1px solid black !important;
+
+      td {
+        padding: 0.5rem;
+
+        input {
+          margin-right: -1rem !important;
+        }
+
+        &:nth-child(3),
+        &:nth-child(4) {
+          width: 35% !important;
+        }
+
+        &:not(:last-child) {
+          border-right: 1px solid !important;
+        }
+      }
+    }
+  }
+}
