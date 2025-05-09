@@ -1,4 +1,5 @@
 let data = {};
+let isCheckedAllReqInputFilled = false;
 
 async function renderAll() {
   // const status = data?.status || false;
@@ -23,9 +24,9 @@ async function renderAll() {
   await extendedAnnexure();
   await boDetailsTable();
   await ausDetails();
-  await extendedDeclaration();
-  await fatcaCRS();
-  await annexure2();
+  // await extendedDeclaration();
+  // await fatcaCRS();
+  // await annexure2();
   // await downloadPDF();
 }
 
@@ -1567,7 +1568,7 @@ function fatcaCRS() {
 }
 
 function annexure2() {
-  const boLength = 10;
+  const boLength = data?.originalData?.boDetails.length;
 
   const fields = {
     'Name of the controlling person (mandatory)': 'boName',

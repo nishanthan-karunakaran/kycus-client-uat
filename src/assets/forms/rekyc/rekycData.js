@@ -1,3 +1,30 @@
+const reqInputs = [
+  'entity-mailing-address',
+  'entity-mailing-address-shopBidg',
+  'entity-mailing-address-roadName',
+  'entity-mailing-address-landmark',
+  'entity-mailing-address-city',
+  'entity-mailing-address-pincode',
+  'entity-mailing-address-state',
+  'entity-mailing-address-country',
+  'entity-mailing-address-telOff',
+  'entity-mailing-address-extNo',
+  'entity-mailing-address-faxNo',
+  'entity-mailing-address-telR',
+  'entity-mailing-address-mobNo',
+  'entity-mailing-address-emailID',
+  'entity-contact-address-sameAsMailingAddress',
+  'entity-contact-address-shopBidg',
+  'entity-contact-address-roadName',
+  'entity-contact-address-landmark',
+  'entity-contact-address-city',
+  'entity-contact-address-pincode',
+  'entity-contact-address-state',
+  'entity-contact-address-country',
+  'entity-contact-address-owned',
+  'entity-contact-address-rentedLeased',
+];
+
 function sendSaveData() {
   window.parent.postMessage(
     {
@@ -35,6 +62,66 @@ function setFormData(payload) {
   renderAll();
 }
 
+function checkAllReqInputFilled() {
+  let firstEmptyInput = null;
+  let allInputsFilled = true;
+
+  reqInputs.forEach((inputId) => {
+    isCheckedAllReqInputFilled = true;
+    const inputElement = document.getElementById(inputId);
+    if (!inputElement) {
+      console.warn(`Missing input: ${inputId}`);
+      allInputsFilled = false;
+      return;
+    }
+
+    const isFilled = inputElement.value?.trim() !== '';
+
+    if (!isFilled) {
+      inputElement.style.setProperty('border-bottom', '1px solid red', 'important');
+      console.log('missed input', inputId);
+      allInputsFilled = false;
+
+      if (!firstEmptyInput) {
+        firstEmptyInput = inputElement;
+      }
+    } else {
+      inputElement.style.removeProperty('border-bottom');
+    }
+  });
+
+  if (allInputsFilled) {
+    console.log('All required inputs are filled.');
+  } else {
+    console.log('Some required inputs are missing.');
+    if (firstEmptyInput) firstEmptyInput.focus();
+  }
+}
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Tab' && isCheckedAllReqInputFilled) {
+    const current = document.activeElement;
+
+    const unfilledInputs = reqInputs
+      .map((id) => document.getElementById(id))
+      .filter((el) => el?.value?.trim() === '');
+
+    if (unfilledInputs.length === 0) return; // All filled, allow default
+
+    const currentIndex = unfilledInputs.indexOf(current);
+
+    e.preventDefault();
+
+    if (currentIndex === -1 || currentIndex === unfilledInputs.length - 1) {
+      // Not in list or last item — loop to first unfilled
+      unfilledInputs[0].focus();
+    } else {
+      // Move to next unfilled
+      unfilledInputs[currentIndex + 1].focus();
+    }
+  }
+});
+
 window.addEventListener('message', (event) => {
   const { type, payload } = event.data || {};
 
@@ -45,6 +132,8 @@ window.addEventListener('message', (event) => {
     case 'TRIGGER_SAVE':
       sendSaveData();
       break;
+    case 'CHECK_ALL_REQ_INPUT_FILLED':
+      checkAllReqInputFilled();
     default:
       break;
   }

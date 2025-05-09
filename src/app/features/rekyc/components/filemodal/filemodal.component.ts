@@ -21,6 +21,7 @@ import {
 import { RekycService } from 'src/app/features/rekyc/rekyc.service';
 import { ToastService } from 'src/app/shared/ui/toast/toast.service';
 import { API_URL } from '@core/constants/apiurls';
+import { environment } from '@src/environments/environment';
 
 @Component({
   selector: 'app-filemodal',
@@ -40,7 +41,7 @@ export class FilemodalComponent {
   duplicateRekycData: RekycData[] = [];
   activePage = signal(1);
   isDragging = signal(false);
-  excelTemplate = `https://kycusuat.ebitaus.com${API_URL.REKYC.EXCEL_TEMPLATE}`;
+  excelTemplate = `${environment.apiBaseUrl}${API_URL.REKYC.EXCEL_TEMPLATE}`;
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 

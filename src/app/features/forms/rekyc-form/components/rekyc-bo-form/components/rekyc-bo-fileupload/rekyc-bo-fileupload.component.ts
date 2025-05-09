@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ApiStatus } from '@core/constants/api.response';
 import { selectEntityInfo } from '@features/forms/rekyc-form/components/entity-filledby/store/entity-info.selectors';
 import { RekycBoService } from '@features/forms/rekyc-form/components/rekyc-bo-form/rekyc-bo.service';
 import { selectBODetails } from '@features/forms/rekyc-form/components/rekyc-bo-form/store/rekyc-bo.selectors';
-import { BODetails } from '@features/forms/rekyc-form/components/rekyc-bo-form/store/rekyc-bo.state';
 import { RekycPersonalFormService } from '@features/forms/rekyc-form/components/rekyc-personal-details/rekyc-personal.service';
 import { selectAusInfo } from '@features/forms/rekyc-form/components/rekyc-personal-details/store/personal-details.selectors';
 import {
@@ -32,7 +31,7 @@ export class RekycBoFileuploadComponent implements OnInit {
     },
     {
       id: 2,
-      label: 'Aadhaar',
+      label: 'Aadhaar (Both Front & Back)',
       value: 'aadhaar',
     },
     {
@@ -45,6 +44,11 @@ export class RekycBoFileuploadComponent implements OnInit {
       label: 'Pan',
       value: 'pan',
     },
+    {
+      id: 5,
+      label: 'Passport (Both Front & Back)',
+      value: 'passport',
+    },
   ];
   addressProofList = [
     {
@@ -54,7 +58,7 @@ export class RekycBoFileuploadComponent implements OnInit {
     },
     {
       id: 2,
-      label: 'Aadhaar',
+      label: 'Aadhaar (Both Front & Back)',
       value: 'aadhaar',
     },
     {
@@ -67,6 +71,11 @@ export class RekycBoFileuploadComponent implements OnInit {
       label: 'Pan',
       value: 'Pan',
     },
+    {
+      id: 5,
+      label: 'Passport (Both Front & Back)',
+      value: 'passport',
+    },
   ];
   form = this.fb.group({
     boDetails: this.fb.array([]),
@@ -75,7 +84,7 @@ export class RekycBoFileuploadComponent implements OnInit {
   ausInfo = toSignal(this.store.select(selectAusInfo));
   isLoading = signal(false);
   ausDocsList = toSignal(this.store.select(selectBODetails));
-  documentKeys = ['identityProof', 'addressProof', 'photograph', 'signature'];
+  documentKeys = ['identityProof', 'addressProof'];
 
   proofDoc = (doc: string) => doc === 'identityProof' || doc === 'addressProof';
 
@@ -92,9 +101,10 @@ export class RekycBoFileuploadComponent implements OnInit {
     this.form = this.fb.group({
       boDetails: this.fb.array([]),
     });
-    // Add two initial BO entries
-    this.createBOSetup();
-    // this.createBOSetup();
+
+    for (let i = 0; i < 2; i++) {
+      this.addBoDetail();
+    }
   }
 
   get boDetails(): FormArray {
@@ -113,28 +123,28 @@ export class RekycBoFileuploadComponent implements OnInit {
     return index;
   }
 
-  onProofDocChange(i: number, j: number, selectedType: string): void {
-    const boDetailsArray = this.form.get('boDetails') as FormArray;
-    const innerArray = boDetailsArray.at(i) as FormArray;
-    const group = innerArray.at(j) as FormGroup;
+  // onProofDocChange(i: number, j: number, selectedType: string): void {
+  //   const boDetailsArray = this.form.get('boDetails') as FormArray;
+  //   const innerArray = boDetailsArray.at(i) as FormArray;
+  //   const group = innerArray.at(j) as FormGroup;
 
-    if (group) {
-      group.get('file.selectedType')?.setValue(selectedType);
-      group.get('file.selectedType')?.markAsTouched();
-    }
-  }
+  //   if (group) {
+  //     group.get('file.selectedType')?.setValue(selectedType);
+  //     group.get('file.selectedType')?.markAsTouched();
+  //   }
+  // }
 
-  onFileSelection(i: number, j: number, file: File): void {
-    const boDetailsArray = this.form.get('boDetails') as FormArray;
-    const innerArray = boDetailsArray.at(i) as FormArray;
-    const group = innerArray.at(j) as FormGroup;
+  // onFileSelection(i: number, j: number, file: File): void {
+  //   const boDetailsArray = this.form.get('boDetails') as FormArray;
+  //   const innerArray = boDetailsArray.at(i) as FormArray;
+  //   const group = innerArray.at(j) as FormGroup;
 
-    if (group && file) {
-      group.get('file.name')?.setValue(file.name);
-      group.get('file.link')?.setValue(''); // set actual link if you have one
-      group.get('file.name')?.markAsTouched();
-    }
-  }
+  //   if (group && file) {
+  //     group.get('file.name')?.setValue(file.name);
+  //     group.get('file.link')?.setValue(''); // set actual link if you have one
+  //     group.get('file.name')?.markAsTouched();
+  //   }
+  // }
 
   removeFile(i: number, j: number): void {
     const boDetailsArray = this.form.get('boDetails') as FormArray;
@@ -213,83 +223,8 @@ export class RekycBoFileuploadComponent implements OnInit {
     return _index;
   }
 
-  createBOSetup() {
-    const ausDocsList = this.ausDocsList();
-
-    if (!ausDocsList) {
-      // eslint-disable-next-line no-console
-      console.warn('ausDocsList is undefined');
-      return;
-    }
-
-    // Initialize a new FormArray for boDetails if it doesn't exist
-    if (!(this.form.get('boDetails') instanceof FormArray)) {
-      this.form.setControl('boDetails', this.fb.array([]));
-    }
-
-    const boDetailsArray = this.form.get('boDetails') as FormArray;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const newDocumentSet: any[] = []; // Array to hold the form groups for one set of documents
-
-    this.documentKeys.forEach((key) => {
-      const doc = ausDocsList[key as keyof BODetails];
-
-      if (!doc) {
-        return; // Skip if document is undefined
-      }
-
-      const fileGroupConfig: Record<string, unknown> = {
-        name: [doc?.file?.name],
-        link: [doc?.file?.link],
-      };
-
-      // Add 'selectedType' for specific document types
-      if (doc?.type === 'identityProof' || doc?.type === 'addressProof') {
-        fileGroupConfig['selectedType'] = [doc?.file?.selectedType || ''];
-      }
-
-      // Create the document form group
-      const docFormGroup = this.fb.group({
-        label: [doc?.label],
-        type: [doc?.type],
-        isRequired: [doc?.isRequired],
-        file: this.fb.group(fileGroupConfig),
-      });
-
-      // Push the document form group into the current set
-      newDocumentSet.push(docFormGroup);
-    });
-
-    // Push the entire set of document form groups into the boDetails FormArray
-    boDetailsArray.push(this.fb.array(newDocumentSet));
-  }
-
-  createBoDetail(): FormGroup {
-    return this.fb.group({
-      name: ['', Validators.required],
-      addressLine: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      country: ['', Validators.required],
-      pincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
-    });
-  }
-
-  updateBoDetail(index: number, field: string, value: string | number | boolean): void {
-    const control = this.boDetails.at(index);
-    if (control) {
-      control.get(field)?.setValue(value, { emitEvent: false });
-    }
-  }
-
   addBoDetail() {
-    this.boDetails.push(this.createBoDetail());
-  }
-
-  removeLastBoDetail() {
-    if (this.boDetails.length > 0) {
-      this.boDetails.removeAt(this.boDetails.length - 1);
-    }
+    this.boDetails.push(this.getBaseDocumentGroup());
   }
 
   submit(action: 'save' | 'submit') {
@@ -319,5 +254,77 @@ export class RekycBoFileuploadComponent implements OnInit {
         },
       });
     }
+  }
+
+  getBaseDocumentGroup(): FormGroup {
+    return this.fb.group({
+      identityProof: this.fb.group({
+        label: ['Select Proof of Identity'],
+        type: ['identityProof'],
+        isRequired: [true],
+        file: this.fb.group({
+          name: [''],
+          link: [''],
+          selectedType: ['pan'],
+        }),
+      }),
+      addressProof: this.fb.group({
+        label: ['Select Proof of Address'],
+        type: ['addressProof'],
+        isRequired: [true],
+        file: this.fb.group({
+          name: [''],
+          link: [''],
+          selectedType: ['aadhaar'],
+        }),
+      }),
+      // photograph: this.fb.group({
+      //   label: ['Upload Photograph'],
+      //   type: ['photograph'],
+      //   isRequired: [true],
+      //   file: this.fb.group({
+      //     name: [''],
+      //     link: [''],
+      //   }),
+      // }),
+      // signature: this.fb.group({
+      //   label: ['Upload Signature'],
+      //   type: ['signature'],
+      //   isRequired: [true],
+      //   file: this.fb.group({
+      //     name: [''],
+      //     link: [''],
+      //   }),
+      // }),
+    });
+  }
+
+  removePerson(index: number): void {
+    const persons = this.boDetailsArray;
+    if (persons.length > 2 && index >= 0 && index < persons.length) {
+      persons.removeAt(index);
+    }
+  }
+
+  onProofDocChange(personIndex: number, docType: string, selected: string) {
+    const control = this.boDetailsArray.at(personIndex).get([docType, 'file', 'selectedType']);
+    control?.setValue(selected);
+  }
+
+  // onFileSelection(personIndex: number, docType: string, fileData: any) {
+  //   // const fileGroup = this.boDetailsArray.at(personIndex).get([docType, 'file']);
+  //   // fileGroup?.patchValue({ name: fileData.name, link: fileData.link });
+  //   uploadFileProof;
+  // }
+
+  onFileSelection(index: number, controlName: string, file: File): void {
+    if (!file) return;
+
+    this.uploadFileProof(index, controlName, file);
+  }
+
+  deleteDocument(personIndex: number, docType: string) {
+    const fileGroup = this.boDetailsArray.at(personIndex).get([docType, 'file']);
+    fileGroup?.patchValue({ name: '', link: '' });
   }
 }

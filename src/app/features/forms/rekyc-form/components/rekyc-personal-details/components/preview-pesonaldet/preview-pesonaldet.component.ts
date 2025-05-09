@@ -1,3 +1,4 @@
+import { HelperService } from '@core/services/helpers.service';
 import { Component, EventEmitter, Input, OnChanges, Output, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiStatus } from '@core/constants/api.response';
@@ -22,6 +23,7 @@ export class PreviewPersonaldetComponent implements OnChanges {
   constructor(
     private store: Store,
     private personalFormService: RekycPersonalFormService,
+    public helperService: HelperService,
   ) {}
 
   ngOnChanges() {

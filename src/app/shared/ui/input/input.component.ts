@@ -17,7 +17,6 @@ import { InputFormat } from 'src/app/core/directives/input-format.directive';
 @Component({
   selector: 'ui-input',
   templateUrl: './input.component.html',
-  // styleUrls: ['./input.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -32,6 +31,7 @@ export class InputComponent implements OnChanges, AfterViewInit, ControlValueAcc
   @Input() name = '';
   @Input() label = '';
   @Input() placeholder = '';
+  @Input() onlyNumeric = false;
   @Input() readonly = false;
   @Input() disabled = false;
   @Input() autofocus = false;
@@ -154,7 +154,7 @@ export class InputComponent implements OnChanges, AfterViewInit, ControlValueAcc
       target.value = inputValue; // Update input field with trimmed value
     }
 
-    if (this.type === 'number') {
+    if (this.type === 'number' || this.onlyNumeric) {
       // Remove non-numeric characters except for decimal and minus sign
       let cleanedValue = inputValue.replace(/[^0-9.-]/g, '');
 

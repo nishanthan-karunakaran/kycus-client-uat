@@ -25,6 +25,7 @@ import {
 import { EntityDetTab } from './store/rekyc-form.state';
 import { ApiStatus } from '@core/constants/api.response';
 import { selectEntityInfo } from './components/entity-filledby/store/entity-info.selectors';
+import { environment } from '@src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -202,7 +203,7 @@ export class RekycFormService {
 
     if (!accessibleSteps[targetFormKey]) return false;
 
-    // if (status[targetFormKey]) return status[targetFormKey];
+    if (status[targetFormKey]) return status[targetFormKey];
 
     if (targetIndex === -1) return false;
 
@@ -232,12 +233,9 @@ export class RekycFormService {
     // whenever the route changes angular will abort all the active requests
 
     this.http
-      .get(
-        'https://kycusuat.ebitaus.com' + API_URL.APPLICATION.REKYC.TAB_COMPLETION_STATUS(ausId),
-        {
-          headers,
-        },
-      )
+      .get(environment.apiBaseUrl + API_URL.APPLICATION.REKYC.TAB_COMPLETION_STATUS(ausId), {
+        headers,
+      })
       .subscribe({
         next: (response) => {
           if (response) {
@@ -261,7 +259,7 @@ export class RekycFormService {
       });
 
     return this.http.get(
-      'https://kycusuat.ebitaus.com' + API_URL.APPLICATION.REKYC.TAB_COMPLETION_STATUS(ausId),
+      environment.apiBaseUrl + API_URL.APPLICATION.REKYC.TAB_COMPLETION_STATUS(ausId),
       { headers },
     );
   }

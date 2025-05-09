@@ -1,3 +1,4 @@
+import { HelperService } from '@core/services/helpers.service';
 import { Component, EventEmitter, Input, OnChanges, Output, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiStatus } from '@core/constants/api.response';
@@ -16,10 +17,12 @@ export class PreviewEntitydetComponent implements OnChanges {
   data = signal<any[]>([]);
   entityInfo = toSignal(this.store.select(selectEntityInfo));
   isLoading = signal(true);
+  // helperService = HelperService;
 
   constructor(
     private store: Store,
     private entityDetailService: EntityDetailsService,
+    public helperService: HelperService,
   ) {}
 
   ngOnChanges() {
@@ -58,7 +61,7 @@ export class PreviewEntitydetComponent implements OnChanges {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const { data } = response as any;
 
-          const customOrder = ['pan', 'gstin', 'addressProof', 'coi', 'moa', 'aoa'];
+          const customOrder = ['pan', 'gstin', 'addressProof', 'cin', 'moa', 'aoa'];
 
           interface PreviewDoc {
             docType: string;
@@ -68,6 +71,9 @@ export class PreviewEntitydetComponent implements OnChanges {
           const sortedDocuments = data.sort((a: PreviewDoc, b: PreviewDoc) => {
             return customOrder.indexOf(a.docType) - customOrder.indexOf(b.docType);
           });
+
+          // eslint-disable-next-line no-console
+          console.log('sortedDocuments', sortedDocuments);
 
           this.data.set(sortedDocuments);
         }

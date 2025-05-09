@@ -15,7 +15,7 @@ export interface ApiResponse<T = unknown> {
   status: ApiStatus;
   message?: string;
   data?: T | T[] | Record<string, T>;
-  errors?: T | T[] | Record<string, T>;
+  error?: T | T[] | Record<string, T>;
 }
 
 export type ApiResult<T = unknown> = Observable<{

@@ -12,14 +12,14 @@ import {
   template: `
     <button
       type="button"
-      class="flex items-center gap-1 border-2 border-dashed border-secondaryBlue bg-transparent px-3 py-2 text-xs focus:ring-0"
+      class="flex items-center gap-1 border-2 border-dashed border-info bg-transparent px-3 py-2 text-xs focus:ring-0"
       [ngClass]="btnClass"
       (click)="fileInput.click()"
       [disabled]="disabled || loading"
     >
       <ng-container *ngIf="!loading">
-        <lucide-icon name="cloud-upload" color="#4076C9" size="16" />
-        <span class="text-secondaryBlue">{{ label }}</span>
+        <lucide-icon name="cloud-upload" color="#2A4BD0" size="16" />
+        <span class="text-info">{{ label }}</span>
       </ng-container>
       <div *ngIf="loading" class="loader"></div>
     </button>

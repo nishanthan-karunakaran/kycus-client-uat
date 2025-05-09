@@ -14,6 +14,7 @@ import { HelperService } from '@core/services/helpers.service';
 import {
   DeleteDocument,
   UploadFileProof,
+  UploadFileProofErrorResponse,
   UploadFileProofResponse,
 } from '@features/forms/rekyc-form/rekyc-form.model';
 import { RekycFormService } from '@features/forms/rekyc-form/rekyc-form.service';
@@ -44,7 +45,7 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
     },
     {
       id: 2,
-      label: 'Aadhaar',
+      label: 'Aadhaar (Both Front & Back)',
       value: 'aadhaar',
     },
     {
@@ -57,6 +58,11 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
       label: 'PAN',
       value: 'pan',
     },
+    {
+      id: 5,
+      label: 'Passport (Both Front & Back)',
+      value: 'passport',
+    },
   ];
   addressProofList = [
     {
@@ -66,7 +72,7 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
     },
     {
       id: 2,
-      label: 'Aadhaar',
+      label: 'Aadhaar (Both Front & Back)',
       value: 'aadhaar',
     },
     {
@@ -76,21 +82,26 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
     },
     {
       id: 4,
+      label: 'Passport  (Both Front & Back)',
+      value: 'passport',
+    },
+    {
+      id: 5,
       label: 'Electricity Bill (not more than 2 months old)',
       value: 'electricityBill',
     },
     {
-      id: 5,
+      id: 6,
       label: 'Water Bill (not more than 2 months old)',
       value: 'waterBill',
     },
     {
-      id: 6,
+      id: 7,
       label: 'Landline Bill (not more than 2 months old)',
       value: 'landlineBill',
     },
     {
-      id: 7,
+      id: 8,
       label: 'Gas Bill (not more than 2 months old)',
       value: 'gasBill',
     },
@@ -107,7 +118,7 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
   ausDocsList = toSignal(this.store.select(selectPersonalDetails));
   documentKeys = ['identityProof', 'addressProof', 'photograph', 'signature'];
   showPreviewSheet = signal(false);
-  previewData = signal([]);
+  showESignSheet = signal(false);
   showPopup = signal(false);
 
   proofDoc = (doc: string) => doc === 'identityProof' || doc === 'addressProof';
@@ -221,6 +232,10 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
     this.showPreviewSheet.set(!this.showPreviewSheet());
   }
 
+  handleESignSheet() {
+    this.showESignSheet.set(!this.showESignSheet());
+  }
+
   trackDoc(_index: number) {
     return _index;
   }
@@ -230,6 +245,13 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
       const link = this.form.get(`${key}.file.name`)?.value;
       return !!link;
     });
+  }
+
+  getDocAcceptedType(doc: string) {
+    if (doc === 'photograph' || doc === 'signature') {
+      return '.png,.jpg';
+    }
+    return '.jpg,.png,.pdf';
   }
 
   isFileLoadingType(doc: string): boolean {
@@ -359,7 +381,11 @@ export class RekycPersonalDetailsComponent implements OnInit, OnDestroy {
           fileGroup.get('link')?.setValue(data?.storedPath);
           this.toast.success(`${fileType} uploaded successfully`);
         } else {
-          this.toast.error(`Invalid document for ${fileType}`);
+          const { error } = response as { error: UploadFileProofErrorResponse };
+          const errMsg = error.reason
+            ? `${this.helperService.toTitleCase(fileType)}: ${error.reason}`
+            : `Invalid document for ${fileType}`;
+          this.toast.error(errMsg, { duration: 5000 });
         }
       },
     });

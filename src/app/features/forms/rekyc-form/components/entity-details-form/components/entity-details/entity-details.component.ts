@@ -27,6 +27,7 @@ import {
   DeleteDocument,
   EntityDetailsFileType,
   UploadFileProof,
+  UploadFileProofErrorResponse,
   UploadFileProofResponse,
 } from '@features/forms/rekyc-form/rekyc-form.model';
 import { RekycFormService } from '@features/forms/rekyc-form/rekyc-form.service';
@@ -45,16 +46,16 @@ export class EntityDetailsComponent implements OnInit, OnDestroy {
   @Output() formNavigation = new EventEmitter<string>();
   form!: FormGroup;
   entityAddressProofList = [
-    {
-      id: 1,
-      label: 'Shop and Establishment Certificate',
-      value: 'shopAndEstablishment',
-    },
-    {
-      id: 2,
-      label: 'Udyam (MSME) Registration Certificate',
-      value: 'udyam',
-    },
+    // {
+    //   id: 1,
+    //   label: 'Shop and Establishment Certificate',
+    //   value: 'shopAndEstablishment',
+    // },
+    // {
+    //   id: 2,
+    //   label: 'Udyam (MSME) Registration Certificate',
+    //   value: 'udyam',
+    // },
     {
       id: 3,
       label: 'Lease/Rental Agreement (in Entity Name)',
@@ -232,6 +233,13 @@ export class EntityDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  getDocAcceptedType(doc: string) {
+    if (doc === 'pan') {
+      return '.jpg,.png,.pdf';
+    }
+    return '.pdf';
+  }
+
   getErrorMessage(controlName: EntityDetailsFileType): string {
     const controlGroup = this.form.get(controlName) as FormGroup;
 
@@ -294,7 +302,10 @@ export class EntityDetailsComponent implements OnInit, OnDestroy {
           const { status } = response;
 
           if (status === ApiStatus.SUCCESS) {
-            this.toast.success(`${this.helperService.toTitleCase(doc)} deleted`);
+            const entityDetailsType =
+              doc !== 'addressProof' ? doc.toUpperCase() : this.helperService.toTitleCase(doc);
+
+            this.toast.success(`${entityDetailsType} deleted`);
             const fileGroup = this.form.get(`${doc}.file`) as FormGroup;
             fileGroup.patchValue({
               name: '',
@@ -340,17 +351,21 @@ export class EntityDetailsComponent implements OnInit, OnDestroy {
 
         const { status } = response;
 
-        // const entityDetailsFileTypeEntityDetailsFileType =
-        //   type !== 'addressProof' ? type.toUpperCase() : this.helperService.toTitleCase(type);
+        const entityDetailsFileType =
+          type !== 'addressProof' ? type.toUpperCase() : this.helperService.toTitleCase(type);
 
         if (status === ApiStatus.SUCCESS) {
           const { data } = response as { data: UploadFileProofResponse };
           fileGroup.get('name')?.setValue(data?.docName);
           fileGroup.get('link')?.setValue(data?.storedPath);
           this.cdr.markForCheck();
-          // this.toast.success(`${entityDetailsFileTypeEntityDetailsFileType} uploaded successfully`);
+          this.toast.success(`${entityDetailsFileType} uploaded successfully`);
         } else {
-          // this.toast.error(`Invalid document for ${entityDetailsFileTypeEntityDetailsFileType}`);
+          const { error } = response as { error: UploadFileProofErrorResponse };
+          const errMsg = error.reason
+            ? `${entityDetailsFileType}: ${error.reason}`
+            : `Invalid document for ${entityDetailsFileType}`;
+          this.toast.error(errMsg, { duration: 5000 });
           // this.removeFile(type);
         }
       },
@@ -369,6 +384,7 @@ export class EntityDetailsComponent implements OnInit, OnDestroy {
     fileGroup.get('name')?.setValue('');
     fileGroup.get('link')?.setValue('');
     this.setIsFileLoading(type, false);
+    this.cdr.markForCheck();
   }
 
   submit(action: 'submit' | 'save' = 'submit'): void {

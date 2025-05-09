@@ -1,38 +1,46 @@
-<div class="flex flex-col gap-2">
-  <p>
-    Please attach the Beneficial Owners details as mentioned below to complete
-    the Extended Annexure.
-  </p>
-
-  <!-- <h6>Beneficiary Owner {{ i + 1 }}</h6> -->
-  <pre>{{ form.value | json }}</pre>
-
-  <div class="divide-y-2 rounded-lg border" formArrayName="boDetails">
-    <ng-container
+<form
+  [formGroup]="form"
+  (ngSubmit)="submit('submit')"
+  class="flex flex-col gap-4"
+>
+  <div formArrayName="persons">
+    <div
       *ngFor="
-        let set of boDetailsArray.controls;
-        let i = index;
-        trackBy: trackByIndex
+        let person of boDetailsArray.controls;
+        let personIndex = index;
+        trackBy: trackBO
       "
     >
-      <div [formArrayName]="i">
+      <div class="mb-2 flex items-center justify-between px-2">
+        <h6 class="mb-2 text-primary">
+          Beneficiary Owner {{ personIndex + 1 }}
+        </h6>
+
         <div
-          *ngFor="
-            let group of getDocumentArray(i).controls;
-            trackBy: trackByIndex;
-            let j = index
-          "
-          [formGroupName]="j"
+          *ngIf="personIndex > 1"
+          class="group self-end rounded-md bg-secondary/20 p-2 hover:bg-secondary/30 group-hover:bg-red-50"
+        >
+          <lucide-icon
+            name="trash-2"
+            color="#FF0000"
+            size="16"
+            class="hover:scale-110"
+            (click)="removePerson(personIndex)"
+          />
+        </div>
+      </div>
+
+      <div class="mb-6 divide-y-2 rounded-lg border">
+        <div
+          *ngFor="let doc of documentKeys; trackBy: trackDoc"
           class="flex items-center justify-between px-4 py-4"
         >
-          hi
-          <!-- <pre>{{ getDocumentArray(i) | json }}</pre> -->
-          <!-- <div class="w-[42%]">
+          <div class="w-[42%]">
             <div class="flex flex-col gap-2">
               <p>
-                {{ group.get('label')?.value }}
+                {{ person.get(doc + '.label')?.value }}
                 <span
-                  *ngIf="group.get('isRequired')?.value"
+                  *ngIf="person.get(doc + '.isRequired')?.value"
                   class="text-red-500"
                 >
                   *
@@ -40,80 +48,69 @@
               </p>
 
               <ui-select
-                *ngIf="
-                  ['identityProof', 'addressProof'].includes(
-                    group.get('type')?.value
-                  )
-                "
+                *ngIf="doc === 'addressProof' || doc === 'identityProof'"
                 [options]="
-                  group.get('type')?.value === 'addressProof'
-                    ? addressProofList
-                    : identityProofList
+                  doc === 'addressProof' ? addressProofList : identityProofList
                 "
-                (valueChange)="onProofDocChange(i, j, $event)"
-                placeholder="Choose Proof"
-                [defaultValue]="group.get('file.selectedType')?.value"
+                (valueChange)="onProofDocChange(personIndex, doc, $event)"
+                placeholder="Choose Proof of Address"
+                [defaultValue]="
+                  person.get([doc, 'file', 'selectedType'])?.value
+                "
               ></ui-select>
             </div>
 
             <span
               class="text-xs text-red-500"
               *ngIf="
-                group.get('file.name')?.errors?.['required'] &&
-                group.get('file.name')?.touched
+                person.get([doc, 'file', 'name'])?.errors?.['required'] &&
+                person.get([doc, 'file', 'name'])?.touched
               "
             >
-              {{ group.get('label')?.value }} is required
+              {{
+                doc === 'addressProof'
+                  ? 'Address Proof'
+                  : doc === 'identityProof'
+                    ? 'Identity Proof'
+                    : doc.charAt(0).toUpperCase() + doc.slice(1)
+              }}
+              is required
             </span>
           </div>
 
           <div>
             <ui-upload-button
-              *ngIf="!group.get('file.name')?.value"
-              [accept]="
-                group.get('type')?.value === 'identityProof' ||
-                group.get('type')?.value === 'addressProof'
-                  ? '.pdf'
-                  : '.jpg, .png'
-              "
+              *ngIf="!person.get(doc + '.file.name')?.value"
+              [accept]="proofDoc(doc) ? '.pdf' : '.jpg, .png'"
               [disabled]="
-                (group.get('type')?.value === 'identityProof' ||
-                  group.get('type')?.value === 'addressProof') &&
-                !group.get('file.selectedType')?.value
+                doc === 'addressProof'
+                  ? person.get(doc + '.file.selectedType')?.value === ''
+                  : false
               "
-              (selectedFile)="onFileSelection(i, j, $event)"
+              (selectedFile)="onFileSelection(personIndex, doc, $event)"
             ></ui-upload-button>
 
             <div
-              *ngIf="group.get('file.name')?.value"
+              *ngIf="person.get(doc + '.file.name')?.value"
               class="flex items-center gap-2"
             >
               <ui-filename
-                [fileName]="group.get('file.name')?.value"
-                (removeFile)="removeFile(i, j)"
-              ></ui-filename>
+                [fileName]="person.get(doc + '.file.name')?.value"
+                [fileLink]="person.get(doc + '.file.link')?.value"
+                (removeFile)="deleteDocument(personIndex, doc)"
+              />
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
-    </ng-container>
+    </div>
   </div>
+</form>
 
-  <!-- <div
-    class="flex items-center justify-end gap-2 border-t border-gray-300 py-4"
-  >
-    <ui-button
-      label="Save Draft"
-      class="btn-outline"
-      (btnClick)="submit('save')"
-    />
-    <ui-button
-      type="submit"
-      label="I Declare"
-      class="py-[7px]"
-      [disabled]="!isFormValid"
-      [loading]="isLoading()"
-      (btnClick)="submit('submit')"
-    />
-  </div> -->
-</div>
+<ui-button
+  label="Add Beneficiary Owner"
+  (btnClick)="addBoDetail()"
+  icon="plus"
+  [iconSize]="16"
+  class="btn-outline"
+/>

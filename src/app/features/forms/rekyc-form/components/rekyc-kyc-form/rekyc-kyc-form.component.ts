@@ -144,6 +144,12 @@ export class RekycKycFormComponent implements OnInit {
   }
 
   getReport() {
+    // const iframe = this.pdfViewer.nativeElement;
+
+    // if (iframe?.contentWindow) {
+    //   iframe.contentWindow.postMessage({ type: 'CHECK_ALL_REQ_INPUT_FILLED' }, '*');
+    // }
+
     this.rekycService.generateReport(this.entityInfo()?.entityId as string).subscribe({
       next: (result) => {
         const { loading, response } = result;

@@ -51,7 +51,7 @@
           </div>
 
           <span
-            class="text-xs text-red-500"
+            class="text-xs font-medium text-red-500"
             *ngIf="
               form.get([doc, 'file', 'name'])?.errors?.['required'] &&
               form.get([doc, 'file', 'name'])?.touched
@@ -65,7 +65,7 @@
         <div>
           <ui-upload-button
             *ngIf="!form.get(doc + '.file.name')?.value"
-            accept=".pdf"
+            [accept]="getDocAcceptedType(doc)"
             [disabled]="
               doc === 'addressProof'
                 ? form.get(doc + '.file.selectedType')?.value === ''

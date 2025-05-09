@@ -26,6 +26,7 @@ export class ApiInterceptor implements HttpInterceptor {
       setHeaders: {
         // Authorization: token ? `Bearer ${token}` : '',
         Authorization: access_token ? `Bearer ${access_token}` : '',
+        access_token: access_token ? `${access_token}` : '',
       },
     });
 

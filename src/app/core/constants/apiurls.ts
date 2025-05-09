@@ -51,6 +51,9 @@ export const API_URL = {
           `/kycus/rekyc/ausDetails/${entityId}/${ausId}`,
         PREVIEW_DETAILS: (entityId: string, ausId: string) =>
           `/kycus/rekyc/ausPreview/${entityId}/${ausId}`,
+        ESIGN_PREVIEW: (entityId: string, ausId: string) =>
+          `/kycus/rekyc/aus/esignPreview/${entityId}/${ausId}`,
+        ESIGN_PREVIEW_SAVE: '/kycus/rekyc/aus/esignPreviewSave',
       },
       REKYC_FORM: {
         GET: (entityId: string) => `/kycus/rekyc/rekycForm/${entityId}`,

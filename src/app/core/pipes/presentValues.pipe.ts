@@ -13,6 +13,6 @@ export class PresentValuesPipe implements PipeTransform {
 
     return Object.entries(value)
       .filter(([, val]) => val !== null && val !== undefined && val !== '')
-      .map(([key, val]) => [this.helperService.toTitleCase(key), val as T[keyof T]]);
+      .map(([key, val]) => [key, val as T[keyof T]]);
   }
 }

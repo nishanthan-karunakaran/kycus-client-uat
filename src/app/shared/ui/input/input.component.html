@@ -7,47 +7,48 @@
     {{ label }}
   </label>
 
-  <div class="relative">
-    <input
-      [type]="type"
-      [id]="id"
-      [name]="name"
-      [placeholder]="placeholder"
-      [ngClass]="{
-        'w-full': true,
-        'pr-9': icon !== null && iconPos === 'end',
-        'pl-9': icon !== null && iconPos === 'start',
-        'error-input': errorMessage,
-      }"
-      [class]="class"
-      [(ngModel)]="value"
-      (input)="handleInput($event)"
-      [attr.disabled]="disabled ? true : null"
-      [attr.required]="required ? true : null"
-      [attr.readonly]="readonly ? true : null"
-      [attr.maxlength]="maxlength !== undefined ? maxlength : null"
-      [attr.min]="min !== undefined ? min : null"
-      [attr.max]="max !== undefined ? max : null"
-      [attr.pattern]="pattern"
-      [attr.autocomplete]="autocomplete"
-      [inputFormat]="inputFormat"
-      #inputElement
-    />
-    <lucide-icon
-      *ngIf="icon"
-      [name]="icon"
-      [size]="iconSize"
-      [color]="iconColor"
-      class="pointer-events-none absolute top-1/2 -translate-y-1/2 transform"
-      [ngClass]="{
-        'left-3': iconPos === 'start',
-        'right-7': iconPos === 'end',
-      }"
-      aria-hidden="true"
-    />
+  <div class="flex flex-col">
+    <div class="relative">
+      <input
+        [type]="type"
+        [id]="id"
+        [name]="name"
+        [placeholder]="placeholder"
+        [ngClass]="{
+          'w-full': true,
+          'pr-9': icon !== null && iconPos === 'end',
+          'pl-9': icon !== null && iconPos === 'start',
+          'error-input': errorMessage,
+        }"
+        [class]="class"
+        [(ngModel)]="value"
+        (input)="handleInput($event)"
+        [attr.disabled]="disabled ? true : null"
+        [attr.required]="required ? true : null"
+        [attr.readonly]="readonly ? true : null"
+        [attr.maxlength]="maxlength !== undefined ? maxlength : null"
+        [attr.min]="min !== undefined ? min : null"
+        [attr.max]="max !== undefined ? max : null"
+        [attr.pattern]="pattern"
+        [attr.autocomplete]="autocomplete"
+        [inputFormat]="inputFormat"
+        #inputElement
+      />
+      <lucide-icon
+        *ngIf="icon"
+        [name]="icon"
+        [size]="iconSize"
+        [color]="iconColor"
+        class="pointer-events-none absolute top-1/2 -translate-y-1/2 transform"
+        [ngClass]="{
+          'left-3': iconPos === 'start',
+          'right-7': iconPos === 'end',
+        }"
+        aria-hidden="true"
+      />
+    </div>
+    <p *ngIf="errorMessage" class="error-msg" aria-live="assertive">
+      {{ errorMessage }}
+    </p>
   </div>
-
-  <p *ngIf="errorMessage" class="error-msg" aria-live="assertive">
-    {{ errorMessage }}
-  </p>
 </fieldset>

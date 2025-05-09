@@ -42,6 +42,10 @@ export interface UploadFileProofResponse {
   storedPath?: string;
 }
 
+export interface UploadFileProofErrorResponse {
+  reason?: string;
+}
+
 export interface DeleteDocument {
   entityId?: string;
   ausId?: string;

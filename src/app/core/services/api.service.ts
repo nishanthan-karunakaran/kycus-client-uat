@@ -47,7 +47,7 @@ export class ApiService {
 
             const rekycTokenError = errMsg.toLowerCase().includes('token');
             const rekycApplicationError = errMsg.toLowerCase().includes('rekyc record not found');
-            // errMsg.toLowerCase().includes('no rekyc');
+            errMsg.toLowerCase().includes('no rekyc');
 
             if (rekycTokenError || rekycApplicationError) {
               this.store.dispatch(updateAusInfo({ isAuthenticated: false }));
@@ -61,7 +61,7 @@ export class ApiService {
                 status: 'error',
                 message: errMsg || 'An unexpected error occurred',
                 data: null,
-                errors: null,
+                error: null,
               },
             });
           }),

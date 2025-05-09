@@ -70,6 +70,6 @@ export const initialEntityDetails: EntityDetails = {
     true,
   ),
   coi: createInitialDoc('COI (Certificate of Incoporation) ', 'coi', true),
-  moa: createInitialDoc('MOA (Memorandum of Association) ', 'moa', true),
-  aoa: createInitialDoc('AOA (Articles of Association) ', 'aoa', true),
+  moa: createInitialDoc('MOA (Memorandum of Association) ', 'moa', false),
+  aoa: createInitialDoc('AOA (Articles of Association) ', 'aoa', false),
 };

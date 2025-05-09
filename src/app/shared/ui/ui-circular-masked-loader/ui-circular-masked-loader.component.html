@@ -1,0 +1,23 @@
+<div
+  class="loader spin relative overflow-hidden rounded-full"
+  [ngClass]="class"
+>
+  <div
+    class="spin__blocker absolute left-[10%] top-[10%] h-[80%] w-[80%] rounded-full bg-white"
+  ></div>
+
+  <!-- More vivid blue -->
+  <div
+    class="absolute left-0 top-1/2 z-[-1] h-1/2 w-1/2 bg-[linear-gradient(to_bottom_right,rgba(1,50,126,0.85)_0%,rgba(1,50,126,0.7)_100%)]"
+  ></div>
+
+  <!-- Still strong blue but a bit lighter -->
+  <div
+    class="absolute left-1/2 top-1/2 z-[-1] h-1/2 w-1/2 bg-[linear-gradient(to_top_right,rgba(1,50,126,0.7)_0%,rgba(1,50,126,0.4)_100%)]"
+  ></div>
+
+  <!-- Minimize ghost feel here -->
+  <div
+    class="absolute left-1/2 top-0 z-[-1] h-1/2 w-1/2 bg-[linear-gradient(to_bottom_right,rgba(1,50,126,0.2)_0%,rgba(1,50,126,0.35)_100%)]"
+  ></div>
+</div>

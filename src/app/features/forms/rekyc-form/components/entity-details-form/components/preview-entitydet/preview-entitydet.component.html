@@ -27,34 +27,43 @@
     </p>
 
     <ng-template #renderDocs>
-      <div *ngFor="let doc of data(); trackBy: trackDoc" class="divide-y-2">
-        <div class="flex justify-between border p-4">
+      <div *ngFor="let doc of data(); trackBy: trackDoc">
+        <div class="flex w-full justify-between border p-4">
           <div class="flex flex-col gap-1">
             <p>{{ doc?.label }}</p>
 
-            <p class="text-success">
-              {{
-                doc?.isVerified ? 'Document verified!' : 'Document uploaded!'
-              }}
-            </p>
+            <div class="flex items-center gap-1">
+              <lucide-icon
+                *ngIf="doc?.status.toLowerCase() === 'document not uploaded'"
+                name="octagon-alert"
+                color="#F42735"
+                size="16"
+              />
+              <p
+                [ngClass]="{
+                  'text-danger':
+                    doc?.status?.toLowerCase() === 'document not uploaded',
+                  'text-success':
+                    doc?.status?.toLowerCase() !== 'document not uploaded',
+                }"
+              >
+                {{ helperService.toTitleCase(doc?.status, 'space') }}
+              </p>
+
+              <lucide-icon
+                *ngIf="doc?.status.toLowerCase() === 'document verified'"
+                name="check-check"
+                color="#3EB24E"
+                size="20"
+              />
+            </div>
           </div>
 
           <div>
             <div
               *ngFor="let item of doc.data | presentValues; trackBy: trackByKey"
-              [ngClass]="{
-                flex: item[0] === 'Address',
-                'justify-end': item[0] === 'Address',
-              }"
             >
-              <div
-                class="flex gap-2 text-xs"
-                [ngClass]="{
-                  'flex-col': item[0] === 'Address',
-                  'w-4/5': item[0] === 'Address',
-                  'items-center': item[0] !== 'Address',
-                }"
-              >
+              <div class="flex gap-2 text-xs">
                 <p *ngIf="item[0] !== 'Address'" class="text-gray-500">
                   {{ item[0] }}:
                 </p>
@@ -76,6 +85,7 @@
                 </ng-container>
               </div>
             </div>
+            <p class="mt-2 text-danger">{{ doc.reason }}</p>
           </div>
         </div>
       </div>
