@@ -15,7 +15,7 @@
       #otpInput
       type="text"
       [maxlength]="1"
-      [disabled]="disabled"
+      [attr.disabled]="disabled"
       class="size-10 text-center"
       [ngClass]="{ 'error-input': errorMessage }"
       [formControl]="control"

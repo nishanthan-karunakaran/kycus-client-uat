@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -91,7 +90,11 @@ export class RekycBankersLoginComponent implements OnInit, OnDestroy {
 
         if (!response) return;
 
-        const { status, message, success } = response as any;
+        const { status, message, success } = response as {
+          status: ApiStatus;
+          message: string;
+          success: boolean;
+        };
 
         if (status === ApiStatus.SUCCESS || success) {
           localStorage.setItem('authEmail', this.loginForm.value.email);
@@ -118,7 +121,11 @@ export class RekycBankersLoginComponent implements OnInit, OnDestroy {
 
           if (!response) return;
 
-          const { status, message, success } = response as any;
+          const { status, message, success } = response as {
+            status: ApiStatus;
+            message: string;
+            success: boolean;
+          };
 
           if (status === ApiStatus.SUCCESS || success) {
             this.toast.success('OTP sent to your email');
