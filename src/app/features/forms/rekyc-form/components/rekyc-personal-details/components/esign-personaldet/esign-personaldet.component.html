@@ -21,149 +21,151 @@
 
   <ng-template #renderScreen>
     <div>
-      <p>{{ form.get('pinCode')?.valid }}</p>
-
-      <form class="space-y-4 p-4" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="name">Name</label>
-          <ui-input
-            id="name"
-            type="text"
-            formControlName="name"
-            class="w-[320px]"
-            [errorMessage]="errorsObj()['name'] ? 'Name is required' : ''"
-            (valueChange)="updateValue('name', $event)"
-          />
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="fatherName">Father's Name</label>
-          <ui-input
-            id="fatherName"
-            type="text"
-            formControlName="fatherName"
-            class="w-[320px]"
-            [errorMessage]="
-              errorsObj()['fatherName'] ? 'Father\'s Name is required' : ''
-            "
-            (valueChange)="updateValue('name', $event)"
-          />
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="proofOfIdentity">Proof of Identity</label>
-          <ui-filename
-            [canRemove]="false"
-            [fileName]="form.get('proofOfIdentity')?.value.fileName"
-            [fileLink]="form.get('proofOfIdentity')?.value.url"
-          />
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="proofOfAddress">Proof of Address</label>
-          <ui-filename
-            [canRemove]="false"
-            [fileName]="form.get('proofOfAddress')?.value.fileName"
-            [fileLink]="form.get('proofOfAddress')?.value.url"
-          />
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="currentAddress">Current Address</label>
-          <ui-input
-            id="currentAddress"
-            type="text"
-            formControlName="currentAddress"
-            class="w-[320px]"
-            [errorMessage]="
-              errorsObj()['currentAddress'] ? 'Current Address is required' : ''
-            "
-            (valueChange)="updateValue('name', $event)"
-          />
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="city">City</label>
-          <ui-input
-            id="city"
-            type="text"
-            formControlName="city"
-            class="w-[320px]"
-            [errorMessage]="errorsObj()['city'] ? 'City is required' : ''"
-            (valueChange)="updateValue('city', $event)"
-          />
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="state">State</label>
-          <ui-input
-            id="state"
-            type="text"
-            formControlName="state"
-            class="w-[320px]"
-            [errorMessage]="errorsObj()['state'] ? 'State is required' : ''"
-            (valueChange)="updateValue('state', $event)"
-          />
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="country">Country</label>
-          <ui-input
-            id="country"
-            type="text"
-            formControlName="country"
-            class="w-[320px]"
-            [errorMessage]="errorsObj()['country'] ? 'Country is required' : ''"
-            (valueChange)="updateValue('country', $event)"
-          />
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="pinCode">Pin Code</label>
-          <ui-input
-            id="pinCode"
-            type="text"
-            [onlyNumeric]="true"
-            formControlName="pinCode"
-            class="w-[320px]"
-            [errorMessage]="errorsObj()['pinCode'] ? 'Invalid Pincode' : ''"
-            (valueChange)="updateValue('pinCode', $event)"
-          />
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="photographUrl">Photograph</label>
-          <img
-            [src]="form.get('photographUrl')?.value"
-            alt="Didn't have photograph"
-            class="w-28 object-contain"
-            [ngClass]="{ 'w-full': !form.get('photographUrl')?.value }"
-          />
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label class="w-1/4" for="signatureUrl">Signature</label>
-          <img
-            [src]="form.get('signatureUrl')?.value"
-            alt="Didn't have signature"
-            class="w-28 object-contain"
-            [ngClass]="{ 'w-full': !form.get('signatureUrl')?.value }"
-          />
-        </div>
-
-        <div class="flex items-center justify-between gap-4">
-          <div class="w-1/2">
-            <ui-button
-              type="button"
-              label="Cancel"
-              class="btn-outline w-full"
+      <form class="space-y-10 p-4" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="name">Name</label>
+            <ui-input
+              id="name"
+              type="text"
+              formControlName="name"
+              class="w-[320px]"
+              [errorMessage]="getErrorMessage('name')"
             />
           </div>
-          <div class="w-1/2">
-            <ui-button type="submit" label="Submit Details" class="w-full" />
+
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="fatherName">Father's Name</label>
+            <ui-input
+              id="fatherName"
+              type="text"
+              formControlName="fatherName"
+              class="w-[320px]"
+              [errorMessage]="getErrorMessage('fatherName')"
+            />
           </div>
+
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="proofOfIdentity">Proof of Identity</label>
+            <ui-filename
+              [canRemove]="false"
+              [fileName]="form.get('proofOfIdentity')?.value.fileName"
+              [fileLink]="form.get('proofOfIdentity')?.value.url"
+            />
+          </div>
+
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="proofOfAddress">Proof of Address</label>
+            <ui-filename
+              [canRemove]="false"
+              [fileName]="form.get('proofOfAddress')?.value.fileName"
+              [fileLink]="form.get('proofOfAddress')?.value.url"
+            />
+          </div>
+
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="currentAddress">Current Address</label>
+            <ui-input
+              id="currentAddress"
+              type="text"
+              formControlName="currentAddress"
+              class="w-[320px]"
+              [errorMessage]="getErrorMessage('currentAddress')"
+            />
+          </div>
+
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="city">City</label>
+            <ui-input
+              id="city"
+              type="text"
+              formControlName="city"
+              class="w-[320px]"
+              [errorMessage]="getErrorMessage('city')"
+            />
+          </div>
+
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="state">State</label>
+            <ui-input
+              id="state"
+              type="text"
+              formControlName="state"
+              class="w-[320px]"
+              [errorMessage]="getErrorMessage('state')"
+            />
+          </div>
+
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="country">Country</label>
+            <ui-input
+              id="country"
+              type="text"
+              formControlName="country"
+              class="w-[320px]"
+              [errorMessage]="getErrorMessage('country')"
+            />
+          </div>
+
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="pinCode">Pin Code</label>
+            <ui-input
+              id="pinCode"
+              type="text"
+              [onlyNumeric]="true"
+              [maxlength]="6"
+              formControlName="pinCode"
+              class="w-[320px]"
+              [errorMessage]="getErrorMessage('pinCode')"
+            />
+          </div>
+
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="photographUrl">Photograph</label>
+            <img
+              [src]="form.get('photographUrl')?.value"
+              alt="Didn't have photograph"
+              class="w-28 object-contain"
+              [ngClass]="{ 'w-[320px]': !form.get('photographUrl')?.value }"
+            />
+          </div>
+
+          <div class="flex items-center gap-4">
+            <label class="w-1/4" for="signatureUrl">Signature</label>
+            <img
+              [src]="form.get('signatureUrl')?.value"
+              alt="Didn't have signature"
+              class="w-28 object-contain"
+              [ngClass]="{ 'w-[320px]': !form.get('signatureUrl')?.value }"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-4">
+          <ui-button
+            type="button"
+            label="Cancel"
+            class="btn-outline"
+            (btnClick)="handleSheet()"
+          />
+
+          <ui-button
+            type="submit"
+            label="Submit"
+            (btnClick)="handleSaveConfimModal()"
+          />
         </div>
       </form>
     </div>
   </ng-template>
 </app-sheet>
+
+<ui-confirmation-modal
+  [showClose]="false"
+  [isOpen]="showSaveConfirmModal()"
+  (close)="handleSaveConfimModal()"
+  (cancel)="handleSaveConfimModal()"
+  (confirm)="onSubmit()"
+  headerText="Submit Details"
+  contentText="Once you saved the details you can't be able to modify it later"
+/>

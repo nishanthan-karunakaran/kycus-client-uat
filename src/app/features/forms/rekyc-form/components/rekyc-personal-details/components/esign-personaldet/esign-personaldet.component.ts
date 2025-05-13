@@ -9,6 +9,7 @@ import {
 } from '@features/forms/rekyc-form/components/rekyc-personal-details/rekyc-personal.service';
 import { ApiStatus } from '@core/constants/api.response';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HelperService } from '@core/services/helpers.service';
 
 @Component({
   selector: 'rekyc-esign-personaldet',
@@ -18,20 +19,24 @@ export class EsignPersonaldetComponent implements OnInit {
   @Input() openSheet = false;
   @Output() closeSheet = new EventEmitter(false);
   form!: FormGroup;
+  isFormSubmitted = signal(false);
   entityInfo = toSignal(this.store.select(selectEntityInfo));
   ausInfo = toSignal(this.store.select(selectAusInfo));
   isLoading = signal(false);
   data = signal<AusESignPreviewData>({} as AusESignPreviewData);
-  errorsObj = signal<Record<string, string>>({});
+  showSaveConfirmModal = signal(false);
 
   constructor(
     private fb: FormBuilder,
     private store: Store,
     private personalFormService: RekycPersonalFormService,
+    private helperService: HelperService,
   ) {}
 
   ngOnInit(): void {
-    this.getESignPreviewDetails();
+    if (this.openSheet) {
+      this.getESignPreviewDetails();
+    }
 
     this.form = this.fb.group({
       name: ['', [Validators.required]],
@@ -50,6 +55,10 @@ export class EsignPersonaldetComponent implements OnInit {
 
   handleSheet() {
     this.closeSheet.emit(true);
+  }
+
+  handleSaveConfimModal() {
+    this.showSaveConfirmModal.set(!this.showSaveConfirmModal());
   }
 
   updateFormGroup() {
@@ -95,37 +104,6 @@ export class EsignPersonaldetComponent implements OnInit {
     });
   }
 
-  updateErrorMessages() {
-    const updatedErrors: Record<string, string> = {};
-
-    Object.keys(this.form.controls).forEach((key) => {
-      const control = this.form.get(key);
-
-      if (control) {
-        const errors = control.errors;
-        if (errors) {
-          if (errors['required']) {
-            updatedErrors[key] = `${key} is required.`;
-          }
-          if (errors['minlength']) {
-            updatedErrors[key] =
-              `${key} must be at least ${errors['minlength'].requiredLength} characters.`;
-          }
-          if (errors['maxlength']) {
-            updatedErrors[key] =
-              `${key} must be at most ${errors['maxlength'].requiredLength} characters.`;
-          }
-          if (errors['pattern']) {
-            updatedErrors[key] = `${key} has an invalid format.`;
-          }
-        }
-      }
-    });
-
-    // Update the errorsObj signal with the new errors
-    this.errorsObj.set(updatedErrors);
-  }
-
   updateValue(key: string, value: string | number | boolean) {
     const control = this.form.get(key);
     if (control) {
@@ -133,16 +111,42 @@ export class EsignPersonaldetComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    // Mark all controls as touched to trigger validation
-    Object.keys(this.form.controls).forEach((key) => {
-      const control = this.form.get(key);
-      if (control) {
-        control.markAsTouched();
-      }
-    });
+  getErrorMessage(formControlName: string): string {
+    if (!this.isFormSubmitted()) {
+      return '';
+    }
 
-    this.updateErrorMessages();
+    const controlName = this.helperService.toTitleCase(formControlName);
+
+    const control = this.form.get(formControlName);
+    if (control && control.errors) {
+      // Loop through the errors object to handle all error cases
+      for (const errorKey in control.errors) {
+        if (Object.prototype.hasOwnProperty.call(control.errors, errorKey)) {
+          const errorValue = control.errors[errorKey];
+
+          // Handle the specific error types
+          switch (errorKey) {
+            case 'required':
+              return `${controlName} is required`;
+            case 'minlength':
+              return `${controlName} must be at least ${errorValue.requiredLength} characters`;
+            case 'maxlength':
+              return `${controlName} must be at most ${errorValue.requiredLength} characters`;
+            case 'pattern':
+              return `${controlName} has an invalid format`;
+            default:
+              return `${controlName} is invalid`; // Default case for unknown errors
+          }
+        }
+      }
+    }
+    return ''; // Return an empty string if no errors
+  }
+
+  onSubmit() {
+    this.handleSaveConfimModal();
+    this.isFormSubmitted.set(true);
 
     const entityId = this.entityInfo()?.entityId;
     const ausId = this.ausInfo()?.ausId;
