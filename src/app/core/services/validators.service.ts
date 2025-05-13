@@ -18,13 +18,16 @@ export class ValidatorsService {
     };
   }
 
+  isValidEmail(email: string): boolean {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  }
+
   panValidator(customMessage?: string): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
       const valid = panRegex.test(control.value?.toUpperCase());
-      return valid
-        ? null
-        : { pan: true, validationError: customMessage || 'Invalid PAN format' };
+      return valid ? null : { pan: true, validationError: customMessage || 'Invalid PAN format' };
     };
   }
 
