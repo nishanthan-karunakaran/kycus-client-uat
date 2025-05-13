@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiStatus } from '@core/constants/api.response';
@@ -14,6 +15,8 @@ import {
 } from '../rekyc-personal-details/store/personal-details.actions';
 import { RekycFormService } from '@features/forms/rekyc-form/rekyc-form.service';
 import { EntityInfoState } from './store/entity-info.reducer';
+import { ValidatorsService } from '@core/services/validators.service';
+import { InputFormat } from '@core/directives/input-format.directive';
 
 @Component({
   selector: 'rekyc-entity-filledby',
@@ -24,18 +27,22 @@ export class RekycEntityFilledbyComponent implements OnInit {
   showFlow = signal(false);
   selectedFilledBy = signal(1);
   ausList = signal<AusDropDownList[]>([]);
+  currentAus = signal<AusDropDownList>({} as AusDropDownList);
   selectedAusId = '';
   othersEmail = '';
+  emailErrorMsg = '';
   readonly ausInfo = toSignal(this.store.select(selectAusInfo));
   readonly entityInfo = toSignal(this.store.select(selectEntityInfo));
   isLoading = signal(false);
   isOpen = signal(true);
+  inputFormat: InputFormat = InputFormat.LOWERCASE;
 
   constructor(
     private store: Store,
     private entityFilledByService: RekycEntityFilledbyService,
     private rekycFormService: RekycFormService,
     private toast: ToastService,
+    private validatorsService: ValidatorsService,
   ) {}
 
   ngOnInit(): void {
@@ -56,10 +63,31 @@ export class RekycEntityFilledbyComponent implements OnInit {
   }
 
   setOthersEmail(event: string | number | boolean) {
-    this.othersEmail = event as string;
+    const value = event as string;
+    this.othersEmail = value.trim();
   }
 
   updateEntityFilledBy() {
+    if (this.selectedFilledBy() === 3) {
+      const othersEmail = this.othersEmail;
+
+      const isEmailAlreadyExists = [...this.ausList(), this.currentAus()].some(
+        (aus) => aus.email === othersEmail,
+      );
+      [...this.ausList(), this.currentAus()].map((aus) => console.log('aus.email', aus.email));
+
+      if (isEmailAlreadyExists) {
+        this.emailErrorMsg = 'E-Mail already exists in the current AUS list';
+        return;
+      }
+
+      const isValidEmail = this.validatorsService.isValidEmail(othersEmail);
+      if (!isValidEmail) {
+        this.emailErrorMsg = 'Invalid E-Mail format';
+        return;
+      }
+    }
+
     const payload: EntityFilledBy = {
       ausId: this.ausInfo()?.ausId as string,
       type: 'AUS',
@@ -132,7 +160,7 @@ export class RekycEntityFilledbyComponent implements OnInit {
               );
             }
           } else {
-            this.isOpen.set(false);
+            // this.isOpen.set(false);
             this.toast.info(response.message || 'Something went wrong!');
             const accessibleSteps = {
               entityDetails: false,
@@ -162,7 +190,6 @@ export class RekycEntityFilledbyComponent implements OnInit {
     const ausInfo = this.ausInfo();
 
     if (!ausInfo) {
-      // eslint-disable-next-line no-console
       console.warn('ausId not found to update entity filled by');
       return;
     }
@@ -177,14 +204,22 @@ export class RekycEntityFilledbyComponent implements OnInit {
           if (status === ApiStatus.SUCCESS) {
             this.store.dispatch(setAusInfo({ ...ausInfo, ausEmail: data.email }));
 
-            const ausDropDownList: AusDropDownList[] = data.authorizedSignatories
-              .map((aus) => ({
-                id: aus.ausId,
-                label: aus.name,
-                value: aus.ausId,
-              }))
-              .filter((aus) => aus.id !== ausInfo.ausId);
+            const allAus: AusDropDownList[] = data.authorizedSignatories.map((aus) => ({
+              id: aus.ausId,
+              label: aus.name,
+              value: aus.ausId,
+              email: aus.email,
+            }));
+
+            const ausDropDownList = allAus.filter((aus) => aus.id !== ausInfo.ausId);
+            const currentAus = allAus.find((aus) => aus.id === ausInfo.ausId);
+
             this.ausList.set(ausDropDownList);
+            if (currentAus) {
+              this.currentAus.set(currentAus);
+            } else {
+              this.currentAus.set({} as AusDropDownList);
+            }
           }
         }
       },

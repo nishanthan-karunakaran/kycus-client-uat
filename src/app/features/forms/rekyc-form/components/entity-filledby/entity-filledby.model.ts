@@ -8,6 +8,7 @@ export interface AusDropDownList {
   id: string;
   label: string;
   value: string;
+  email: string;
 }
 
 export interface Aus {

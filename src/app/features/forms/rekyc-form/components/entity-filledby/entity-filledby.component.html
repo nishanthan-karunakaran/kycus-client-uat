@@ -90,10 +90,11 @@
 
           <div class="w-1/2">
             <ui-input
-              type="text"
+              type="email"
               placeholder="Others"
               (valueChange)="setOthersEmail($event)"
               [autofocus]="selectedFilledBy() === 3"
+              [errorMessage]="emailErrorMsg"
             />
           </div>
         </div>
