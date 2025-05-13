@@ -1,19 +1,22 @@
+import { CommonModule } from '@angular/common';
 import {
-  Component,
-  Input,
-  ElementRef,
   AfterContentInit,
-  Output,
-  EventEmitter,
-  Renderer2,
-  OnChanges,
-  SimpleChanges,
   ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
   OnDestroy,
+  Output,
+  Renderer2,
+  SimpleChanges,
 } from '@angular/core';
 
 @Component({
   selector: 'ui-modal',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

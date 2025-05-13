@@ -58,12 +58,10 @@ import { TooltipComponent } from './ui/tooltip/tooltip.component';
 
 @NgModule({
   declarations: [
-    ButtonComponent,
     FilenameComponent,
     InputComponent,
     InputDebounceComponent,
     MenuComponent,
-    ModalComponent,
     OtpComponent,
     PaginationComponent,
     SelectComponent,
@@ -73,6 +71,7 @@ import { TooltipComponent } from './ui/tooltip/tooltip.component';
     UploadButtonComponent,
   ],
   imports: [
+    ButtonComponent,
     CommonModule,
     FormsModule,
     InputFormatDirective,
@@ -112,6 +111,7 @@ import { TooltipComponent } from './ui/tooltip/tooltip.component';
       X,
       XCircle,
     }),
+    ModalComponent,
     PresentValuesPipe,
     ReactiveFormsModule,
     RouterModule,
