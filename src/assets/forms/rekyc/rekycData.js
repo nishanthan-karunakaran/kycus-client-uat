@@ -1,4 +1,7 @@
 const reqInputs = [
+  'entityCustId',
+  'entityName',
+  'entityPan',
   'entity-mailing-address',
   'entity-mailing-address-shopBidg',
   'entity-mailing-address-roadName',
@@ -23,6 +26,7 @@ const reqInputs = [
   'entity-contact-address-country',
   'entity-contact-address-owned',
   'entity-contact-address-rentedLeased',
+  'aof-no',
 ];
 
 function sendSaveData() {
@@ -79,7 +83,6 @@ function checkAllReqInputFilled() {
 
     if (!isFilled) {
       inputElement.style.setProperty('border-bottom', '1px solid red', 'important');
-      console.log('missed input', inputId);
       allInputsFilled = false;
 
       if (!firstEmptyInput) {
@@ -96,6 +99,15 @@ function checkAllReqInputFilled() {
     console.log('Some required inputs are missing.');
     if (firstEmptyInput) firstEmptyInput.focus();
   }
+
+  window.parent.postMessage(
+    {
+      type: 'CHECK_ALL_REQ_INPUT_FILLED_RESPONSE',
+      source: 'kyc-form',
+      isFilled: allInputsFilled,
+    },
+    '*',
+  );
 }
 
 document.addEventListener('keydown', function (e) {

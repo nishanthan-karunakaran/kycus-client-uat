@@ -24,10 +24,10 @@ async function renderAll() {
   await extendedAnnexure();
   await boDetailsTable();
   await ausDetails();
-  // await extendedDeclaration();
-  // await fatcaCRS();
-  // await annexure2();
-  // await downloadPDF();
+  await extendedDeclaration();
+  await fatcaCRS();
+  await annexure1();
+  await annexure2();
 }
 
 function entityBasicInfo() {
@@ -809,7 +809,7 @@ function entityProofDeclaration() {
   // Prefill values
   inputs[0].value = `PAN - ${panDoc?.panNumber}` || '';
   inputs[1].value = `CIN - ${coiDoc?.cinNumber}` || '';
-  inputs[2].value = camelToTitleCase(addressProofDoc?.selectedType) || '';
+  inputs[2].value = camelToTitleCase(addressProofDoc?.selectedType || '') || '';
   inputs[3].value = identityProof;
 
   // Clear input fields if they are empty
@@ -989,7 +989,7 @@ function extendedAnnexure() {
 }
 
 function boDetailsTable() {
-  const boDetailsTemp = data?.originalData?.boDetails; // Assuming data.boDetails contains the details
+  const boDetailsTemp = data?.originalData?.boDetails || [{}, {}]; // Assuming data.boDetails contains the details
   const boDetails = [...boDetailsTemp];
   // const boDetails = [...boDetailsTemp, ...boDetailsTemp, ...boDetailsTemp, ...boDetailsTemp];
   const container = document.querySelector('#extended-annexure');
@@ -997,7 +997,7 @@ function boDetailsTable() {
   const boContainer = document.createElement('div');
   boContainer.classList.add('bo_container');
 
-  const boLength = boDetails.length;
+  const boLength = boDetails.length || 2;
 
   // Loop for half the length of boDetails
   for (let i = 0; i < Math.ceil(boLength / 2); i += 2) {
@@ -1020,8 +1020,8 @@ function boDetailsTable() {
     }
 
     // Loop over BOs
-    const currentBo = boDetails[i];
-    const nextBo = boDetails[i + 1];
+    const currentBo = boDetails[i] || {};
+    const nextBo = boDetails[i + 1] || {};
 
     columns.forEach((col) => {
       const row = document.createElement('div');
@@ -1567,6 +1567,210 @@ function fatcaCRS() {
   attachInputTracking(designation, ['entityDetails', 'fatcaCRS', 'designation']);
 }
 
+function annexure1() {
+  // Update data.originalData.annexure1 for the current checkbox
+  if (!data.originalData.annexure1) {
+    data.originalData.annexure1 = {};
+  }
+
+  const section = document.querySelector('#annexure-1');
+
+  const entityName = section.querySelector('#entityName');
+  entityName.value = data.originalData.entityName || '';
+  attachInputTracking(entityName, ['entityName']);
+
+  const aofNo = section.querySelector('#aof-no');
+  aofNo.value = data?.originalData?.entityDetails?.aofNo || '';
+  attachInputTracking(aofNo, ['entityDetails', 'aofNo']);
+
+  const checkBoxIds = ['cin', 'globalEntityIdentificationNo', 'tin', 'other-checkbox'];
+
+  checkBoxIds.forEach((id) => {
+    const checkbox = section.querySelector(`#${id}`);
+    if (!checkbox) return;
+
+    // Set initial state based on data.originalData.annexure1
+    checkbox.checked = !!data.originalData.annexure1?.[id];
+
+    // Add change event listener
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        // Uncheck all other checkboxes
+        checkBoxIds.forEach((otherId) => {
+          if (otherId !== id) {
+            const otherCheckbox = section.querySelector(`#${otherId}`);
+            if (otherCheckbox) {
+              otherCheckbox.checked = false;
+              if (data.originalData.annexure1) {
+                data.originalData.annexure1[otherId] = false;
+              }
+            }
+          }
+        });
+
+        data.originalData.annexure1[id] = true;
+
+        if (id === 'other-checkbox') {
+          otherInput.focus();
+        }
+      } else {
+        // If unchecked, update data.originalData.annexure1
+        if (data.originalData.annexure1) {
+          data.originalData.annexure1[id] = false;
+        }
+
+        if (id !== 'other-checkbox') {
+          otherInput.focus();
+        }
+      }
+    });
+  });
+
+  const otherInput = section.querySelector('#other');
+  otherInput.value = data.originalData.annexure1.identificationNoOtherInput || '';
+  attachInputTracking(otherInput, ['annexure1', 'identificationNoOtherInput']);
+
+  const idNo = section.querySelector('#idNo');
+  idNo.value = data.originalData.annexure1.idNo || '';
+  attachInputTracking(idNo, ['annexure1', 'idNo']);
+
+  const idNoIssuingCountry = section.querySelector('#idNoIssuingCountry');
+  idNoIssuingCountry.value = data.originalData.annexure1.idNoIssuingCountry || '';
+  attachInputTracking(idNoIssuingCountry, ['annexure1', 'idNoIssuingCountry']);
+
+  const addressCheckBoxIds = ['taxAddressReg', 'taxAddressMail'];
+  const addressCheckBoxType = ['resiBusiness', 'residential', 'business', 'regOffice'];
+
+  // Ensure only one checkbox from addressCheckBoxIds can be selected
+  addressCheckBoxIds.forEach((id) => {
+    const checkbox = section.querySelector(`#${id}`);
+    if (!checkbox) return;
+
+    // Set initial state based on data.originalData.annexure1
+    checkbox.checked = !!data.originalData.annexure1?.[id];
+
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        addressCheckBoxIds.forEach((otherId) => {
+          if (otherId !== id) {
+            const otherCheckbox = section.querySelector(`#${otherId}`);
+            if (otherCheckbox) otherCheckbox.checked = false;
+            if (data.originalData.annexure1) {
+              data.originalData.annexure1[otherId] = false;
+            }
+          }
+        });
+        data.originalData.annexure1[id] = true;
+      } else {
+        if (data.originalData.annexure1) {
+          data.originalData.annexure1[id] = false;
+        }
+      }
+    });
+  });
+
+  // Ensure only one checkbox from addressCheckBoxType can be selected
+  addressCheckBoxType.forEach((id) => {
+    const checkbox = section.querySelector(`#${id}`);
+    if (!checkbox) return;
+
+    // Set initial state based on data.originalData.annexure1
+    checkbox.checked = !!data.originalData.annexure1?.[id];
+
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        addressCheckBoxType.forEach((otherId) => {
+          if (otherId !== id) {
+            const otherCheckbox = section.querySelector(`#${otherId}`);
+            if (otherCheckbox) otherCheckbox.checked = false;
+            if (data.originalData.annexure1) {
+              data.originalData.annexure1[otherId] = false;
+            }
+          }
+        });
+        data.originalData.annexure1[id] = true;
+      } else {
+        if (data.originalData.annexure1) {
+          data.originalData.annexure1[id] = false;
+        }
+      }
+    });
+  });
+
+  const entityExcemptionCode = section.querySelector('#entityExcemptionCode');
+  entityExcemptionCode.value = data.originalData.annexure1.entityExcemptionCode || '';
+  attachInputTracking(entityExcemptionCode, ['annexure1', 'entityExcemptionCode']);
+
+  const personType = ['usPerson', 'nonUSPerson'];
+
+  // Ensure only one checkbox from personType can be selected
+  personType.forEach((id) => {
+    const checkbox = section.querySelector(`#${id}`);
+    if (!checkbox) return;
+
+    // Set initial state based on data.originalData.annexure1
+    checkbox.checked = !!data.originalData.annexure1?.[id];
+
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        personType.forEach((otherId) => {
+          if (otherId !== id) {
+            const otherCheckbox = section.querySelector(`#${otherId}`);
+            if (otherCheckbox) otherCheckbox.checked = false;
+            if (data.originalData.annexure1) {
+              data.originalData.annexure1[otherId] = false;
+            }
+          }
+        });
+        data.originalData.annexure1[id] = true;
+
+        // Disable and clear entityExcemptionCode if usPerson is selected
+        if (id === 'usPerson') {
+          entityExcemptionCode.value = '';
+          entityExcemptionCode.disabled = true;
+          data.originalData.annexure1.entityExcemptionCode = '';
+        } else {
+          entityExcemptionCode.disabled = false;
+        }
+      } else {
+        if (data.originalData.annexure1) {
+          data.originalData.annexure1[id] = false;
+        }
+      }
+    });
+  });
+
+  const institutionType = ['financialInstitution', 'directReporting'];
+
+  // Ensure only one checkbox from institutionType can be selected
+  institutionType.forEach((id) => {
+    const checkbox = section.querySelector(`#${id}`);
+    if (!checkbox) return;
+
+    // Set initial state based on data.originalData.extendedDeclaration
+    checkbox.checked = !!data.originalData.annexure1?.[id];
+
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        institutionType.forEach((otherId) => {
+          if (otherId !== id) {
+            const otherCheckbox = section.querySelector(`#${otherId}`);
+            if (otherCheckbox) otherCheckbox.checked = false;
+            if (data.originalData.annexure1) {
+              data.originalData.annexure1[otherId] = false;
+            }
+          }
+        });
+        data.originalData.annexure1[id] = true;
+      } else {
+        if (data.originalData.annexure1) {
+          data.originalData.annexure1[id] = false;
+        }
+      }
+    });
+  });
+}
+
 function annexure2() {
   const boLength = data?.originalData?.boDetails.length;
 
@@ -1692,7 +1896,6 @@ function annexure2() {
       document.body.appendChild(wholeContainer);
       document.body.appendChild(newPage);
       // wholeContainer.parentNode.insertBefore(newPage, wholeContainer.nextSibling);
-      console.log('added to doc');
     }
   }
 }

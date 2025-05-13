@@ -144,25 +144,40 @@ export class RekycKycFormComponent implements OnInit {
   }
 
   getReport() {
-    // const iframe = this.pdfViewer.nativeElement;
+    const iframe = this.pdfViewer.nativeElement;
 
-    // if (iframe?.contentWindow) {
-    //   iframe.contentWindow.postMessage({ type: 'CHECK_ALL_REQ_INPUT_FILLED' }, '*');
-    // }
+    if (iframe?.contentWindow) {
+      iframe.contentWindow.postMessage({ type: 'CHECK_ALL_REQ_INPUT_FILLED' }, '*');
+    }
 
-    this.rekycService.generateReport(this.entityInfo()?.entityId as string).subscribe({
-      next: (result) => {
-        const { loading, response } = result;
-        this.isGettingReport.set(loading);
-        if (!response) return;
-        const { status } = response;
-        if (status === ApiStatus.SUCCESS) {
-          this.toast.success('Report successfully generated and sent to the Bank');
-        } else {
-          this.toast.error('Failed to generate report');
+    const handleMessage = (event: MessageEvent) => {
+      if (
+        event.data?.type === 'CHECK_ALL_REQ_INPUT_FILLED_RESPONSE' &&
+        event.data?.source === 'kyc-form'
+      ) {
+        const isFilled = event.data.isFilled;
+
+        if (isFilled) {
+          this.rekycService.generateReport(this.entityInfo()?.entityId as string).subscribe({
+            next: (result) => {
+              const { loading, response } = result;
+              this.isGettingReport.set(loading);
+              if (!response) return;
+              const { status } = response;
+              if (status === ApiStatus.SUCCESS) {
+                this.toast.success('Report successfully generated and sent to the Bank');
+              } else {
+                this.toast.error('Failed to generate report');
+              }
+            },
+          });
         }
-      },
-    });
+
+        window.removeEventListener('message', handleMessage);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
     // return;
     // this.rekycKycFormService.getReport(this.entityInfo()?.entityId as string).subscribe({
     //   next: (result) => {
