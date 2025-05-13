@@ -1,14 +1,18 @@
+import { CommonModule } from '@angular/common';
 import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
   ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
   OnChanges,
+  Output,
 } from '@angular/core';
+import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'ui-button',
+  standalone: true,
+  imports: [CommonModule, LucideAngularModule],
   template: `
     <button
       class="flex items-center justify-center gap-2"
