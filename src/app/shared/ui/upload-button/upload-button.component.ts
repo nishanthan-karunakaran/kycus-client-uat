@@ -6,6 +6,7 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
+import { ToastService } from '../toast/toast.service';
 
 @Component({
   selector: 'ui-upload-button',
@@ -49,8 +50,10 @@ export class UploadButtonComponent implements OnChanges {
   @Output() selectedFile = new EventEmitter<File>();
 
   btnClass = {};
+  // loader: this.loading;
 
-  // loader: this.loading,
+  constructor(private toast: ToastService) {}
+
   ngOnChanges() {
     this.btnClass = {
       [this.class]: !!this.class,
@@ -61,7 +64,18 @@ export class UploadButtonComponent implements OnChanges {
   handleChange(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input?.files?.[0]) {
-      this.selectedFile.emit(input.files[0]);
+      const file = input.files[0];
+      const acceptedTypes = this.accept.split(',').map((type) => type.trim());
+
+      // Check if the file type matches the accepted types
+      if (!acceptedTypes.some((type) => file.name.endsWith(type))) {
+        this.toast.error(
+          `Invalid file type. Accepted types are: ${this.accept.replaceAll('.', ' ')}`,
+        );
+        return;
+      }
+
+      this.selectedFile.emit(file);
     }
   }
 }
