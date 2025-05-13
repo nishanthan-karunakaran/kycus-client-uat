@@ -181,6 +181,9 @@ export class InputComponent implements OnChanges, AfterViewInit, ControlValueAcc
         this.value = ''; // Reset value if invalid
         target.value = ''; // Clear input if value is not valid
       }
+    } else if (this.type === 'email') {
+      this.value = inputValue.toLowerCase();
+      target.value = inputValue.toLowerCase();
     } else {
       // For other types, just update the value based on input (text, etc.)
       this.value = inputValue;
