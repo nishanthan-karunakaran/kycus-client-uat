@@ -15,10 +15,10 @@
         </p>
       </ng-container> -->
 
-      <!-- *ngIf="isSaveBtnClicked()" -->
       <ng-container>
         <ui-button label="Save" (btnClick)="onSave()" />
         <ui-button
+          *ngIf="isSaveBtnClicked()"
           class="btn-outline min-h-[33px] min-w-[106px]"
           [label]="isGettingReport() ? '' : 'Submit'"
           [loading]="isGettingReport()"
