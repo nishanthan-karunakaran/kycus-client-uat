@@ -1,0 +1,34 @@
+<ui-modal
+  [showClose]="showClose"
+  (close)="handleCancel()"
+  class="max-w-md"
+  [isOpen]="isOpen"
+  contentClass="px-6 py-6"
+>
+  <div modalContent class="flex flex-col gap-8">
+    <ng-container *ngIf="isCustomContent; else defaultContent">
+      <ng-content></ng-content>
+    </ng-container>
+
+    <ng-template #defaultContent>
+      <div class="flex flex-col gap-4">
+        <p class="text-[1.2rem] font-medium text-primary">{{ headerText }}</p>
+        <p class="text-md">{{ contentText }}</p>
+      </div>
+
+      <div class="flex justify-end gap-4">
+        <ui-button
+          class="btn-outline"
+          [label]="cancelText"
+          (btnClick)="handleCancel()"
+          [tabindex]="1"
+        />
+        <ui-button
+          [label]="confirmText"
+          (btnClick)="handleConfirm()"
+          [tabindex]="0"
+        />
+      </div>
+    </ng-template>
+  </div>
+</ui-modal>

@@ -22,6 +22,7 @@ import { RekycPersonalDetailsComponent } from './components/rekyc-personal-detai
 import { RekycFormRoutingModule } from './rekyc-form-routing.module';
 import { RekycFormComponent } from './rekyc-form.component';
 import { rekycFormReducers } from './store/rekyc-form.reducer';
+import { ConfirmationModalComponent } from '@src/app/shared/ui/confirmation-modal/confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { rekycFormReducers } from './store/rekyc-form.reducer';
     RekycFormRoutingModule,
     StoreModule.forFeature('rekycForm', rekycFormReducers),
     UiCircularMaskedLoaderComponent,
+    ConfirmationModalComponent,
   ],
   declarations: [
     RekycFormComponent,
