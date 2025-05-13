@@ -14,6 +14,7 @@ import { selectEntityInfo } from '@features/forms/rekyc-form/components/entity-f
 export class PreviewPersonaldetComponent implements OnChanges {
   @Input() openSheet = false;
   @Output() closeSheet = new EventEmitter(false);
+  @Output() openESignSheet = new EventEmitter(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data = signal<any[]>([]);
   entityInfo = toSignal(this.store.select(selectEntityInfo));
@@ -34,6 +35,10 @@ export class PreviewPersonaldetComponent implements OnChanges {
 
   handleReKycSheet() {
     this.closeSheet.emit(true);
+  }
+
+  handleProceedESign() {
+    this.openESignSheet.emit(true);
   }
 
   trackDoc(_index: number, doc: string) {
